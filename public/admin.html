@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>إدارة آن AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+body{margin:0;background:#F5EEE7;font-family:Tajawal;color:#2b1915}.wrap{max-width:900px;margin:auto;padding:28px 18px}.card{background:white;border:1px solid #e9ddd4;border-radius:22px;padding:20px;margin:16px 0}input,textarea{width:100%;padding:11px;border:1px solid #ddd0c7;border-radius:12px;font:inherit;box-sizing:border-box}button{background:#4A241C;color:white;border:0;border-radius:12px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}.row{display:grid;grid-template-columns:1fr 2fr auto;gap:8px;margin:10px 0;padding:10px;border:1px solid #eee2da;border-radius:14px}.row textarea{min-height:70px}.top{display:flex;justify-content:space-between;align-items:center}.top a{color:#4A241C;text-decoration:none}@media(max-width:650px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><h1>إدارة آن AI</h1><a href="/">← المحادثة</a></div>
+  <div class="card">
+    <input id="pin" type="password" placeholder="رمز الإدارة">
+    <button id="load">دخول</button>
+    <p id="msg">رمز الإدارة محفوظ في متغير ADMIN_PIN على السيرفر.</p>
+  </div>
+  <div class="card" id="editor" hidden>
+    <div id="facts"></div>
+    <button id="add">+ إضافة رد</button>
+    <button id="save">حفظ</button>
+  </div>
+</div>
+<script>
+let kb=null;const q=s=>document.querySelector(s),facts=q('#facts'),msg=q('#msg'),headers=()=>({'Content-Type':'application/json','x-admin-pin':q('#pin').value});
+function render(){facts.innerHTML='';(kb.facts||[]).forEach((x,i)=>{const r=document.createElement('div');r.className='row';r.innerHTML=`<input data-i="${i}" data-k="keywords" value="${(x.keywords||[]).join('، ')}"><textarea data-i="${i}" data-k="answer">${x.answer||''}</textarea><button data-del="${i}">حذف</button>`;facts.append(r);});}
+q('#load').onclick=async()=>{const r=await fetch('/api/knowledge',{headers:headers()});if(!r.ok){msg.textContent='رمز غير صحيح';return;}kb=await r.json();q('#editor').hidden=false;render();msg.textContent='تم الدخول';};
+facts.oninput=e=>{if(!e.target.dataset.k)return;const i=+e.target.dataset.i;if(e.target.dataset.k==='keywords')kb.facts[i].keywords=e.target.value.split(/[،,]/).map(x=>x.trim()).filter(Boolean);else kb.facts[i].answer=e.target.value;};
+facts.onclick=e=>{if(e.target.dataset.del!==undefined){kb.facts.splice(+e.target.dataset.del,1);render();}};
+q('#add').onclick=()=>{kb.facts.push({keywords:['كلمة'],answer:'رد معتمد'});render();};
+q('#save').onclick=async()=>{const r=await fetch('/api/knowledge',{method:'PUT',headers:headers(),body:JSON.stringify(kb)});msg.textContent=r.ok?'تم الحفظ ✅':'تعذر الحفظ';};
+</script>
+</body>
+</html>
