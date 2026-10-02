@@ -1,8 +1,5 @@
-const fs = require('fs');
-const path = require('path');
 const crypto = require('crypto');
-
-const KB_PATH = path.join(process.cwd(), 'data', 'knowledge.json');
+const kb = require('../data/knowledge.json');
 
 function authorized(req) {
   const expected = String(process.env.ADMIN_PIN || '');
@@ -19,11 +16,7 @@ module.exports = async function handler(req, res) {
   }
 
   if (req.method === 'GET') {
-    try {
-      return res.status(200).json(JSON.parse(fs.readFileSync(KB_PATH, 'utf8')));
-    } catch {
-      return res.status(500).json({ error: 'knowledge_unavailable' });
-    }
+    return res.status(200).json(kb);
   }
 
   if (req.method === 'PUT') {
