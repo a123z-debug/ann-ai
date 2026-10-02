@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
-
-const KB_PATH = path.join(process.cwd(), 'data', 'knowledge.json');
+const kb = require('../data/knowledge.json');
 
 function normalize(value) {
   return String(value || '')
@@ -14,11 +11,7 @@ function normalize(value) {
     .trim();
 }
 
-function readKnowledge() {
-  return JSON.parse(fs.readFileSync(KB_PATH, 'utf8'));
-}
-
-function answer(message, kb) {
+function answer(message) {
   const q = normalize(message);
   let best = null;
   let score = 0;
@@ -52,8 +45,7 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: 'empty_message' });
     }
 
-    const kb = readKnowledge();
-    return res.status(200).json({ reply: answer(message, kb) });
+    return res.status(200).json({ reply: answer(message) });
   } catch {
     return res.status(500).json({ error: 'server_error' });
   }
