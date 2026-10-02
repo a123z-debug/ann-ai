@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/admin", "destination": "/public/admin.html" },
+    { "source": "/styles.css", "destination": "/public/styles.css" },
+    { "source": "/app.js", "destination": "/public/app.js" }
+  ],
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 10
+    }
+  }
+}
