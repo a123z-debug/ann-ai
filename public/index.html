@@ -54,11 +54,73 @@
       <div><span>♨</span><b>مشروبات وحلويات</b></div>
       <div><span>❧</span><b>أجواء جميلة</b></div>
     </div>
+    <nav class="ann-bottom-nav" aria-label="التنقل الرئيسي">
+      <button class="ann-nav-item is-active" type="button" data-nav-home aria-current="page">
+        <span class="ann-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3.8 10.7 12 4l8.2 6.7v8.1a1.2 1.2 0 0 1-1.2 1.2h-4.5v-5.6h-5V20H5a1.2 1.2 0 0 1-1.2-1.2v-8.1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </span>
+        <span>الرئيسية</span>
+      </button>
 
-    <button class="mobile-chat" type="button" data-open-chat>
-      <span class="online"></span><span>☕</span><strong>اسأل آن</strong><b>‹</b>
-    </button>
-  </section>
+      <button class="ann-nav-item" type="button" data-open-sheet="menu">
+        <span class="ann-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5h12M6 12h12M6 18.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <span>القائمة</span>
+      </button>
+
+      <button class="ann-nav-item" type="button" data-open-sheet="experience">
+        <span class="ann-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s7-3.8 7-10.1A4.9 4.9 0 0 0 14.1 5c-1.2 0-2.2.4-3 1.3C10.3 5.4 9.3 5 8.1 5A4.9 4.9 0 0 0 3.2 9.9C3.2 16.2 10.2 20 12 20Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </span>
+        <span>تجربتك في آن</span>
+      </button>
+
+      <button class="ann-nav-item ann-nav-assistant" type="button" data-open-chat>
+        <span class="ann-nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7.3 18.1 4 20l.9-3.8A8.2 8.2 0 1 1 7.3 18.1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.3 10.3h7.4M8.3 13.7h4.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </span>
+        <span>اسأل آن</span>
+        <i class="ann-online-dot" aria-hidden="true"></i>
+      </button>
+    </nav>
+
+    <div class="ann-sheet-backdrop" data-close-sheet hidden></div>
+
+    <section class="ann-sheet" id="annMenuSheet" data-sheet="menu" aria-hidden="true" aria-label="قائمة آن">
+      <div class="ann-sheet-handle" aria-hidden="true"></div>
+      <div class="ann-sheet-head">
+        <div>
+          <span class="ann-sheet-kicker">قائمة آن</span>
+          <h2>قهوة مختصة وأكثر</h2>
+        </div>
+        <button class="ann-sheet-close" type="button" data-close-sheet aria-label="إغلاق">×</button>
+      </div>
+      <div class="ann-sheet-grid">
+        <article><span>☕</span><strong>قهوة مختصة</strong><small>اختيارات نحضّرها بعناية.</small></article>
+        <article><span>🥤</span><strong>مشروبات</strong><small>باردة وساخنة حسب الموسم.</small></article>
+        <article><span>🍰</span><strong>حلويات</strong><small>تفاصيل القائمة الكاملة قريبًا.</small></article>
+      </div>
+      <button class="ann-sheet-cta" type="button" data-open-chat>اسأل آن عن القائمة</button>
+    </section>
+
+    <section class="ann-sheet" id="annExperienceSheet" data-sheet="experience" aria-hidden="true" aria-label="تجربتك في آن">
+      <div class="ann-sheet-handle" aria-hidden="true"></div>
+      <div class="ann-sheet-head">
+        <div>
+          <span class="ann-sheet-kicker">تجربتك في آن</span>
+          <h2>لحظة هادئة بطابع آن</h2>
+        </div>
+        <button class="ann-sheet-close" type="button" data-close-sheet aria-label="إغلاق">×</button>
+      </div>
+      <div class="ann-experience-list">
+        <div><span>01</span><p><strong>جلسات هادئة</strong><small>مساحة مريحة للقاء والهدوء.</small></p></div>
+        <div><span>02</span><p><strong>مذاق مميز</strong><small>قهوة مختصة ومشروبات مختارة.</small></p></div>
+        <div><span>03</span><p><strong>أجواء دافئة</strong><small>هوية بصرية وتجربة بسيطة وواضحة.</small></p></div>
+      </div>
+    </section>
+  
+</section>
 </main>
 
 <div class="chat-backdrop" data-close-chat hidden></div>

@@ -222,3 +222,78 @@ $$('.quick button').forEach(btn => {
     });
   }
 })();
+
+
+// ===== ANN PROFESSIONAL MOBILE NAV =====
+(() => {
+  const navItems = [...document.querySelectorAll('.ann-nav-item')];
+  const sheets = [...document.querySelectorAll('.ann-sheet')];
+  const sheetBackdrop = document.querySelector('.ann-sheet-backdrop');
+
+  const setActive = (button) => {
+    navItems.forEach(item => {
+      item.classList.toggle('is-active', item === button);
+      if (item === button) item.setAttribute('aria-current','page');
+      else item.removeAttribute('aria-current');
+    });
+  };
+
+  const closeSheets = () => {
+    sheets.forEach(sheet => {
+      sheet.classList.remove('is-open');
+      sheet.setAttribute('aria-hidden','true');
+    });
+    if (sheetBackdrop) {
+      sheetBackdrop.classList.remove('is-visible');
+      setTimeout(() => { sheetBackdrop.hidden = true; }, 220);
+    }
+  };
+
+  const openSheet = (name, trigger) => {
+    closeSheets();
+    const sheet = document.querySelector('.ann-sheet[data-sheet="' + name + '"]');
+    if (!sheet) return;
+    sheet.setAttribute('aria-hidden','false');
+    sheet.classList.add('is-open');
+    if (sheetBackdrop) {
+      sheetBackdrop.hidden = false;
+      requestAnimationFrame(() => sheetBackdrop.classList.add('is-visible'));
+    }
+    if (trigger) setActive(trigger);
+  };
+
+  document.querySelectorAll('[data-open-sheet]').forEach(btn => {
+    btn.addEventListener('click', () => openSheet(btn.dataset.openSheet, btn));
+  });
+
+  document.querySelectorAll('[data-close-sheet]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeSheets();
+      const home = document.querySelector('[data-nav-home]');
+      if (home) setActive(home);
+    });
+  });
+
+  document.querySelectorAll('[data-nav-home]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeSheets();
+      setActive(btn);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  document.querySelectorAll('.ann-nav-assistant').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeSheets();
+      setActive(btn);
+    });
+  });
+
+  document.querySelectorAll('.ann-sheet [data-open-chat]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      closeSheets();
+      const assistant = document.querySelector('.ann-nav-assistant');
+      if (assistant) setActive(assistant);
+    });
+  });
+})();

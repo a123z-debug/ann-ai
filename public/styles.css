@@ -298,3 +298,226 @@ button,a{-webkit-tap-highlight-color:transparent}
   .mobile-features{right:8px;left:8px}
   .mobile-features b{font-size:9.5px}
 }
+
+
+/* ===== ANN PROFESSIONAL MOBILE NAV v1 ===== */
+.ann-bottom-nav,.ann-sheet,.ann-sheet-backdrop{display:none}
+
+@media(max-width:700px){
+  .mobile-concept{
+    padding-bottom:92px;
+  }
+
+  .ann-bottom-nav{
+    position:fixed;
+    z-index:55;
+    left:10px;
+    right:10px;
+    bottom:max(10px,env(safe-area-inset-bottom));
+    min-height:72px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+    padding:7px;
+    border-radius:24px;
+    background:rgba(255,249,240,.92);
+    border:1px solid rgba(84,38,20,.13);
+    box-shadow:0 18px 46px rgba(53,18,6,.22);
+    -webkit-backdrop-filter:blur(18px) saturate(1.15);
+    backdrop-filter:blur(18px) saturate(1.15);
+  }
+
+  .ann-nav-item{
+    position:relative;
+    min-width:0;
+    min-height:58px;
+    border:0;
+    border-radius:18px;
+    background:transparent;
+    color:#765246;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:6px 4px;
+    font-size:10.5px;
+    font-weight:800;
+    line-height:1.15;
+    cursor:pointer;
+    transition:transform .16s ease,background .16s ease,color .16s ease,box-shadow .16s ease;
+  }
+
+  .ann-nav-item:active{transform:scale(.96)}
+
+  .ann-nav-icon{
+    width:24px;height:24px;
+    display:grid;place-items:center;
+  }
+  .ann-nav-icon svg{width:22px;height:22px}
+
+  .ann-nav-item.is-active{
+    background:linear-gradient(145deg,#6f331c,#532312);
+    color:#fff8ef;
+    box-shadow:0 8px 20px rgba(77,33,19,.22);
+  }
+
+  .ann-nav-assistant{
+    color:#532312;
+    background:rgba(245,234,222,.72);
+    border:1px solid rgba(92,42,22,.08);
+  }
+
+  .ann-online-dot{
+    position:absolute;
+    top:6px;
+    right:13px;
+    width:8px;height:8px;border-radius:50%;
+    background:#28c85e;
+    box-shadow:0 0 0 4px rgba(40,200,94,.10);
+  }
+
+  .ann-sheet-backdrop{
+    position:fixed;
+    z-index:70;
+    inset:0;
+    display:block;
+    background:rgba(35,12,5,.40);
+    -webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(4px);
+    opacity:0;
+    transition:opacity .22s ease;
+  }
+  .ann-sheet-backdrop.is-visible{opacity:1}
+
+  .ann-sheet{
+    position:fixed;
+    z-index:75;
+    left:0;right:0;bottom:0;
+    display:block;
+    padding:10px 16px calc(24px + env(safe-area-inset-bottom));
+    background:rgba(255,250,243,.985);
+    color:#2f1710;
+    border-radius:28px 28px 0 0;
+    box-shadow:0 -24px 70px rgba(39,13,5,.25);
+    transform:translateY(104%);
+    opacity:0;
+    visibility:hidden;
+    transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s ease,visibility .2s;
+  }
+
+  .ann-sheet.is-open{
+    transform:translateY(0);
+    opacity:1;
+    visibility:visible;
+  }
+
+  .ann-sheet-handle{
+    width:46px;height:5px;
+    margin:1px auto 12px;
+    border-radius:999px;
+    background:#d7c2b2;
+  }
+
+  .ann-sheet-head{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .ann-sheet-head>div{flex:1}
+  .ann-sheet-kicker{
+    display:block;
+    color:#9d7768;
+    font-size:11px;
+    font-weight:800;
+    margin-bottom:2px;
+  }
+  .ann-sheet-head h2{
+    margin:0;
+    color:#4d2113;
+    font-size:24px;
+    line-height:1.25;
+  }
+  .ann-sheet-close{
+    width:42px;height:42px;
+    border:0;border-radius:13px;
+    background:#f2e6da;
+    color:#5c3428;
+    font-size:26px;
+    line-height:1;
+    cursor:pointer;
+  }
+
+  .ann-sheet-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+  }
+  .ann-sheet-grid article{
+    min-height:128px;
+    padding:14px 10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    text-align:center;
+    border:1px solid rgba(83,35,18,.10);
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 8px 22px rgba(63,24,9,.05);
+  }
+  .ann-sheet-grid article>span{font-size:23px}
+  .ann-sheet-grid strong{font-size:13px;color:#4d2113}
+  .ann-sheet-grid small{font-size:10px;line-height:1.5;color:#816a60}
+
+  .ann-sheet-cta{
+    width:100%;
+    min-height:50px;
+    margin-top:12px;
+    border:0;
+    border-radius:16px;
+    background:linear-gradient(145deg,#6f331c,#532312);
+    color:#fff8ef;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .ann-experience-list{
+    display:grid;
+    gap:9px;
+  }
+  .ann-experience-list>div{
+    min-height:74px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:12px 13px;
+    border:1px solid rgba(83,35,18,.10);
+    border-radius:18px;
+    background:#fff;
+  }
+  .ann-experience-list>div>span{
+    width:40px;height:40px;flex:0 0 40px;
+    display:grid;place-items:center;
+    border-radius:13px;
+    background:#6a321c;
+    color:#fff7ed;
+    font-size:11px;
+    font-weight:800;
+  }
+  .ann-experience-list p{margin:0;display:grid;gap:2px}
+  .ann-experience-list strong{font-size:14px;color:#4d2113}
+  .ann-experience-list small{font-size:11px;color:#816a60;line-height:1.5}
+
+  /* Remove the old floating mobile assistant button; assistant is now in the nav. */
+  .mobile-chat{display:none!important}
+}
+
+@media(max-width:390px){
+  .ann-bottom-nav{left:7px;right:7px;gap:3px;padding:6px}
+  .ann-nav-item{font-size:9.7px}
+  .ann-sheet-grid{gap:7px}
+  .ann-sheet-grid article{padding:12px 7px}
+}
