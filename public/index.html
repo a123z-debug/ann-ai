@@ -7,7 +7,7 @@
 <meta name="description" content="آن coffee — قهوة مختصة وأكثر. قريبًا في شمال محايل عسير.">
 <title>آن coffee — قريبًا الافتتاح</title>
 <link rel="preload" href="/concept-desktop.webp" as="image" type="image/webp">
-<link rel="preload" href="/ann-mobile.webp" as="image" type="image/webp" media="(max-width:700px)">
+<link rel="preload" href="/mobile-scene.webp" as="image" type="image/webp" media="(max-width:700px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,21 +23,38 @@
   </section>
 
   <section class="mobile-concept" aria-label="واجهة آن coffee للجوال">
-    <img class="mobile-scene" src="/ann-mobile.webp" alt="">
+    <img class="mobile-scene" src="/mobile-scene.webp" alt="">
+    <div class="mobile-overlay" aria-hidden="true"></div>
+
+    <header class="mobile-header">
+      <img class="mobile-logo" src="/logo.webp" alt="آن coffee">
+      <a class="mobile-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener">
+        <span>شمال محايل عسير</span><b>⌖</b>
+      </a>
+    </header>
+
     <div class="mobile-copy">
       <div class="opening-pill"><span>❧</span> قريبًا الافتتاح</div>
       <h1>لحظتك تبدأ من آن</h1>
       <h2>قهوة مختصة ... وأكثر</h2>
       <p>في شمال محايل عسير، نهيّئ لك مساحة هادئة تجمع بين نكهات القهوة المختصة والمشروبات والحلويات.</p>
       <div class="mobile-ctas">
-        <a href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" class="cta light">
+        <a class="cta light" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener">
           <span>تعرف على موقعنا</span><b>⌖</b>
         </a>
-        <button type="button" data-open-chat class="cta dark">
+        <button class="cta dark" type="button" data-open-chat>
           <span>اكتشف قائمتنا</span><b>☕</b>
         </button>
       </div>
     </div>
+
+    <div class="mobile-features" aria-label="مزايا آن coffee">
+      <div><span>◉</span><b>قهوة مختصة</b></div>
+      <div><span>▱</span><b>جلسات هادئة</b></div>
+      <div><span>♨</span><b>مشروبات وحلويات</b></div>
+      <div><span>❧</span><b>أجواء جميلة</b></div>
+    </div>
+
     <button class="mobile-chat" type="button" data-open-chat>
       <span class="online"></span><span>☕</span><strong>اسأل آن</strong><b>‹</b>
     </button>

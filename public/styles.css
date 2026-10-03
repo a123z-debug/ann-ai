@@ -10,6 +10,7 @@ html,body{margin:0;width:100%;min-height:100%;background:#241008;font-family:"Ta
 body{overflow-x:hidden}
 body.chat-open{overflow:hidden}
 button,input{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
 
 .ann-shell{width:100%;min-height:100svh}
 .desktop-concept{
@@ -27,19 +28,14 @@ button,input{font:inherit}
   object-fit:cover;
   object-position:center;
 }
-.hotspot{
-  position:absolute;
-  z-index:5;
-  border:0;
-  background:transparent;
-  cursor:pointer;
-}
+.hotspot{position:absolute;z-index:5;border:0;background:transparent;cursor:pointer}
 .hs-menu{left:10.7%;top:57.1%;width:15.5%;height:6.4%}
 .hs-location{left:27.3%;top:57.1%;width:13.6%;height:6.4%}
 .hs-chat{right:1.6%;bottom:1.6%;width:10.5%;height:8.8%}
 
 .mobile-concept{display:none}
 
+/* chat */
 .chat-backdrop{
   position:fixed;z-index:80;inset:0;background:rgba(34,13,6,.42);
   backdrop-filter:blur(5px);opacity:0;transition:opacity .2s ease
@@ -75,115 +71,197 @@ button,input{font:inherit}
 .chat-note{text-align:center;padding:0 10px 10px;font-size:10px;color:#9a847a}
 
 @media(max-width:700px){
-  html,body{background:#efe3d2}
+  html,body{background:#ead9c2}
   .desktop-concept{display:none}
   .mobile-concept{
     position:relative;
     display:block;
     width:100%;
-    min-height:100svh;
+    height:100svh;
+    min-height:660px;
     overflow:hidden;
-    background:#efe3d2;
+    background:#ead9c2;
+    isolation:isolate;
   }
   .mobile-scene{
-    width:100%;
-    height:auto;
-    min-height:100svh;
-    display:block;
-    object-fit:cover;
-    object-position:center top;
-  }
-  .mobile-copy{
     position:absolute;
-    z-index:10;
-    top:21.6%;
-    left:0;
-    right:0;
-    padding:20px 20px 28px;
-    text-align:center;
-    color:#4b1d0e;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center center;
+    z-index:-3;
+  }
+  .mobile-overlay{
+    position:absolute;
+    inset:0;
+    z-index:-2;
     background:
       linear-gradient(180deg,
-        rgba(246,235,217,.98) 0%,
-        rgba(246,235,217,.97) 70%,
-        rgba(246,235,217,.72) 88%,
-        rgba(246,235,217,0) 100%);
+        rgba(255,246,232,.92) 0%,
+        rgba(255,246,232,.86) 17%,
+        rgba(255,246,232,.42) 34%,
+        rgba(255,246,232,.02) 52%,
+        rgba(44,17,7,.06) 100%),
+      linear-gradient(90deg,rgba(255,247,235,.08),transparent 55%);
+  }
+
+  .mobile-header{
+    position:absolute;
+    z-index:12;
+    top:max(12px,env(safe-area-inset-top));
+    right:14px;
+    left:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .mobile-logo{
+    width:82px;
+    height:auto;
+    border-radius:0 0 18px 18px;
+    box-shadow:0 10px 28px rgba(65,23,7,.15);
+  }
+  .mobile-location{
+    min-height:42px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:0 15px;
+    border-radius:999px;
+    background:rgba(92,36,16,.90);
+    color:#fff7ec;
+    border:1px solid rgba(255,245,227,.38);
+    text-decoration:none;
+    font-size:13px;
+    font-weight:800;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 10px 26px rgba(55,18,6,.14);
+  }
+  .mobile-location b{font-size:17px;font-weight:500}
+
+  .mobile-copy{
+    position:absolute;
+    z-index:11;
+    top:16.2%;
+    right:16px;
+    left:16px;
+    max-width:530px;
+    margin:auto;
+    text-align:right;
+    color:#4a1d0f;
   }
   .opening-pill{
     width:max-content;
-    max-width:88%;
-    height:38px;
-    margin:0 auto 10px;
-    padding:0 18px;
+    max-width:100%;
+    min-height:38px;
+    padding:0 16px;
     display:flex;
     align-items:center;
     justify-content:center;
     gap:8px;
     border-radius:999px;
-    background:#6a321c;
+    background:rgba(96,38,17,.94);
     color:#fff8ee;
-    border:1px solid rgba(255,245,225,.45);
+    border:1px solid rgba(255,245,225,.42);
     box-shadow:0 9px 26px rgba(57,20,7,.12);
-    font-size:14px;
+    font-size:13px;
     font-weight:800;
   }
   .mobile-copy h1{
-    margin:0;
-    font-size:clamp(36px,10vw,52px);
-    line-height:1.06;
-    letter-spacing:-.035em;
+    margin:9px 0 0;
+    font-size:clamp(39px,10.4vw,56px);
+    line-height:1.02;
+    letter-spacing:-.045em;
     font-weight:800;
+    text-wrap:balance;
   }
   .mobile-copy h2{
-    margin:9px 0 0;
-    font-size:clamp(21px,6vw,30px);
+    margin:8px 0 0;
+    font-size:clamp(21px,5.8vw,30px);
+    line-height:1.25;
     font-weight:600;
   }
   .mobile-copy p{
-    width:min(92%,540px);
-    margin:10px auto 0;
-    font-size:14px;
-    line-height:1.7;
+    width:min(92%,500px);
+    margin:9px 0 0 auto;
+    font-size:13.5px;
+    line-height:1.72;
     font-weight:500;
   }
   .mobile-ctas{
-    width:min(96%,560px);
-    margin:15px auto 0;
+    width:min(100%,520px);
+    margin:14px 0 0 auto;
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:10px;
+    gap:9px;
     direction:rtl;
   }
   .cta{
-    min-height:50px;
+    min-height:48px;
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    border-radius:16px;
-    padding:0 11px;
+    gap:7px;
+    border-radius:15px;
+    padding:0 10px;
     text-decoration:none;
     font-weight:800;
-    font-size:14px;
+    font-size:13.5px;
     box-shadow:0 12px 28px rgba(55,19,6,.13);
     cursor:pointer;
   }
-  .cta.light{background:#fff9ef;color:#4d2113;border:1px solid rgba(88,42,22,.16)}
-  .cta.dark{background:#6a321c;color:#fff7ec;border:1px solid rgba(255,244,223,.38)}
-  .cta b{font-size:18px;font-weight:500}
+  .cta.light{background:rgba(255,249,239,.96);color:#4d2113;border:1px solid rgba(88,42,22,.16)}
+  .cta.dark{background:rgba(96,38,17,.95);color:#fff7ec;border:1px solid rgba(255,244,223,.38)}
+  .cta b{font-size:17px;font-weight:500}
+
+  .mobile-features{
+    position:absolute;
+    z-index:10;
+    right:12px;
+    left:12px;
+    bottom:78px;
+    min-height:66px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    align-items:center;
+    padding:9px 6px;
+    border-radius:20px;
+    background:rgba(69,31,17,.55);
+    color:#fff8ed;
+    border:1px solid rgba(255,245,229,.35);
+    backdrop-filter:blur(13px);
+    -webkit-backdrop-filter:blur(13px);
+    box-shadow:0 14px 34px rgba(53,18,6,.16);
+  }
+  .mobile-features>div{
+    min-width:0;
+    display:grid;
+    place-items:center;
+    gap:2px;
+    padding:0 5px;
+    border-left:1px solid rgba(255,247,232,.26);
+    text-align:center;
+  }
+  .mobile-features>div:last-child{border-left:0}
+  .mobile-features span{font-size:19px;line-height:1}
+  .mobile-features b{font-size:10.5px;line-height:1.25;white-space:nowrap}
+
   .mobile-chat{
     position:fixed;
     z-index:30;
-    left:18px;
-    bottom:max(18px,env(safe-area-inset-bottom));
-    min-width:150px;
-    height:54px;
+    left:14px;
+    bottom:max(14px,env(safe-area-inset-bottom));
+    min-width:142px;
+    height:52px;
     display:flex;
     direction:rtl;
     align-items:center;
     justify-content:center;
-    gap:8px;
-    padding:0 16px;
+    gap:7px;
+    padding:0 15px;
     border:1px solid rgba(91,44,24,.22);
     border-radius:999px;
     background:rgba(255,250,239,.96);
@@ -192,16 +270,17 @@ button,input{font:inherit}
     backdrop-filter:blur(12px);
     -webkit-backdrop-filter:blur(12px);
   }
-  .mobile-chat strong{font-size:16px}
+  .mobile-chat strong{font-size:15px}
   .mobile-chat .online{
     position:absolute;
     right:-2px;
     top:-4px;
-    width:14px;height:14px;border-radius:50%;
+    width:13px;height:13px;border-radius:50%;
     background:#24c45a;
-    box-shadow:0 0 0 5px rgba(36,196,90,.10);
+    box-shadow:0 0 0 4px rgba(36,196,90,.10);
   }
-  .mobile-chat b{font-size:24px;font-weight:400}
+  .mobile-chat b{font-size:23px;font-weight:400}
+
   .chat-panel{
     left:0;right:0;bottom:0;width:100%;height:min(78svh,720px);
     border-radius:24px 24px 0 0;transform-origin:bottom center
@@ -209,7 +288,13 @@ button,input{font:inherit}
 }
 
 @media(max-width:390px){
-  .mobile-copy{padding-left:14px;padding-right:14px}
-  .mobile-copy p{font-size:13px}
-  .cta{font-size:13px;padding:0 8px}
+  .mobile-header{right:10px;left:10px}
+  .mobile-logo{width:74px}
+  .mobile-location{padding:0 12px;font-size:12px}
+  .mobile-copy{right:13px;left:13px;top:15.5%}
+  .mobile-copy h1{font-size:38px}
+  .mobile-copy p{font-size:12.5px}
+  .cta{font-size:12.5px}
+  .mobile-features{right:8px;left:8px}
+  .mobile-features b{font-size:9.5px}
 }
