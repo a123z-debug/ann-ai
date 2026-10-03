@@ -14,26 +14,34 @@
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-<main class="concept-stage" aria-label="آن coffee">
-  <picture class="concept-picture">
-    <source media="(max-width:700px)" srcset="/ann-mobile.webp">
-    <img class="concept-art" src="/concept-desktop.webp" alt="آن coffee — لحظتك تبدأ من آن">
-  </picture>
-  <div class="mobile-actions" aria-label="روابط آن coffee">
-    <a class="mobile-cta mobile-cta-light" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener">
-      <span>تعرف على موقعنا</span><b aria-hidden="true">⌖</b>
-    </a>
-    <button class="mobile-cta mobile-cta-dark" type="button" data-open-chat>
-      <span>اكتشف قائمتنا</span><b aria-hidden="true">☕</b>
+<main class="ann-shell" aria-label="آن coffee">
+  <section class="desktop-concept" aria-label="واجهة آن coffee">
+    <img src="/concept-desktop.webp" alt="آن coffee — لحظتك تبدأ من آن">
+    <a class="hotspot hs-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="تعرف على موقعنا"></a>
+    <button class="hotspot hs-menu" type="button" data-open-chat aria-label="اكتشف قائمتنا"></button>
+    <button class="hotspot hs-chat" type="button" data-open-chat aria-label="اسأل آن"></button>
+  </section>
+
+  <section class="mobile-concept" aria-label="واجهة آن coffee للجوال">
+    <img class="mobile-scene" src="/ann-mobile.webp" alt="">
+    <div class="mobile-copy">
+      <div class="opening-pill"><span>❧</span> قريبًا الافتتاح</div>
+      <h1>لحظتك تبدأ من آن</h1>
+      <h2>قهوة مختصة ... وأكثر</h2>
+      <p>في شمال محايل عسير، نهيّئ لك مساحة هادئة تجمع بين نكهات القهوة المختصة والمشروبات والحلويات.</p>
+      <div class="mobile-ctas">
+        <a href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" class="cta light">
+          <span>تعرف على موقعنا</span><b>⌖</b>
+        </a>
+        <button type="button" data-open-chat class="cta dark">
+          <span>اكتشف قائمتنا</span><b>☕</b>
+        </button>
+      </div>
+    </div>
+    <button class="mobile-chat" type="button" data-open-chat>
+      <span class="online"></span><span>☕</span><strong>اسأل آن</strong><b>‹</b>
     </button>
-  </div>
-  <div class="mobile-opening-pill" aria-label="قريبًا الافتتاح"><span>❧</span> قريبًا الافتتاح</div>
-  <button class="chat-fab" type="button" data-open-chat aria-label="اسأل آن">
-    <span class="fab-status" aria-hidden="true"></span>
-    <span class="bot-icon">☕</span>
-    <strong>اسأل آن</strong>
-    <span class="arrow">‹</span>
-  </button>
+  </section>
 </main>
 
 <div class="chat-backdrop" data-close-chat hidden></div>
@@ -46,12 +54,23 @@
     </div>
     <button class="close-chat" type="button" data-close-chat aria-label="إغلاق">×</button>
   </div>
-  <div class="chat-intro"><span>آن AI</span><h2>وش ودّك تعرف؟</h2><p>أجاوبك بالمعلومات المؤكدة عن آن coffee.</p></div>
+  <div class="chat-intro">
+    <span>آن AI</span>
+    <h2>وش ودّك تعرف؟</h2>
+    <p>أجاوبك بالمعلومات المؤكدة عن آن coffee.</p>
+  </div>
   <div id="messages" class="messages" aria-live="polite">
     <div class="msg bot"><div class="bubble">ياهلا 🤎 أنا مساعد آن coffee. اسألني عن الافتتاح أو الموقع.</div></div>
   </div>
-  <div class="quick"><button type="button">متى الافتتاح؟</button><button type="button">وين موقعكم؟</button><button type="button">وش تقدمون؟</button></div>
-  <form id="form" class="composer"><input id="input" autocomplete="off" maxlength="1000" placeholder="اكتب سؤالك هنا..." aria-label="اكتب سؤالك"><button type="submit" aria-label="إرسال">➤</button></form>
+  <div class="quick">
+    <button type="button">متى الافتتاح؟</button>
+    <button type="button">وين موقعكم؟</button>
+    <button type="button">وش تقدمون؟</button>
+  </div>
+  <form id="form" class="composer">
+    <input id="input" autocomplete="off" maxlength="1000" placeholder="اكتب سؤالك هنا..." aria-label="اكتب سؤالك">
+    <button type="submit" aria-label="إرسال">➤</button>
+  </form>
   <div class="chat-note">آن coffee · قهوة مختصة وأكثر</div>
 </aside>
 <script src="/app.js"></script>
