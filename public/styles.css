@@ -22,3 +22,37 @@ body{overflow-x:hidden} body.chat-open{overflow:hidden} button,input{font:inheri
  .chat-fab{position:fixed;left:16px;bottom:max(18px,env(safe-area-inset-bottom));min-width:142px;height:54px;gap:8px}.chat-fab strong{font-size:16px}
  .chat-panel{left:0;right:0;bottom:0;width:100%;height:min(78svh,720px);border-radius:24px 24px 0 0;transform-origin:bottom center}
 }
+
+/* v6 mobile: dedicated portrait artwork; no horizontal crop */
+@media(max-width:700px){
+  html,body{background:#efe4d4}
+  .concept-stage{
+    height:100svh;
+    min-height:100svh;
+    background:#efe4d4;
+    overflow:hidden;
+  }
+  .concept-picture{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#efe4d4;
+  }
+  .concept-art{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center center;
+    display:block;
+  }
+  .chat-fab{
+    position:fixed;
+    left:16px;
+    bottom:max(18px,env(safe-area-inset-bottom));
+    min-width:142px;
+    height:54px;
+    z-index:20;
+  }
+}
