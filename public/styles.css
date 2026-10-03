@@ -521,3 +521,35 @@ button,a{-webkit-tap-highlight-color:transparent}
   .ann-sheet-grid{gap:7px}
   .ann-sheet-grid article{padding:12px 7px}
 }
+
+
+/* ===== ANN INTERACTION RELIABILITY PATCH =====
+   Visual design intentionally unchanged. */
+.ann-sheet-backdrop[hidden],
+.chat-backdrop[hidden]{
+  display:none!important;
+  pointer-events:none!important;
+}
+.ann-sheet-backdrop{
+  pointer-events:none;
+}
+.ann-sheet-backdrop.is-visible{
+  pointer-events:auto;
+}
+.chat-backdrop{
+  pointer-events:none;
+}
+.chat-backdrop.visible{
+  pointer-events:auto;
+}
+.ann-bottom-nav,
+.ann-nav-item{
+  pointer-events:auto!important;
+}
+.ann-nav-item,
+.ann-sheet-close,
+.ann-sheet-cta{
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+}

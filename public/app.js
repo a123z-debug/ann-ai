@@ -2,49 +2,159 @@ const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 
 const panel = $('#chatPanel');
-const backdrop = $('.chat-backdrop');
+const chatBackdrop = $('.chat-backdrop');
 const form = $('#form');
 const input = $('#input');
 const messages = $('#messages');
 const submitButton = form?.querySelector('button[type="submit"]');
+const sheetBackdrop = $('.ann-sheet-backdrop');
+const sheets = $$('.ann-sheet');
+const navItems = $$('.ann-nav-item');
 
 let lastTrigger = null;
 let sending = false;
 
+function setActive(button) {
+  navItems.forEach(item => {
+    const active = item === button;
+    item.classList.toggle('is-active', active);
+    if (active) item.setAttribute('aria-current', 'page');
+    else item.removeAttribute('aria-current');
+  });
+}
+
+function activateHome() {
+  const home = $('[data-nav-home]');
+  if (home) setActive(home);
+}
+
+function closeSheets(activateHomeAfter = false) {
+  sheets.forEach(sheet => {
+    sheet.classList.remove('is-open');
+    sheet.setAttribute('aria-hidden', 'true');
+  });
+
+  if (sheetBackdrop) {
+    sheetBackdrop.classList.remove('is-visible');
+    sheetBackdrop.style.pointerEvents = 'none';
+    sheetBackdrop.hidden = true;
+  }
+
+  if (activateHomeAfter) activateHome();
+}
+
+function openSheet(name, trigger) {
+  closeChat(false);
+  closeSheets(false);
+
+  const sheet = $('.ann-sheet[data-sheet="' + name + '"]');
+  if (!sheet) return;
+
+  sheet.hidden = false;
+  sheet.setAttribute('aria-hidden', 'false');
+  sheet.classList.add('is-open');
+
+  if (sheetBackdrop) {
+    sheetBackdrop.hidden = false;
+    sheetBackdrop.style.pointerEvents = 'auto';
+    requestAnimationFrame(() => sheetBackdrop.classList.add('is-visible'));
+  }
+
+  if (trigger) setActive(trigger);
+}
+
 function openChat(trigger) {
   if (!panel) return;
+
+  closeSheets(false);
   lastTrigger = trigger || document.activeElement;
+
   panel.classList.add('open');
   panel.setAttribute('aria-hidden', 'false');
-  if (backdrop) {
-    backdrop.hidden = false;
-    requestAnimationFrame(() => backdrop.classList.add('visible'));
+
+  if (chatBackdrop) {
+    chatBackdrop.hidden = false;
+    chatBackdrop.style.pointerEvents = 'auto';
+    requestAnimationFrame(() => chatBackdrop.classList.add('visible'));
   }
+
   document.body.classList.add('chat-open');
-  window.setTimeout(() => input?.focus(), 120);
+
+  const assistant = $('.ann-nav-assistant');
+  if (assistant) setActive(assistant);
+
+  window.setTimeout(() => input?.focus(), 100);
 }
 
-function closeChat() {
+function closeChat(activateHomeAfter = true) {
   if (!panel) return;
+
   panel.classList.remove('open');
   panel.setAttribute('aria-hidden', 'true');
-  backdrop?.classList.remove('visible');
+
+  if (chatBackdrop) {
+    chatBackdrop.classList.remove('visible');
+    chatBackdrop.style.pointerEvents = 'none';
+    chatBackdrop.hidden = true;
+  }
+
   document.body.classList.remove('chat-open');
-  window.setTimeout(() => {
-    if (backdrop) backdrop.hidden = true;
-    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
-  }, 220);
+
+  if (activateHomeAfter) activateHome();
+
+  if (lastTrigger && typeof lastTrigger.focus === 'function') {
+    window.setTimeout(() => lastTrigger.focus(), 0);
+  }
 }
 
-$$('[data-open-chat]').forEach(btn => btn.addEventListener('click', () => openChat(btn)));
-$$('[data-close-chat]').forEach(btn => btn.addEventListener('click', closeChat));
+document.addEventListener('click', event => {
+  const openSheetBtn = event.target.closest('[data-open-sheet]');
+  if (openSheetBtn) {
+    event.preventDefault();
+    openSheet(openSheetBtn.dataset.openSheet, openSheetBtn);
+    return;
+  }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && panel?.classList.contains('open')) closeChat();
+  const closeSheetBtn = event.target.closest('[data-close-sheet]');
+  if (closeSheetBtn) {
+    event.preventDefault();
+    closeSheets(true);
+    return;
+  }
+
+  const homeBtn = event.target.closest('[data-nav-home]');
+  if (homeBtn) {
+    event.preventDefault();
+    closeSheets(false);
+    closeChat(false);
+    setActive(homeBtn);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+
+  const openChatBtn = event.target.closest('[data-open-chat]');
+  if (openChatBtn) {
+    event.preventDefault();
+    openChat(openChatBtn);
+    return;
+  }
+
+  const closeChatBtn = event.target.closest('[data-close-chat]');
+  if (closeChatBtn) {
+    event.preventDefault();
+    closeChat(true);
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  if (panel?.classList.contains('open')) closeChat(true);
+  else if (sheets.some(sheet => sheet.classList.contains('is-open'))) closeSheets(true);
 });
 
 function addMessage(text, who = 'user', extraClass = '') {
   if (!messages) return null;
+
   const wrap = document.createElement('div');
   wrap.className = ['msg', who, extraClass].filter(Boolean).join(' ');
 
@@ -87,8 +197,8 @@ async function send(text) {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: text})
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
     });
 
     const data = await response.json().catch(() => ({}));
@@ -110,190 +220,22 @@ async function send(text) {
   }
 }
 
-form?.addEventListener('submit', e => {
-  e.preventDefault();
+form?.addEventListener('submit', event => {
+  event.preventDefault();
   send(input?.value);
 });
 
-$$('.quick button').forEach(btn => {
-  btn.addEventListener('click', () => send(btn.textContent));
+document.addEventListener('click', event => {
+  const quick = event.target.closest('.quick button');
+  if (quick) send(quick.textContent);
 });
 
-
-// ===== ANN IMMERSIVE MOTION =====
-(() => {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia('(pointer: fine)').matches;
-  const hero = document.querySelector('.hero');
-  const heroBg = document.querySelector('.hero-bg');
-  if (!hero || !heroBg) return;
-
-  let pointerX = 0;
-  let pointerY = 0;
-  let targetX = 0;
-  let targetY = 0;
-  let frame = 0;
-
-  const renderHero = () => {
-    frame = 0;
-    if (reduceMotion) return;
-
-    pointerX += (targetX - pointerX) * .075;
-    pointerY += (targetY - pointerY) * .075;
-
-    const maxScroll = Math.max(hero.offsetHeight, 1);
-    const progress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
-    const scrollShift = -(progress * 72);
-
-    heroBg.style.setProperty('--hero-x', pointerX.toFixed(2) + 'px');
-    heroBg.style.setProperty('--hero-y', pointerY.toFixed(2) + 'px');
-    heroBg.style.setProperty('--hero-scroll', scrollShift.toFixed(2) + 'px');
-
-    if (Math.abs(targetX - pointerX) > .08 || Math.abs(targetY - pointerY) > .08) {
-      requestHero();
-    }
-  };
-
-  const requestHero = () => {
-    if (!frame) frame = requestAnimationFrame(renderHero);
-  };
-
-  if (!reduceMotion) {
-    window.addEventListener('scroll', requestHero, {passive:true});
-
-    if (finePointer) {
-      hero.addEventListener('pointermove', event => {
-        const rect = hero.getBoundingClientRect();
-        const nx = ((event.clientX - rect.left) / rect.width) - .5;
-        const ny = ((event.clientY - rect.top) / rect.height) - .5;
-
-        targetX = nx * 22;
-        targetY = ny * 14;
-
-        const glowX = Math.round(50 + nx * 34);
-        const glowY = Math.round(44 + ny * 24);
-        hero.style.setProperty('--glow-x', glowX + '%');
-        hero.style.setProperty('--glow-y', glowY + '%');
-        requestHero();
-      }, {passive:true});
-
-      hero.addEventListener('pointerleave', () => {
-        targetX = 0;
-        targetY = 0;
-        hero.style.setProperty('--glow-x', '72%');
-        hero.style.setProperty('--glow-y', '38%');
-        requestHero();
-      });
-    }
-
-    requestHero();
-  }
-
-  const revealTargets = document.querySelectorAll(
-    '.experience-copy, .feature-card, .opening-panel'
-  );
-
-  revealTargets.forEach(el => el.classList.add('reveal'));
-
-  if (reduceMotion || !('IntersectionObserver' in window)) {
-    revealTargets.forEach(el => el.classList.add('is-visible'));
-  } else {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {threshold:.16, rootMargin:'0px 0px -7% 0px'});
-
-    revealTargets.forEach(el => observer.observe(el));
-  }
-
-  if (!reduceMotion && finePointer) {
-    document.querySelectorAll('.feature-card').forEach(card => {
-      card.addEventListener('pointermove', event => {
-        const rect = card.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width;
-        const y = (event.clientY - rect.top) / rect.height;
-        card.style.setProperty('--card-x', (x * 100).toFixed(1) + '%');
-        card.style.setProperty('--card-y', (y * 100).toFixed(1) + '%');
-      }, {passive:true});
-    });
-  }
-})();
-
-
-// ===== ANN PROFESSIONAL MOBILE NAV =====
-(() => {
-  const navItems = [...document.querySelectorAll('.ann-nav-item')];
-  const sheets = [...document.querySelectorAll('.ann-sheet')];
-  const sheetBackdrop = document.querySelector('.ann-sheet-backdrop');
-
-  const setActive = (button) => {
-    navItems.forEach(item => {
-      item.classList.toggle('is-active', item === button);
-      if (item === button) item.setAttribute('aria-current','page');
-      else item.removeAttribute('aria-current');
-    });
-  };
-
-  const closeSheets = () => {
-    sheets.forEach(sheet => {
-      sheet.classList.remove('is-open');
-      sheet.setAttribute('aria-hidden','true');
-    });
-    if (sheetBackdrop) {
-      sheetBackdrop.classList.remove('is-visible');
-      setTimeout(() => { sheetBackdrop.hidden = true; }, 220);
-    }
-  };
-
-  const openSheet = (name, trigger) => {
-    closeSheets();
-    const sheet = document.querySelector('.ann-sheet[data-sheet="' + name + '"]');
-    if (!sheet) return;
-    sheet.setAttribute('aria-hidden','false');
-    sheet.classList.add('is-open');
-    if (sheetBackdrop) {
-      sheetBackdrop.hidden = false;
-      requestAnimationFrame(() => sheetBackdrop.classList.add('is-visible'));
-    }
-    if (trigger) setActive(trigger);
-  };
-
-  document.querySelectorAll('[data-open-sheet]').forEach(btn => {
-    btn.addEventListener('click', () => openSheet(btn.dataset.openSheet, btn));
-  });
-
-  document.querySelectorAll('[data-close-sheet]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeSheets();
-      const home = document.querySelector('[data-nav-home]');
-      if (home) setActive(home);
-    });
-  });
-
-  document.querySelectorAll('[data-nav-home]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeSheets();
-      setActive(btn);
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
-  });
-
-  document.querySelectorAll('.ann-nav-assistant').forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeSheets();
-      setActive(btn);
-    });
-  });
-
-  document.querySelectorAll('.ann-sheet [data-open-chat]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      closeSheets();
-      const assistant = document.querySelector('.ann-nav-assistant');
-      if (assistant) setActive(assistant);
-    });
-  });
-})();
+// Defensive startup: hidden overlays must never intercept taps.
+if (sheetBackdrop && !sheetBackdrop.classList.contains('is-visible')) {
+  sheetBackdrop.hidden = true;
+  sheetBackdrop.style.pointerEvents = 'none';
+}
+if (chatBackdrop && !chatBackdrop.classList.contains('visible')) {
+  chatBackdrop.hidden = true;
+  chatBackdrop.style.pointerEvents = 'none';
+}
