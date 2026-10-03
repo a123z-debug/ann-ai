@@ -1,10 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
   "rewrites": [
     { "source": "/", "destination": "/public/index.html" },
     { "source": "/admin", "destination": "/public/admin.html" },
     { "source": "/styles.css", "destination": "/public/styles.css" },
     { "source": "/app.js", "destination": "/public/app.js" }
+  ],
+  "headers": [
+    {
+      "source": "/hero-8k.avif",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ],
   "functions": {
     "api/*.js": {

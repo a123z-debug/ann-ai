@@ -118,3 +118,107 @@ form?.addEventListener('submit', e => {
 $$('.quick button').forEach(btn => {
   btn.addEventListener('click', () => send(btn.textContent));
 });
+
+
+// ===== ANN IMMERSIVE MOTION =====
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const hero = document.querySelector('.hero');
+  const heroBg = document.querySelector('.hero-bg');
+  if (!hero || !heroBg) return;
+
+  let pointerX = 0;
+  let pointerY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let frame = 0;
+
+  const renderHero = () => {
+    frame = 0;
+    if (reduceMotion) return;
+
+    pointerX += (targetX - pointerX) * .075;
+    pointerY += (targetY - pointerY) * .075;
+
+    const maxScroll = Math.max(hero.offsetHeight, 1);
+    const progress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+    const scrollShift = -(progress * 72);
+
+    heroBg.style.setProperty('--hero-x', pointerX.toFixed(2) + 'px');
+    heroBg.style.setProperty('--hero-y', pointerY.toFixed(2) + 'px');
+    heroBg.style.setProperty('--hero-scroll', scrollShift.toFixed(2) + 'px');
+
+    if (Math.abs(targetX - pointerX) > .08 || Math.abs(targetY - pointerY) > .08) {
+      requestHero();
+    }
+  };
+
+  const requestHero = () => {
+    if (!frame) frame = requestAnimationFrame(renderHero);
+  };
+
+  if (!reduceMotion) {
+    window.addEventListener('scroll', requestHero, {passive:true});
+
+    if (finePointer) {
+      hero.addEventListener('pointermove', event => {
+        const rect = hero.getBoundingClientRect();
+        const nx = ((event.clientX - rect.left) / rect.width) - .5;
+        const ny = ((event.clientY - rect.top) / rect.height) - .5;
+
+        targetX = nx * 22;
+        targetY = ny * 14;
+
+        const glowX = Math.round(50 + nx * 34);
+        const glowY = Math.round(44 + ny * 24);
+        hero.style.setProperty('--glow-x', glowX + '%');
+        hero.style.setProperty('--glow-y', glowY + '%');
+        requestHero();
+      }, {passive:true});
+
+      hero.addEventListener('pointerleave', () => {
+        targetX = 0;
+        targetY = 0;
+        hero.style.setProperty('--glow-x', '72%');
+        hero.style.setProperty('--glow-y', '38%');
+        requestHero();
+      });
+    }
+
+    requestHero();
+  }
+
+  const revealTargets = document.querySelectorAll(
+    '.experience-copy, .feature-card, .opening-panel'
+  );
+
+  revealTargets.forEach(el => el.classList.add('reveal'));
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach(el => el.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.16, rootMargin:'0px 0px -7% 0px'});
+
+    revealTargets.forEach(el => observer.observe(el));
+  }
+
+  if (!reduceMotion && finePointer) {
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('pointermove', event => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        const y = (event.clientY - rect.top) / rect.height;
+        card.style.setProperty('--card-x', (x * 100).toFixed(1) + '%');
+        card.style.setProperty('--card-y', (y * 100).toFixed(1) + '%');
+      }, {passive:true});
+    });
+  }
+})();
