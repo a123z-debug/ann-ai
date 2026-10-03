@@ -914,3 +914,237 @@ img{max-width:100%;display:block}
     transform:none!important;
   }
 }
+
+
+/* ===== ANN CONCEPT MATCH v4 — reference composition ===== */
+@media (min-width: 701px){
+  .site-header{
+    top:28px;
+    left:clamp(40px,7vw,150px);
+    right:clamp(40px,7vw,150px);
+    min-height:66px;
+    padding:0;
+    align-items:center;
+    flex-direction:row-reverse;
+    pointer-events:none;
+  }
+  .site-header .brand{
+    pointer-events:auto;
+    position:absolute;
+    right:0;
+    top:-10px;
+    width:166px;
+    height:166px;
+    display:grid;
+    place-items:center;
+    border-radius:0 0 36px 36px;
+    background:linear-gradient(180deg,rgba(83,34,18,.98),rgba(104,43,20,.96));
+    border:1px solid rgba(255,241,218,.55);
+    box-shadow:0 18px 48px rgba(55,20,7,.18);
+    overflow:hidden;
+  }
+  .site-header .brand img{
+    width:142px!important;
+    height:auto!important;
+    padding:0!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    filter:none!important;
+  }
+  .header-actions{
+    pointer-events:auto;
+    margin-left:0;
+    margin-right:auto;
+    flex-direction:row-reverse;
+    gap:12px;
+  }
+  .status-pill{
+    min-height:48px;
+    padding:0 20px;
+    border:1px solid rgba(255,255,255,.42);
+    background:rgba(72,28,14,.78);
+    color:#fff8ee;
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+    box-shadow:0 12px 35px rgba(42,15,6,.16);
+  }
+  .ask-top{
+    min-height:48px;
+    padding:0 20px;
+    background:rgba(255,248,237,.86);
+    color:#4d1f12;
+    border:1px solid rgba(102,49,28,.16);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+
+  .hero{
+    min-height:100svh;
+    background:#4a1c0e;
+  }
+  .hero-bg{
+    inset:-2.2%;
+    background-image:url("/ann-cover.webp")!important;
+    background-size:cover;
+    background-position:center center;
+    filter:saturate(1.08) contrast(1.02) brightness(1.02);
+    transform:translate3d(var(--hero-x),calc(var(--hero-y) + var(--hero-scroll)),0) scale(1.045);
+  }
+  .hero-vignette{
+    background:
+      linear-gradient(90deg,rgba(255,244,224,.06) 0%,rgba(255,244,224,.01) 48%,rgba(67,23,9,.10) 100%),
+      linear-gradient(180deg,rgba(45,13,3,.06),rgba(45,13,3,.01) 58%,rgba(39,12,4,.25) 100%);
+  }
+  .hero-grain{opacity:.08}
+
+  .hero-content{
+    min-height:100svh;
+    align-items:center;
+    justify-content:flex-end;
+    padding:170px clamp(44px,10.5vw,205px) 150px;
+  }
+  .hero-copy{
+    width:min(600px,39vw);
+    margin:0 auto 0 0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+    box-shadow:none;
+    color:#4b1d10;
+    text-shadow:0 1px 0 rgba(255,255,255,.22);
+  }
+  .hero-copy::before{display:none}
+  .eyebrow{
+    width:max-content;
+    min-height:45px;
+    padding:0 22px;
+    border-radius:999px;
+    background:rgba(83,31,14,.91);
+    border:1px solid rgba(255,246,229,.48);
+    color:#fff8ec;
+    box-shadow:0 10px 30px rgba(58,19,6,.12);
+    font-size:16px;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"❧";
+    font-size:20px;
+    color:#fff8ec;
+  }
+  .eyebrow-line{display:none}
+  .hero h1{
+    margin-top:12px;
+    max-width:640px;
+    font-size:clamp(62px,5.4vw,98px);
+    line-height:.98;
+    letter-spacing:-.045em;
+    color:#4b1b0d;
+  }
+  .hero h1 span,.hero h1 strong{
+    display:inline;
+    color:#4b1b0d;
+    text-shadow:0 2px 0 rgba(255,247,230,.28);
+  }
+  .hero h1 strong::before{content:" "}
+  .hero-copy>p{
+    max-width:550px;
+    margin-top:18px;
+    color:#5a2b1d;
+    font-size:clamp(17px,1.18vw,21px);
+    line-height:1.85;
+    font-weight:500;
+  }
+  .hero-cta{
+    justify-content:flex-start;
+    margin-top:22px;
+  }
+  .primary-cta{
+    min-height:52px;
+    padding:0 24px;
+    background:rgba(82,31,14,.94);
+    color:#fff7eb;
+    border:1px solid rgba(255,244,224,.40);
+    box-shadow:0 14px 32px rgba(64,22,8,.14);
+  }
+  .secondary-cta{
+    min-height:52px;
+    padding:0 24px;
+    background:rgba(255,247,233,.86);
+    color:#4e2013;
+    border:1px solid rgba(91,42,24,.18);
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
+  }
+  .trust-row{
+    position:absolute;
+    left:50%;
+    bottom:26px;
+    transform:translateX(-50%);
+    width:min(920px,64vw);
+    min-height:88px;
+    margin:0;
+    padding:13px 20px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:0;
+    border:1px solid rgba(255,247,232,.42);
+    border-radius:30px;
+    background:rgba(75,35,20,.53);
+    -webkit-backdrop-filter:blur(18px) saturate(1.12);
+    backdrop-filter:blur(18px) saturate(1.12);
+    box-shadow:0 18px 50px rgba(45,14,5,.18);
+  }
+  .trust-item{
+    justify-content:center;
+    min-height:62px;
+    padding:0 20px;
+    border:0;
+    border-left:1px solid rgba(255,246,229,.28);
+    border-radius:0;
+    background:transparent;
+    color:#fff8ed;
+    font-size:15px;
+  }
+  .trust-item:last-child{border-left:0}
+  .trust-item svg{width:27px;height:27px}
+
+  .scroll-hint{
+    bottom:102px;
+    color:#fff9ef;
+    text-shadow:0 2px 12px rgba(0,0,0,.25);
+  }
+
+  .chat-fab{
+    left:28px;
+    bottom:28px;
+    min-height:62px;
+    padding:0 24px;
+    background:rgba(255,249,239,.94);
+    color:#4d1f12;
+    border:1px solid rgba(99,46,26,.22);
+    box-shadow:0 16px 45px rgba(52,17,6,.20);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+}
+
+/* Keep the same hero artwork clean and readable on phones. */
+@media (max-width:700px){
+  .hero-bg{
+    background-image:url("/ann-cover.webp")!important;
+    background-size:cover;
+    background-position:center center;
+    filter:saturate(1.06) contrast(1.02);
+  }
+  .hero-vignette{
+    background:linear-gradient(180deg,rgba(35,11,4,.08) 0%,rgba(35,11,4,.14) 47%,rgba(35,11,4,.72) 100%);
+  }
+  .hero-copy{
+    background:linear-gradient(145deg,rgba(57,22,11,.62),rgba(57,22,11,.42));
+  }
+}
