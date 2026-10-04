@@ -17,8 +17,19 @@
 <main class="ann-shell" aria-label="آن coffee">
   <section class="desktop-concept" aria-label="واجهة آن coffee">
     <img src="/concept-desktop.webp" alt="آن coffee — لحظتك تبدأ من آن">
+
+    <button class="hotspot hs-home" type="button" data-nav-home aria-label="الرئيسية"></button>
+    <button class="hotspot hs-about" type="button" data-open-sheet="about" aria-label="من نحن"></button>
+    <button class="hotspot hs-top-menu" type="button" data-open-sheet="menu" aria-label="قائمتنا"></button>
+    <button class="hotspot hs-top-experience" type="button" data-open-sheet="experience" aria-label="تجربتك في آن"></button>
+    <button class="hotspot hs-gallery" type="button" data-open-sheet="gallery" aria-label="المعرض"></button>
+    <a class="hotspot hs-top-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="موقعنا"></a>
+    <button class="hotspot hs-contact" type="button" data-open-chat aria-label="تواصل معنا"></button>
+
+    <a class="hotspot hs-location-pill" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="شمال محايل عسير"></a>
+    <button class="hotspot hs-menu" type="button" data-open-sheet="menu" aria-label="اكتشف قائمتنا"></button>
     <a class="hotspot hs-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="تعرف على موقعنا"></a>
-    <button class="hotspot hs-menu" type="button" data-open-chat aria-label="اكتشف قائمتنا"></button>
+    <button class="hotspot hs-more" type="button" data-open-sheet="experience" aria-label="اكتشف المزيد"></button>
     <button class="hotspot hs-chat" type="button" data-open-chat aria-label="اسأل آن"></button>
   </section>
 
@@ -119,6 +130,37 @@
         <div><span>03</span><p><strong>أجواء دافئة</strong><small>هوية بصرية وتجربة بسيطة وواضحة.</small></p></div>
       </div>
     </section>
+
+    <section class="ann-sheet" id="annAboutSheet" data-sheet="about" aria-hidden="true" aria-label="من نحن">
+      <div class="ann-sheet-handle" aria-hidden="true"></div>
+      <div class="ann-sheet-head">
+        <div>
+          <span class="ann-sheet-kicker">من نحن</span>
+          <h2>آن coffee</h2>
+        </div>
+        <button class="ann-sheet-close" type="button" data-close-sheet aria-label="إغلاق">×</button>
+      </div>
+      <div class="ann-experience-list">
+        <div><span>آن</span><p><strong>قهوة مختصة وأكثر</strong><small>هوية دافئة وتجربة هادئة في شمال محايل عسير.</small></p></div>
+        <div><span>01</span><p><strong>تفاصيل محسوبة</strong><small>من القهوة إلى الجلسة، نحاول أن تكون اللحظة بسيطة ومميزة.</small></p></div>
+      </div>
+    </section>
+
+    <section class="ann-sheet" id="annGallerySheet" data-sheet="gallery" aria-hidden="true" aria-label="المعرض">
+      <div class="ann-sheet-handle" aria-hidden="true"></div>
+      <div class="ann-sheet-head">
+        <div>
+          <span class="ann-sheet-kicker">المعرض</span>
+          <h2>مشاهد من آن</h2>
+        </div>
+        <button class="ann-sheet-close" type="button" data-close-sheet aria-label="إغلاق">×</button>
+      </div>
+      <div class="ann-gallery-preview">
+        <img src="/mobile-scene.webp" alt="واجهة آن coffee" loading="lazy">
+        <p>واجهة آن وأجواؤها. بنضيف صور الافتتاح والمنيو هنا تباعًا.</p>
+      </div>
+    </section>
+
   
 </section>
 </main>
