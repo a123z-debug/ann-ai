@@ -19,17 +19,17 @@
     <img src="/concept-desktop.webp" alt="آن coffee — لحظتك تبدأ من آن">
 
     <button class="hotspot hs-home" type="button" data-nav-home aria-label="الرئيسية"></button>
-    <button class="hotspot hs-about" type="button" data-open-sheet="about" aria-label="من نحن"></button>
-    <button class="hotspot hs-top-menu" type="button" data-open-sheet="menu" aria-label="قائمتنا"></button>
-    <button class="hotspot hs-top-experience" type="button" data-open-sheet="experience" aria-label="تجربتك في آن"></button>
-    <button class="hotspot hs-gallery" type="button" data-open-sheet="gallery" aria-label="المعرض"></button>
+    <button class="hotspot hs-about" type="button" data-open-sheet="about" aria-haspopup="dialog" aria-controls="annAboutSheet" aria-label="من نحن"></button>
+    <button class="hotspot hs-top-menu" type="button" data-open-sheet="menu" aria-haspopup="dialog" aria-controls="annMenuSheet" aria-label="قائمتنا"></button>
+    <button class="hotspot hs-top-experience" type="button" data-open-sheet="experience" aria-haspopup="dialog" aria-controls="annExperienceSheet" aria-label="تجربتك في آن"></button>
+    <button class="hotspot hs-gallery" type="button" data-open-sheet="gallery" aria-haspopup="dialog" aria-controls="annGallerySheet" aria-label="المعرض"></button>
     <a class="hotspot hs-top-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="موقعنا"></a>
     <button class="hotspot hs-contact" type="button" data-open-chat aria-label="تواصل معنا"></button>
 
     <a class="hotspot hs-location-pill" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="شمال محايل عسير"></a>
-    <button class="hotspot hs-menu" type="button" data-open-sheet="menu" aria-label="اكتشف قائمتنا"></button>
+    <button class="hotspot hs-menu" type="button" data-open-sheet="menu" aria-haspopup="dialog" aria-controls="annMenuSheet" aria-label="اكتشف قائمتنا"></button>
     <a class="hotspot hs-location" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener" aria-label="تعرف على موقعنا"></a>
-    <button class="hotspot hs-more" type="button" data-open-sheet="experience" aria-label="اكتشف المزيد"></button>
+    <button class="hotspot hs-more" type="button" data-open-sheet="experience" aria-haspopup="dialog" aria-controls="annExperienceSheet" aria-label="اكتشف المزيد"></button>
     <button class="hotspot hs-chat" type="button" data-open-chat aria-label="اسأل آن"></button>
   </section>
 
@@ -53,17 +53,29 @@
         <a class="cta light" href="https://www.google.com/maps/search/?api=1&query=%D8%B4%D9%85%D8%A7%D9%84+%D9%85%D8%AD%D8%A7%D9%8A%D9%84+%D8%B9%D8%B3%D9%8A%D8%B1" target="_blank" rel="noopener">
           <span>تعرف على موقعنا</span><b>⌖</b>
         </a>
-        <button class="cta dark" type="button" data-open-chat>
-          <span>اكتشف قائمتنا</span><b>☕</b>
+        <button class="cta dark" type="button" data-open-sheet="menu" aria-haspopup="dialog" aria-controls="annMenuSheet">
+          <span>اكتشف قائمتنا</span><b class="cta-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="1.7"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15M8 5.2c1 .8 1 1.7 0 2.5M11.5 5.2c1 .8 1 1.7 0 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></b>
         </button>
       </div>
     </div>
 
     <div class="mobile-features" aria-label="مزايا آن coffee">
-      <div><span>◉</span><b>قهوة مختصة</b></div>
-      <div><span>▱</span><b>جلسات هادئة</b></div>
-      <div><span>♨</span><b>مشروبات وحلويات</b></div>
-      <div><span>❧</span><b>أجواء جميلة</b></div>
+      <div>
+        <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8.5 4.5c3.8-2.2 8.2-.9 9.9 2s.2 7.2-3.6 9.4-8.2.9-9.9-2-.2-7.2 3.6-9.4Z" stroke="currentColor" stroke-width="1.6"/><path d="M7.2 15.7c2.2-2.6 4.4-5.6 6.1-9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <b>قهوة مختصة</b>
+      </div>
+      <div>
+        <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11.2C4 7 7.6 3.5 12 3.5s8 3.5 8 7.7v1.3H4v-1.3Z" stroke="currentColor" stroke-width="1.6"/><path d="M6.5 12.5v5.2M17.5 12.5v5.2M4.5 18.5h15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <b>جلسات هادئة</b>
+      </div>
+      <div>
+        <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9.5h9v8.8H5zM14 12h2.7a2.3 2.3 0 0 1 2.3 2.3v4H14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 6.2c1 .8 1 1.7 0 2.5M11 6.2c1 .8 1 1.7 0 2.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        <b>مشروبات وحلويات</b>
+      </div>
+      <div>
+        <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20c0-6.5 2.4-11.1 7-14.5M12 15.7C9.7 11.5 6.4 9.2 3 8.7c.3 4.5 3 7.1 8 7.8M12.7 12.4c1.8-3.9 4.4-6.1 7.9-6.8-.2 3.8-2.6 6.2-7.5 7.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <b>أجواء جميلة</b>
+      </div>
     </div>
     <nav class="ann-bottom-nav" aria-label="التنقل الرئيسي">
       <button class="ann-nav-item is-active" type="button" data-nav-home aria-current="page">
@@ -73,14 +85,14 @@
         <span>الرئيسية</span>
       </button>
 
-      <button class="ann-nav-item" type="button" data-open-sheet="menu">
+      <button class="ann-nav-item" type="button" data-open-sheet="menu" aria-haspopup="dialog" aria-controls="annMenuSheet">
         <span class="ann-nav-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5h12M6 12h12M6 18.5h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </span>
         <span>القائمة</span>
       </button>
 
-      <button class="ann-nav-item" type="button" data-open-sheet="experience">
+      <button class="ann-nav-item" type="button" data-open-sheet="experience" aria-haspopup="dialog" aria-controls="annExperienceSheet">
         <span class="ann-nav-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s7-3.8 7-10.1A4.9 4.9 0 0 0 14.1 5c-1.2 0-2.2.4-3 1.3C10.3 5.4 9.3 5 8.1 5A4.9 4.9 0 0 0 3.2 9.9C3.2 16.2 10.2 20 12 20Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
         </span>
@@ -98,7 +110,7 @@
 
     <div class="ann-sheet-backdrop" data-close-sheet hidden></div>
 
-    <section class="ann-sheet" id="annMenuSheet" data-sheet="menu" aria-hidden="true" aria-label="قائمة آن">
+    <section class="ann-sheet" id="annMenuSheet" role="dialog" aria-modal="true" tabindex="-1" data-sheet="menu" aria-hidden="true" aria-label="قائمة آن">
       <div class="ann-sheet-handle" aria-hidden="true"></div>
       <div class="ann-sheet-head">
         <div>
@@ -108,14 +120,23 @@
         <button class="ann-sheet-close" type="button" data-close-sheet aria-label="إغلاق">×</button>
       </div>
       <div class="ann-sheet-grid">
-        <article><span>☕</span><strong>قهوة مختصة</strong><small>اختيارات نحضّرها بعناية.</small></article>
-        <article><span>🥤</span><strong>مشروبات</strong><small>باردة وساخنة حسب الموسم.</small></article>
-        <article><span>🍰</span><strong>حلويات</strong><small>تفاصيل القائمة الكاملة قريبًا.</small></article>
+        <article>
+          <span class="ann-sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="1.7"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15M8 5.2c1 .8 1 1.7 0 2.5M11.5 5.2c1 .8 1 1.7 0 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <strong>قهوة مختصة</strong><small>اختيارات نحضّرها بعناية.</small>
+        </article>
+        <article>
+          <span class="ann-sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M8 4h8l-1 15H9L8 4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7 7h10M10.5 11c1.2-1 2.3-1 3.5 0M16 4l1.7-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <strong>مشروبات</strong><small>باردة وساخنة حسب الموسم.</small>
+        </article>
+        <article>
+          <span class="ann-sheet-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 17h14l-1.2-6.2H6.2L5 17Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M7.5 10.8c.8-3 2.8-4.8 6-5.3 1.5.8 2.5 2.6 3 5.3M4 19.5h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          <strong>حلويات</strong><small>تفاصيل القائمة الكاملة قريبًا.</small>
+        </article>
       </div>
       <button class="ann-sheet-cta" type="button" data-open-chat>اسأل آن عن القائمة</button>
     </section>
 
-    <section class="ann-sheet" id="annExperienceSheet" data-sheet="experience" aria-hidden="true" aria-label="تجربتك في آن">
+    <section class="ann-sheet" id="annExperienceSheet" role="dialog" aria-modal="true" tabindex="-1" data-sheet="experience" aria-hidden="true" aria-label="تجربتك في آن">
       <div class="ann-sheet-handle" aria-hidden="true"></div>
       <div class="ann-sheet-head">
         <div>
@@ -131,7 +152,7 @@
       </div>
     </section>
 
-    <section class="ann-sheet" id="annAboutSheet" data-sheet="about" aria-hidden="true" aria-label="من نحن">
+    <section class="ann-sheet" id="annAboutSheet" role="dialog" aria-modal="true" tabindex="-1" data-sheet="about" aria-hidden="true" aria-label="من نحن">
       <div class="ann-sheet-handle" aria-hidden="true"></div>
       <div class="ann-sheet-head">
         <div>
@@ -146,7 +167,7 @@
       </div>
     </section>
 
-    <section class="ann-sheet" id="annGallerySheet" data-sheet="gallery" aria-hidden="true" aria-label="المعرض">
+    <section class="ann-sheet" id="annGallerySheet" role="dialog" aria-modal="true" tabindex="-1" data-sheet="gallery" aria-hidden="true" aria-label="المعرض">
       <div class="ann-sheet-handle" aria-hidden="true"></div>
       <div class="ann-sheet-head">
         <div>

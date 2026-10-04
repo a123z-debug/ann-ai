@@ -239,3 +239,85 @@ if (chatBackdrop && !chatBackdrop.classList.contains('visible')) {
   chatBackdrop.hidden = true;
   chatBackdrop.style.pointerEvents = 'none';
 }
+
+
+// ===== ANN UI/UX PRO MAX INTERACTIONS =====
+(() => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const desktop = document.querySelector('.desktop-concept');
+  let raf = 0;
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+
+  const render = () => {
+    raf = 0;
+    cx += (tx - cx) * .09;
+    cy += (ty - cy) * .09;
+    desktop?.style.setProperty('--ann-parallax-x', cx.toFixed(2) + 'px');
+    desktop?.style.setProperty('--ann-parallax-y', cy.toFixed(2) + 'px');
+    if (Math.abs(tx-cx) > .08 || Math.abs(ty-cy) > .08) raf = requestAnimationFrame(render);
+  };
+
+  if (desktop && !reduceMotion && finePointer) {
+    desktop.addEventListener('pointermove', event => {
+      const r = desktop.getBoundingClientRect();
+      const nx = ((event.clientX-r.left)/r.width)-.5;
+      const ny = ((event.clientY-r.top)/r.height)-.5;
+      tx = nx * 5;
+      ty = ny * 3;
+      desktop.style.setProperty('--ann-pointer-x', ((nx+.5)*100).toFixed(1)+'%');
+      desktop.style.setProperty('--ann-pointer-y', ((ny+.5)*100).toFixed(1)+'%');
+      if (!raf) raf = requestAnimationFrame(render);
+    }, {passive:true});
+
+    desktop.addEventListener('pointerleave', () => {
+      tx = 0; ty = 0;
+      desktop.style.setProperty('--ann-pointer-x','50%');
+      desktop.style.setProperty('--ann-pointer-y','42%');
+      if (!raf) raf = requestAnimationFrame(render);
+    }, {passive:true});
+  }
+
+  // Small tactile confirmation on supported phones.
+  document.addEventListener('pointerup', event => {
+    if (!event.target.closest('.ann-nav-item,.cta,.ann-sheet-cta')) return;
+    if (navigator.vibrate && matchMedia('(pointer: coarse)').matches) {
+      try { navigator.vibrate(8); } catch {}
+    }
+  }, {passive:true});
+
+  // Improve sheet semantics/focus without changing visuals.
+  const focusables = root => [...root.querySelectorAll(
+    'button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])'
+  )].filter(el => !el.hidden && el.offsetParent !== null);
+
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Tab') return;
+    const openSurface = document.querySelector('.ann-sheet.is-open') ||
+      document.querySelector('.chat-panel.open');
+    if (!openSurface) return;
+    const list = focusables(openSurface);
+    if (!list.length) return;
+    const first = list[0], last = list[list.length-1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
+    }
+  });
+
+  document.addEventListener('click', event => {
+    const trigger = event.target.closest('[data-open-sheet]');
+    if (!trigger) return;
+    trigger.setAttribute('aria-expanded','true');
+    const id = trigger.getAttribute('aria-controls');
+    const sheet = id && document.getElementById(id);
+    requestAnimationFrame(() => sheet?.querySelector('.ann-sheet-close')?.focus());
+  });
+
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-close-sheet]')) return;
+    document.querySelectorAll('[data-open-sheet][aria-expanded="true"]')
+      .forEach(el => el.setAttribute('aria-expanded','false'));
+  });
+})();
