@@ -10,7 +10,8 @@ const submitButton = form?.querySelector('button[type="submit"]');
 const sheetBackdrop = $('.ann-sheet-backdrop');
 const sheets = $$('.ann-sheet');
 const navItems = $$('.ann-nav-item');
-
+const pageContent = $('.ann-shell');
+let activeSurface = null;
 let lastTrigger = null;
 let sending = false;
 
@@ -24,133 +25,106 @@ function setActive(button) {
 }
 
 function activateHome() {
-  const home = $('[data-nav-home]');
-  if (home) setActive(home);
+  setActive($('.ann-nav-item[data-nav-home]'));
 }
 
-function closeSheets(activateHomeAfter = false) {
-  sheets.forEach(sheet => {
-    sheet.classList.remove('is-open');
-    sheet.setAttribute('aria-hidden', 'true');
+function closeSurface(restoreFocus = true) {
+  [panel, ...sheets].filter(Boolean).forEach(surface => {
+    surface.classList.remove('is-open', 'open');
+    surface.setAttribute('aria-hidden', 'true');
+    surface.inert = true;
+    surface.hidden = true;
   });
-
-  if (sheetBackdrop) {
-    sheetBackdrop.classList.remove('is-visible');
-    sheetBackdrop.style.pointerEvents = 'none';
-    sheetBackdrop.hidden = true;
-  }
-
-  if (activateHomeAfter) activateHome();
+  [sheetBackdrop, chatBackdrop].filter(Boolean).forEach(backdrop => {
+    backdrop.classList.remove('is-visible', 'visible');
+    backdrop.hidden = true;
+  });
+  $$('[data-open-sheet]').forEach(button => button.setAttribute('aria-expanded', 'false'));
+  if (pageContent) pageContent.inert = false;
+  document.body.classList.remove('overlay-open', 'chat-open');
+  activeSurface = null;
+  activateHome();
+  if (restoreFocus && lastTrigger?.isConnected && lastTrigger.getClientRects().length) lastTrigger.focus();
 }
 
-function openSheet(name, trigger) {
-  closeChat(false);
-  closeSheets(false);
-
-  const sheet = $('.ann-sheet[data-sheet="' + name + '"]');
-  if (!sheet) return;
-
-  sheet.hidden = false;
-  sheet.setAttribute('aria-hidden', 'false');
-  sheet.classList.add('is-open');
-
-  if (sheetBackdrop) {
-    sheetBackdrop.hidden = false;
-    sheetBackdrop.style.pointerEvents = 'auto';
-    requestAnimationFrame(() => sheetBackdrop.classList.add('is-visible'));
+function showSurface(surface, trigger, isChat = false) {
+  if (!surface) return;
+  // Retain the original page trigger when moving from one dialog to another.
+  if (!activeSurface || !activeSurface.contains(trigger)) lastTrigger = trigger || document.activeElement;
+  closeSurface(false);
+  activeSurface = surface;
+  surface.hidden = false;
+  surface.inert = false;
+  surface.setAttribute('aria-hidden', 'false');
+  surface.classList.add(isChat ? 'open' : 'is-open');
+  const backdrop = isChat ? chatBackdrop : sheetBackdrop;
+  if (backdrop) {
+    backdrop.hidden = false;
+    backdrop.classList.add(isChat ? 'visible' : 'is-visible');
   }
-
-  if (trigger) setActive(trigger);
-}
-
-function openChat(trigger) {
-  if (!panel) return;
-
-  closeSheets(false);
-  lastTrigger = trigger || document.activeElement;
-
-  panel.classList.add('open');
-  panel.setAttribute('aria-hidden', 'false');
-
-  if (chatBackdrop) {
-    chatBackdrop.hidden = false;
-    chatBackdrop.style.pointerEvents = 'auto';
-    requestAnimationFrame(() => chatBackdrop.classList.add('visible'));
-  }
-
-  document.body.classList.add('chat-open');
-
-  const assistant = $('.ann-nav-assistant');
-  if (assistant) setActive(assistant);
-
-  window.setTimeout(() => input?.focus(), 100);
-}
-
-function closeChat(activateHomeAfter = true) {
-  if (!panel) return;
-
-  panel.classList.remove('open');
-  panel.setAttribute('aria-hidden', 'true');
-
-  if (chatBackdrop) {
-    chatBackdrop.classList.remove('visible');
-    chatBackdrop.style.pointerEvents = 'none';
-    chatBackdrop.hidden = true;
-  }
-
-  document.body.classList.remove('chat-open');
-
-  if (activateHomeAfter) activateHome();
-
-  if (lastTrigger && typeof lastTrigger.focus === 'function') {
-    window.setTimeout(() => lastTrigger.focus(), 0);
+  if (pageContent) pageContent.inert = true;
+  document.body.classList.add('overlay-open');
+  if (isChat) {
+    setActive($('.ann-nav-assistant'));
+    input?.focus();
+  } else {
+    const name = surface.dataset.sheet;
+    $$('[data-open-sheet]').forEach(button => button.setAttribute('aria-expanded', String(button.dataset.openSheet === name)));
+    setActive($('.ann-nav-item[data-open-sheet="' + name + '"]'));
+    surface.focus();
   }
 }
 
 document.addEventListener('click', event => {
-  const openSheetBtn = event.target.closest('[data-open-sheet]');
-  if (openSheetBtn) {
+  const sheetButton = event.target.closest('[data-open-sheet]');
+  if (sheetButton) {
     event.preventDefault();
-    openSheet(openSheetBtn.dataset.openSheet, openSheetBtn);
+    const surface = sheets.find(sheet => sheet.dataset.sheet === sheetButton.dataset.openSheet);
+    showSurface(surface, sheetButton);
     return;
   }
-
-  const closeSheetBtn = event.target.closest('[data-close-sheet]');
-  if (closeSheetBtn) {
+  if (event.target.closest('[data-close-sheet], [data-close-chat]')) {
     event.preventDefault();
-    closeSheets(true);
+    closeSurface();
     return;
   }
-
-  const homeBtn = event.target.closest('[data-nav-home]');
-  if (homeBtn) {
+  const chatButton = event.target.closest('[data-open-chat]');
+  if (chatButton) {
     event.preventDefault();
-    closeSheets(false);
-    closeChat(false);
-    setActive(homeBtn);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showSurface(panel, chatButton, true);
     return;
   }
-
-  const openChatBtn = event.target.closest('[data-open-chat]');
-  if (openChatBtn) {
+  if (event.target.closest('[data-nav-home]')) {
     event.preventDefault();
-    openChat(openChatBtn);
-    return;
-  }
-
-  const closeChatBtn = event.target.closest('[data-close-chat]');
-  if (closeChatBtn) {
-    event.preventDefault();
-    closeChat(true);
+    closeSurface(false);
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
 });
 
 document.addEventListener('keydown', event => {
-  if (event.key !== 'Escape') return;
-  if (panel?.classList.contains('open')) closeChat(true);
-  else if (sheets.some(sheet => sheet.classList.contains('is-open'))) closeSheets(true);
+  if (!activeSurface) return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeSurface();
+    return;
+  }
+  if (event.key !== 'Tab') return;
+  const list = $$('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])', activeSurface)
+    .filter(element => element.getClientRects().length && !element.closest('[hidden], [inert]'));
+  if (!list.length) {
+    event.preventDefault();
+    activeSurface.focus();
+    return;
+  }
+  const first = list[0], last = list[list.length - 1];
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === activeSurface)) {
+    event.preventDefault(); last.focus();
+  } else if (!event.shiftKey && (document.activeElement === last || !activeSurface.contains(document.activeElement))) {
+    event.preventDefault(); first.focus();
+  }
 });
+
+closeSurface(false);
 
 function addMessage(text, who = 'user', extraClass = '') {
   if (!messages) return null;
@@ -230,17 +204,6 @@ document.addEventListener('click', event => {
   if (quick) send(quick.textContent);
 });
 
-// Defensive startup: hidden overlays must never intercept taps.
-if (sheetBackdrop && !sheetBackdrop.classList.contains('is-visible')) {
-  sheetBackdrop.hidden = true;
-  sheetBackdrop.style.pointerEvents = 'none';
-}
-if (chatBackdrop && !chatBackdrop.classList.contains('visible')) {
-  chatBackdrop.hidden = true;
-  chatBackdrop.style.pointerEvents = 'none';
-}
-
-
 // ===== ANN UI/UX PRO MAX INTERACTIONS =====
 (() => {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -278,46 +241,4 @@ if (chatBackdrop && !chatBackdrop.classList.contains('visible')) {
     }, {passive:true});
   }
 
-  // Small tactile confirmation on supported phones.
-  document.addEventListener('pointerup', event => {
-    if (!event.target.closest('.ann-nav-item,.cta,.ann-sheet-cta')) return;
-    if (navigator.vibrate && matchMedia('(pointer: coarse)').matches) {
-      try { navigator.vibrate(8); } catch {}
-    }
-  }, {passive:true});
-
-  // Improve sheet semantics/focus without changing visuals.
-  const focusables = root => [...root.querySelectorAll(
-    'button:not([disabled]),a[href],input:not([disabled]),[tabindex]:not([tabindex="-1"])'
-  )].filter(el => !el.hidden && el.offsetParent !== null);
-
-  document.addEventListener('keydown', event => {
-    if (event.key !== 'Tab') return;
-    const openSurface = document.querySelector('.ann-sheet.is-open') ||
-      document.querySelector('.chat-panel.open');
-    if (!openSurface) return;
-    const list = focusables(openSurface);
-    if (!list.length) return;
-    const first = list[0], last = list[list.length-1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault(); last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault(); first.focus();
-    }
-  });
-
-  document.addEventListener('click', event => {
-    const trigger = event.target.closest('[data-open-sheet]');
-    if (!trigger) return;
-    trigger.setAttribute('aria-expanded','true');
-    const id = trigger.getAttribute('aria-controls');
-    const sheet = id && document.getElementById(id);
-    requestAnimationFrame(() => sheet?.querySelector('.ann-sheet-close')?.focus());
-  });
-
-  document.addEventListener('click', event => {
-    if (!event.target.closest('[data-close-sheet]')) return;
-    document.querySelectorAll('[data-open-sheet][aria-expanded="true"]')
-      .forEach(el => el.setAttribute('aria-expanded','false'));
-  });
 })();
