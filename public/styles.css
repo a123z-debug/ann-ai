@@ -1014,3 +1014,81 @@ input:focus-visible{
   }
   .desktop-concept>img{transform:none!important}
 }
+
+/* Functional moments share the existing warm ANN identity. */
+[hidden]{display:none!important}
+body.overlay-open{overflow:hidden}
+.ann-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ann-skip-link{position:fixed;z-index:120;top:12px;right:12px;padding:13px 20px;background:#fff7eb;color:#4d2113;border-radius:12px;transform:translateY(-180%)}
+.ann-skip-link:focus{transform:none}
+.moments-hub{background:#faf3e8;color:#402316;padding:64px max(28px,calc((100vw - 1120px)/2)) 24px}
+.moments-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:30px}
+.moments-eyebrow{font-size:14px;color:#80654c;font-weight:700;letter-spacing:.02em}
+.moments-heading h2{margin:8px 0 0;font-size:clamp(28px,3.5vw,44px);line-height:1.3;font-weight:800}
+.moments-heading p{font-size:16px;line-height:1.9;color:#7a6150;margin:0;max-width:430px}
+.moments-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.moment-card{display:flex;flex-direction:column;align-items:stretch;text-align:right;gap:20px;min-height:270px;padding:28px;border:1px solid #e4d5c3;border-radius:24px;background:#fffaf3;color:#4d2113;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease}
+.moment-card:hover{transform:translateY(-4px);box-shadow:0 16px 30px #51281310}
+.moment-card:focus-visible,.moment-button:focus-visible{outline:3px solid #a06027;outline-offset:4px}
+.moment-number{font-size:12px;font-weight:700;color:#95704d}
+.moment-card strong{font-size:25px;line-height:1.5;font-weight:800}
+.moment-card>span:not(.moment-number){font-size:15px;line-height:1.8;color:#7e6655}
+.moment-card>b{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;margin-top:auto;padding-top:5px}
+.moment-taste{background:#5a3021;color:#fff7e9;border-color:#5a3021}
+.moment-taste .moment-number{color:#e7c8a1}
+.moment-taste>span:not(.moment-number){color:#ecdac8}
+.moment-invite{background:#f0e5d3}
+.moments-closing{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:32px;padding-top:22px;border-top:1px solid #e1d3c0;font-size:13px;color:#8b6b52}
+.ann-sheet{overscroll-behavior:contain}
+.ann-sheet .moment-note{font-size:14px;line-height:1.8;color:#785e4d;margin:14px 0}
+.moment-inline-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.moment-button{flex:1;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border:1px solid #5c3221;border-radius:14px;background:#5c3221;color:#fff8ed;font:700 15px "Tajawal",sans-serif;text-decoration:none;cursor:pointer;line-height:1.5}
+.moment-button.secondary{background:#fff8ed;color:#5c3221;border-color:#d9c4ad}
+.moment-button:disabled{opacity:.6;cursor:wait}
+.moment-status{font-size:14px;line-height:1.8;color:#5b4b28;margin:10px 0 0;overflow-wrap:anywhere}
+.moment-status:empty{display:none}
+.taste-form fieldset{border:0;margin:20px 0 0;padding:0;min-width:0}
+.taste-form legend{font-weight:700;font-size:15px;margin-bottom:10px;color:#5c3221}
+.taste-options{display:flex;gap:8px}
+.taste-options label{position:relative;flex:1;min-width:0;cursor:pointer}
+.taste-options input{position:absolute;opacity:0;width:1px;height:1px}
+.taste-options span{display:flex;align-items:center;justify-content:center;min-height:48px;padding:10px 6px;border:1px solid #dbc8b3;border-radius:12px;color:#705340;background:#fffaf3;font-size:15px;line-height:1.5;text-align:center}
+.taste-options input:checked+span{background:#5c3221;border-color:#5c3221;color:#fff8ed}
+.taste-options input:focus-visible+span{outline:3px solid #a06027;outline-offset:3px}
+.taste-passport{display:flex;flex-direction:column;gap:10px;margin-top:24px;padding:22px;border:1px solid #d9c2a7;border-radius:20px;background:#eee1cc}
+.taste-passport>span{font-size:13px;color:#886341}
+.taste-passport strong{font-size:25px;line-height:1.5;color:#4d2113}
+.taste-passport p{margin:0;font-size:15px;color:#755236}
+.taste-passport small{font-size:12px;line-height:1.8;color:#7c624d}
+.invite-form>label{display:block;font-size:15px;font-weight:700;color:#5c3221;margin-top:18px}
+.invite-form input,.invite-form textarea{display:block;width:100%;max-width:100%;margin-top:8px;border:1px solid #d7c3ab;border-radius:12px;padding:12px;background:#fffaf3;color:#4d2113;font:400 16px/1.8 "Tajawal",sans-serif;resize:vertical}
+.invite-form input:focus-visible,.invite-form textarea:focus-visible{outline:3px solid #a06027;outline-offset:2px}
+.invitation-card{display:flex;flex-direction:column;align-items:center;gap:17px;margin-top:23px;padding:30px 22px;border:1px solid #d8c1a4;outline:1px solid #e4d4bd;outline-offset:-8px;border-radius:20px;text-align:center;background:radial-gradient(ellipse at top,#fffdf8,#f0e0c8);color:#542a19}
+.invitation-brand{font-size:36px;font-weight:800;line-height:1}
+.invitation-brand small{display:block;font:15px Georgia,serif;margin-top:6px}
+.invitation-card>#invitationTo{font-size:14px;overflow-wrap:anywhere;max-width:100%}
+.invitation-card strong{font-size:28px;line-height:1.5}
+.invitation-card p{margin:0;font-size:18px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%}
+.invitation-card>small{padding-top:16px;border-top:1px solid #d9c4a8;font-size:12px;line-height:1.8;color:#856346}
+.location-copy{font-size:18px;line-height:1.9;color:#755843}
+.location-area{width:100%;margin-top:16px}
+.mobile-location{font-family:inherit;cursor:pointer}
+@media(min-width:701px){.moment-sheet{width:min(600px,calc(100vw - 48px))}}
+@media(min-width:701px) and (max-width:1000px){.moments-hub{padding-top:40px}.moments-heading{align-items:start;flex-direction:column;gap:18px}.moments-grid{gap:12px}.moment-card{padding:22px 18px}.moment-card strong{font-size:22px}}
+@media(max-width:700px){
+  .moments-hub{padding:38px 20px 118px}
+  .moments-heading{display:block;margin-bottom:23px}
+  .moments-heading p{font-size:15px;margin-top:16px}
+  .moments-grid{grid-template-columns:1fr;gap:14px}
+  .moment-card{min-height:220px;padding:24px;gap:15px}
+  .moment-card strong{font-size:25px}
+  .moments-closing{font-size:12px;gap:12px;margin-top:24px}
+  .ann-sheet{max-height:calc(100svh - 20px);max-height:calc(100dvh - 20px);overflow-y:auto}
+  .moment-sheet .ann-sheet-head h2{font-size:26px;line-height:1.5}
+  .ann-sheet-grid small{font-size:12px}
+  .moment-button{padding:12px 10px}
+  .taste-passport strong{font-size:23px}
+  .taste-options span{font-size:14px}
+  .invitation-card{padding:26px 17px}
+}
+@media(prefers-reduced-motion:reduce){.moment-card:hover{transform:none}}
