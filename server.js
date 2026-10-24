@@ -6,6 +6,19 @@ const KB=path.join(__dirname,'data','knowledge.json');
 const ADMIN_PIN=process.env.ADMIN_PIN||'change-me';
 
 const {buildPass,missingConfig}=require('./lib/pass');
+const orders=require('./lib/orders');
+const ORDER_ROUTES={
+  'GET /api/menu':async()=>({status:200,body:require('./data/menu.json')}),
+  'GET /api/settings':orders.getSettingsPublic,
+  'GET /api/order':orders.getOrder,
+  'POST /api/order':orders.createOrder,
+  'POST /api/pay':orders.verifyPayment,
+  'GET /api/orders':orders.adminList,
+  'PATCH /api/orders':orders.adminUpdate,
+  'POST /api/orders':orders.adminUpdate,
+  'GET /api/admin-settings':orders.adminSettings,
+  'PUT /api/admin-settings':orders.adminSettings
+};
 const readKB=()=>JSON.parse(fs.readFileSync(KB,'utf8'));
 const send=(res,code,obj)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj));};
 const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>1024*1024)reject(new Error('too_large'));});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(e)}});req.on('error',reject);});
@@ -34,6 +47,8 @@ function serve(req,res){
   if(p==='/') p='/index.html';
   if(p==='/admin') p='/admin.html';
   if(p==='/wallet') p='/wallet.html';
+  if(p==='/order') p='/order.html';
+  if(p==='/orders') p='/orders.html';
   const f=path.normalize(path.join(PUBLIC,p));
   if(!f.startsWith(PUBLIC)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
   const ext=path.extname(f);
@@ -46,6 +61,18 @@ function serve(req,res){
 http.createServer(async(req,res)=>{
   try{
     if(req.method==='GET'&&req.url.startsWith('/health')) return send(res,200,{ok:true,service:'ann-ai'});
+    const u=new URL(req.url,'http://x');
+    const route=ORDER_ROUTES[req.method+' '+u.pathname];
+    if(route){
+      const body=(req.method==='GET')?{}:await parse(req);
+      const r=await route({method:req.method,query:Object.fromEntries(u.searchParams),body,headers:req.headers});
+      return send(res,r.status,r.body);
+    }
+    if(u.pathname==='/.well-known/apple-developer-merchantid-domain-association'){
+      const v=process.env.APPLE_PAY_DOMAIN_ASSOCIATION||'';
+      if(!v) return send(res,404,{error:'not_configured'});
+      res.writeHead(200,{'Content-Type':'text/plain'});return res.end(v);
+    }
     if(req.method==='GET'&&req.url.startsWith('/api/pass')){
       if(/[?&]check=1/.test(req.url)) return send(res,200,{ready:missingConfig().length===0});
       try{

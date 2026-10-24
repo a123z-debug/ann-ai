@@ -15,6 +15,22 @@
       "destination": "/public/wallet.html"
     },
     {
+      "source": "/order",
+      "destination": "/public/order.html"
+    },
+    {
+      "source": "/orders",
+      "destination": "/public/orders.html"
+    },
+    {
+      "source": "/cart.js",
+      "destination": "/public/cart.js"
+    },
+    {
+      "source": "/.well-known/apple-developer-merchantid-domain-association",
+      "destination": "/api/applepay-domain"
+    },
+    {
       "source": "/styles.css",
       "destination": "/public/styles.css"
     },

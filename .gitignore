@@ -5,3 +5,5 @@ public/ann-mobile.webp
 *.pem
 *.p12
 *.cer
+data/orders.local.json
+data/orders.local.json.tmp

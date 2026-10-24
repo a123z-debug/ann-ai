@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2e140b">
+<meta name="robots" content="noindex">
+<title>لوحة طلبات آن</title>
+<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<style>
+body{background:var(--sand);min-height:100svh}
+.d-top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 18px;background:var(--espresso);color:var(--stone)}
+.d-top img{height:40px;width:auto}
+.d-top h1{font-size:22px;flex:1;min-width:140px}
+.switch{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:15px;cursor:pointer;user-select:none}
+.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch i{position:relative;width:48px;height:28px;border-radius:999px;background:rgba(243,233,220,.25);transition:background .2s;flex:none}
+.switch i::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s var(--ease)}
+.switch input:checked+i{background:#3aa55d}
+.switch input:checked+i::after{transform:translateX(-20px)}
+.switch input:focus-visible+i{outline:2px solid var(--halo);outline-offset:2px}
+.light .switch i{background:rgba(75,31,16,.2)}
+.icon-btn{display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:12px;background:rgba(243,233,220,.1);color:var(--stone);cursor:pointer}
+.icon-btn svg{width:20px;height:20px}
+.icon-btn[aria-pressed=false]{opacity:.5}
+.tabs{display:flex;gap:4px;padding:10px 18px 0;background:var(--espresso);overflow-x:auto;scrollbar-width:none;position:sticky;top:60px;z-index:19}
+.tabs button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:14px 14px 0 0;background:transparent;color:var(--smoke);font:inherit;font-weight:800;font-size:16px;cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--sand);color:var(--roast)}
+.pane{padding:18px;max-width:1500px;margin:0 auto}
+.pane[hidden]{display:none}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{min-height:38px;padding:0 14px;border:0;border-radius:999px;background:#fff;color:var(--ink);font:inherit;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px var(--line-light)}
+.chip[aria-pressed=true]{background:var(--roast);color:var(--stone);box-shadow:none}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;align-items:start}
+.col{background:rgba(255,255,255,.45);border-radius:20px;padding:12px;min-height:120px}
+.col h2{display:flex;align-items:center;gap:8px;font-size:19px;color:var(--roast);padding:4px 6px 10px}
+.col h2 span{display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:999px;background:var(--roast);color:var(--stone);font-size:14px}
+.col.c-new h2 span{background:#c8782a}
+.col .none{padding:18px 8px;text-align:center;color:var(--ink-2);font-size:15px}
+.ord{background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 0 rgba(75,31,16,.08),inset 0 0 0 1px rgba(75,31,16,.06)}
+.ord.fresh{animation:fresh 1.4s ease-in-out 3}
+@keyframes fresh{50%{box-shadow:0 0 0 4px rgba(242,179,102,.85)}}
+.ord.awaiting{opacity:.7;border:1.5px dashed rgba(75,31,16,.3)}
+.o-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.o-h b{font-size:22px;font-weight:900;color:var(--roast);direction:ltr}
+.o-h time{margin-inline-start:auto;font-size:14px;color:var(--ink-2)}
+.o-type{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-weight:800;font-size:14px}
+.t-dinein{background:#efe3fb;color:#5a2d8a}.t-pickup{background:#e3f1fa;color:#2a6f96}.t-delivery{background:#fde6da;color:#a2492a}
+.o-who{margin-top:6px;font-size:15px;color:var(--ink-2);display:flex;gap:10px;flex-wrap:wrap}
+.o-who a{color:var(--roast);font-weight:700}
+.o-items{margin:10px 0;padding:10px 0;border-block:1px dashed rgba(75,31,16,.15);display:grid;gap:4px}
+.o-items li{font-size:16.5px;line-height:1.5}
+.o-items li b{display:inline-block;min-width:30px;color:#c8782a;font-weight:900}
+.o-items small{display:block;padding-inline-start:30px;color:#a2492a;font-weight:700}
+.o-notes{margin:0 0 8px;padding:8px 10px;border-radius:10px;background:#fff6e4;font-size:15px}
+.o-addr{margin:0 0 8px;font-size:15px}
+.o-f{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.o-f .sum{margin:0;font-weight:900;font-size:18px;color:var(--ink)}
+.pd{padding:2px 10px;border-radius:999px;font-size:13px;font-weight:800}
+.pd.y{background:#e6f4e7;color:#2f6b34}.pd.n{background:#fff1d6;color:#7a4313}
+.o-act{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.o-act button{flex:1;min-height:46px;border:0;border-radius:12px;font:inherit;font-weight:900;font-size:16px;cursor:pointer;background:var(--roast);color:var(--stone)}
+.o-act button.go{background:#2f7d4a}
+.o-act button.ghost{flex:0 0 auto;padding:0 14px;background:transparent;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-light)}
+.card{background:#fff;border-radius:20px;padding:20px;box-shadow:inset 0 0 0 1px rgba(75,31,16,.06);margin-bottom:14px}
+.card h2{font-size:20px;color:var(--roast);margin-bottom:12px}
+.card p.help{color:var(--ink-2);font-size:15px;margin:4px 0 0}
+.form{display:grid;gap:14px;max-width:560px}
+.form label.f{display:grid;gap:6px;font-weight:800}
+.form input[type=text],.form input[type=number],.form input[type=tel],.form input[type=password]{min-height:48px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(75,31,16,.16);font:inherit;font-size:17px;background:#fff;color:var(--ink)}
+.row-sw{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-light)}
+.row-sw:last-child{border-bottom:0}
+.save{min-height:50px;border:0;border-radius:14px;background:var(--roast);color:var(--stone);font:inherit;font-weight:900;font-size:17px;cursor:pointer;padding:0 22px}
+.status-line{display:flex;gap:8px;align-items:center;font-weight:700}
+.dot{width:10px;height:10px;border-radius:50%;background:#c0412a}.dot.ok{background:#3aa55d}
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.items-grid .row-sw{background:#fff;border-radius:12px;padding:10px 14px;border:0;box-shadow:inset 0 0 0 1px var(--line-light)}
+.items-grid h3{grid-column:1/-1;margin:14px 0 2px;font-size:18px;color:var(--roast)}
+.qr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.qr-card{background:#fff;border-radius:20px;padding:18px;text-align:center;display:grid;justify-items:center;gap:6px;box-shadow:inset 0 0 0 1px rgba(75,31,16,.1);break-inside:avoid}
+.qr-card .qr-logo{background:var(--roast);border-radius:0 0 16px 16px;padding:8px 14px 10px;margin-top:-18px}
+.qr-card .qr-logo img{height:54px;width:auto}
+.qr-card .qr{width:170px}
+.qr-card .qr svg{width:100%;height:auto;display:block}
+.qr-card b{font-size:26px;font-weight:900;color:var(--roast)}
+.qr-card small{color:var(--ink-2);font-size:14px}
+.login{max-width:420px;margin:12vh auto;padding:0 18px}
+.login .card{display:grid;gap:12px;text-align:center}
+.login img{height:90px;width:auto;margin:0 auto;background:var(--roast);padding:12px 16px;border-radius:0 0 22px 22px;margin-top:-20px}
+.msg{min-height:1.5em;color:#8a2a17;font-weight:700}
+.warn-box{padding:12px 14px;border-radius:14px;background:#fff1d6;color:#7a4313;line-height:1.7;margin-bottom:14px}
+@media print{
+  body{background:#fff}
+  .d-top,.tabs,.no-print,.pane:not(#p-tables){display:none!important}
+  #p-tables{padding:0}
+  .qr-grid{grid-template-columns:repeat(3,1fr);gap:10mm}
+  .qr-card{box-shadow:0 0 0 1px #ccc}
+}
+</style>
+</head>
+<body>
+<div id="login" class="login">
+  <form class="card" id="loginForm">
+    <img src="/logo-white.webp" alt="آن coffee" width="228" height="242">
+    <h1 style="font-size:26px;color:var(--roast)">لوحة الطلبات</h1>
+    <div class="form" style="max-width:none">
+      <label class="f" style="text-align:start">رمز الإدارة<input type="password" id="pin" autocomplete="current-password" required></label>
+    </div>
+    <button class="save" type="submit">دخول</button>
+    <p class="msg" id="loginMsg"></p>
+  </form>
+</div>
+
+<div id="dash" hidden>
+  <header class="d-top">
+    <img src="/pass/logo@2x.png" alt="" width="122" height="88">
+    <h1>لوحة طلبات آن</h1>
+    <label class="switch" title="استقبال الطلبات من الموقع"><input type="checkbox" id="openSw"><i></i><span id="openLbl">نستقبل الطلبات</span></label>
+    <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="صوت التنبيه"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    <button class="icon-btn" id="outBtn" type="button" aria-label="خروج"><svg viewBox="0 0 24 24" fill="none"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M9 8l-4 4 4 4M5 12h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </header>
+  <nav class="tabs" role="tablist" aria-label="أقسام اللوحة">
+    <button role="tab" aria-selected="true" aria-controls="p-orders" id="t-orders">الطلبات</button>
+    <button role="tab" aria-selected="false" aria-controls="p-items" id="t-items">الأصناف</button>
+    <button role="tab" aria-selected="false" aria-controls="p-tables" id="t-tables">باركود الطاولات</button>
+    <button role="tab" aria-selected="false" aria-controls="p-settings" id="t-settings">الإعدادات</button>
+  </nav>
+
+  <section class="pane" id="p-orders" role="tabpanel" aria-labelledby="t-orders">
+    <div id="storageWarn"></div>
+    <div class="filters" role="group" aria-label="تصفية">
+      <button class="chip" data-f="all" aria-pressed="true">الكل</button>
+      <button class="chip" data-f="dinein" aria-pressed="false">داخل المحل</button>
+      <button class="chip" data-f="pickup" aria-pressed="false">استلام</button>
+      <button class="chip" data-f="delivery" aria-pressed="false">توصيل</button>
+    </div>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section class="pane" id="p-items" role="tabpanel" aria-labelledby="t-items" hidden>
+    <div class="card"><h2>الأصناف المتوفرة</h2><p class="help">اطفي الصنف إذا خلص، ويظهر للعملاء «نفد» وما يقدرون يطلبونه.</p></div>
+    <div class="items-grid" id="itemsGrid"></div>
+  </section>
+
+  <section class="pane" id="p-tables" role="tabpanel" aria-labelledby="t-tables" hidden>
+    <div class="card no-print">
+      <h2>باركود لكل طاولة</h2>
+      <p class="help">اطبعها وحطها على الطاولات. العميل يمسح الباركود، يطلب من مكانه، والطلب يوصلك هنا برقم الطاولة.</p>
+      <div class="form" style="grid-template-columns:1fr auto;align-items:end;margin-top:12px">
+        <label class="f">عدد الطاولات<input type="number" id="tablesN" min="1" max="300" value="12"></label>
+        <button class="save" type="button" id="printBtn">اطبع</button>
+      </div>
+    </div>
+    <div class="qr-grid" id="qrGrid"></div>
+  </section>
+
+  <section class="pane" id="p-settings" role="tabpanel" aria-labelledby="t-settings" hidden>
+    <div class="card">
+      <h2>استقبال الطلبات</h2>
+      <div class="row-sw"><span>داخل المحل (طاولات)</span><label class="switch light"><input type="checkbox" id="ty-dinein"><i></i></label></div>
+      <div class="row-sw"><span>استلام من المحل</span><label class="switch light"><input type="checkbox" id="ty-pickup"><i></i></label></div>
+      <div class="row-sw"><span>توصيل</span><label class="switch light"><input type="checkbox" id="ty-delivery"><i></i></label></div>
+    </div>
+    <div class="card form" style="max-width:none">
+      <h2>التواصل والتوصيل</h2>
+      <label class="f">رقم واتساب المحل<input type="tel" id="waIn" dir="ltr" placeholder="05xxxxxxxx"></label>
+      <p class="help" style="margin-top:-8px">يوصلك عليه نص الطلب، ويظهر للعميل زر واتساب في صفحة طلبه.</p>
+      <label class="f">رسوم التوصيل (ر.س)<input type="number" id="feeIn" min="0" max="200" step="1"></label>
+    </div>
+    <div class="card">
+      <h2>الدفع</h2>
+      <div class="row-sw"><span>الدفع عند الاستلام / الكاشير</span><label class="switch light"><input type="checkbox" id="payCounter"><i></i></label></div>
+      <div class="row-sw"><span>الدفع الإلكتروني (Apple Pay، مدى، بطاقة)</span><label class="switch light"><input type="checkbox" id="payOnline"><i></i></label></div>
+      <p class="help" id="onlineHelp"></p>
+    </div>
+    <div class="card">
+      <h2>حفظ الطلبات</h2>
+      <p class="status-line"><i class="dot" id="stDot"></i><span id="stText"></span></p>
+    </div>
+    <button class="save" type="button" id="saveSettings">حفظ الإعدادات</button>
+    <p class="msg" id="setMsg" style="color:#2f6b34"></p>
+  </section>
+</div>
+
+<script src="/vendor/qrcode.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = n => (Math.round(n * 100) / 100).toLocaleString('en-US');
+  let PIN = ''; try { PIN = sessionStorage.getItem('ann-pin') || ''; } catch {}
+  let S = null, MENU = [], ORDERS = [], filter = 'all', seen = new Set(), firstLoad = true, sound = true, timer = null;
+  const H = () => ({ 'Content-Type': 'application/json', 'x-admin-pin': PIN });
+  const TYPE = { pickup: 'استلام', dinein: 'داخل المحل', delivery: 'توصيل' };
+  const WHEN = { asap: 'بأقرب وقت', '15': 'بعد ١٥ د', '30': 'بعد ٣٠ د', '45': 'بعد ٤٥ د', '60': 'بعد ساعة' };
+  const CAT = { featured: 'المشروبات المميزة', 'featured-sweet': 'الحلويات المميزة', cold: 'باردة', hot: 'ساخنة', drip: 'قهوة مقطّرة', sweet: 'حلويات' };
+
+  async function api(path, opt = {}) {
+    const r = await fetch(path, Object.assign({ headers: H(), cache: 'no-store' }, opt));
+    if (r.status === 401) { logout('رمز الإدارة غير صحيح.'); throw new Error('auth'); }
+    return r.json();
+  }
+
+  // ---------- login ----------
+  $('#loginForm').addEventListener('submit', async e => {
+    e.preventDefault(); PIN = $('#pin').value.trim();
+    try { const j = await api('/api/admin-settings'); if (j.settings) { try { sessionStorage.setItem('ann-pin', PIN); } catch {} start(j); } } catch {}
+  });
+  function logout(msg) {
+    PIN = ''; try { sessionStorage.removeItem('ann-pin'); } catch {}
+    clearTimeout(timer); $('#dash').hidden = true; $('#login').hidden = false; $('#loginMsg').textContent = msg || '';
+  }
+  $('#outBtn').onclick = () => logout('');
+
+  function start(j) {
+    S = j.settings; MENU = j.menu;
+    $('#login').hidden = true; $('#dash').hidden = false;
+    fillSettings(j); renderItems(); renderTables();
+    poll();
+  }
+
+  // ---------- tabs ----------
+  $$('.tabs [role=tab]').forEach(t => t.addEventListener('click', () => {
+    $$('.tabs [role=tab]').forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); $('#' + x.getAttribute('aria-controls')).hidden = !on; });
+  }));
+
+  // ---------- orders ----------
+  async function poll() {
+    clearTimeout(timer);
+    try {
+      const j = await api('/api/orders?hours=24');
+      ORDERS = j.orders || [];
+      $('#storageWarn').innerHTML = j.durable ? '' : '<p class="warn-box">الطلبات هنا مؤقتة لأن قاعدة البيانات غير مربوطة. اربط Upstash من الإعدادات عشان ما تضيع، وإلى ذلك الحين تابع الطلبات على واتساب.</p>';
+      const fresh = ORDERS.filter(o => o.status === 'new' && !seen.has(o.id));
+      if (!firstLoad && fresh.length) alertNew(fresh.length);
+      ORDERS.forEach(o => { if (o.status === 'new') seen.add(o.id); });
+      renderBoard(firstLoad ? new Set() : new Set(fresh.map(o => o.id)));
+      firstLoad = false;
+    } catch {}
+    timer = setTimeout(poll, 4000);
+  }
+  function ago(t) {
+    const m = Math.round((Date.now() - t) / 60000);
+    if (m < 1) return 'الحين'; if (m < 60) return `قبل ${m} د`;
+    return new Date(t).toLocaleTimeString('ar-SA-u-nu-latn', { hour: 'numeric', minute: '2-digit' });
+  }
+  function card(o, fresh) {
+    const chip = o.type === 'dinein' ? `طاولة ${o.table}` : o.type === 'pickup' ? `استلام • ${WHEN[o.when] || ''}` : 'توصيل';
+    const wa = o.phone ? `https://wa.me/966${o.phone.slice(1)}` : '';
+    const acts = {
+      new: `<button class="go" data-s="preparing">ابدأ التحضير</button><button class="ghost" data-s="cancelled">إلغاء</button>`,
+      preparing: `<button class="go" data-s="ready">جاهز</button><button class="ghost" data-s="new">رجوع</button>`,
+      ready: `<button data-s="done">تم التسليم</button><button class="ghost" data-s="preparing">رجوع</button>`,
+      awaiting_payment: `<button class="ghost" data-s="cancelled">إلغاء</button>`,
+      done: '', cancelled: ''
+    }[o.status];
+    return `<article class="ord${fresh ? ' fresh' : ''}${o.status === 'awaiting_payment' ? ' awaiting' : ''}" data-id="${o.id}">
+      <div class="o-h"><b>#${o.number}</b><span class="o-type t-${o.type}">${chip}</span><time>${ago(o.createdAt)}</time></div>
+      ${o.name || o.phone ? `<div class="o-who">${o.name ? `<span>${esc(o.name)}</span>` : ''}${o.phone ? `<a href="tel:${o.phone}" dir="ltr">${o.phone}</a>${wa ? `<a href="${wa}" target="_blank" rel="noopener">واتساب</a>` : ''}` : ''}</div>` : ''}
+      <ul class="o-items">${o.lines.map(l => `<li><b>${l.qty}×</b>${esc(l.name)}${l.variant ? ` (${esc(l.variant)})` : ''}${l.note ? `<small>${esc(l.note)}</small>` : ''}</li>`).join('')}</ul>
+      ${o.type === 'delivery' ? `<p class="o-addr">📍 ${esc(o.address)}${o.location ? ` — <a href="https://maps.google.com/?q=${o.location.lat},${o.location.lng}" target="_blank" rel="noopener">الخريطة</a>` : ''}</p>` : ''}
+      ${o.notes ? `<p class="o-notes">${esc(o.notes)}</p>` : ''}
+      <div class="o-f"><p class="sum">${money(o.total)} ر.س</p>${o.status === 'awaiting_payment' ? '<span class="pd n">بانتظار الدفع الإلكتروني</span>' : `<span class="pd ${o.paid ? 'y' : 'n'}">${o.paid ? 'مدفوع' : 'غير مدفوع'}</span>${!o.paid && o.pay === 'counter' ? '<button class="chip" data-paid="1" style="min-height:32px">تم الدفع</button>' : ''}`}</div>
+      ${acts ? `<div class="o-act">${acts}</div>` : ''}
+    </article>`;
+  }
+  function renderBoard(freshIds) {
+    const list = ORDERS.filter(o => filter === 'all' || o.type === filter);
+    const cols = [
+      ['c-new', 'جديد', list.filter(o => o.status === 'new' || o.status === 'awaiting_payment').sort((a, b) => a.createdAt - b.createdAt)],
+      ['c-prep', 'قيد التحضير', list.filter(o => o.status === 'preparing').sort((a, b) => a.createdAt - b.createdAt)],
+      ['c-ready', 'جاهز', list.filter(o => o.status === 'ready')],
+      ['c-done', 'تم التسليم', list.filter(o => o.status === 'done' || o.status === 'cancelled').slice(0, 15)]
+    ];
+    $('#board').innerHTML = cols.map(([c, t, arr]) => `<div class="col ${c}"><h2>${t} <span>${arr.filter(o => o.status !== 'cancelled').length}</span></h2>${arr.length ? arr.map(o => card(o, freshIds.has(o.id))).join('') : '<p class="none">ما فيه طلبات</p>'}</div>`).join('');
+    const n = ORDERS.filter(o => o.status === 'new').length;
+    document.title = n ? `(${n}) طلبات جديدة | آن` : 'لوحة طلبات آن';
+  }
+  $('#board').addEventListener('click', async e => {
+    const art = e.target.closest('.ord'); if (!art) return;
+    const b = e.target.closest('[data-s],[data-paid]'); if (!b) return;
+    if (b.dataset.s === 'cancelled' && !confirm('تلغي الطلب؟')) return;
+    b.disabled = true;
+    const body = b.dataset.paid ? { id: art.dataset.id, paid: true } : { id: art.dataset.id, status: b.dataset.s };
+    try { await api('/api/orders', { method: 'PATCH', body: JSON.stringify(body) }); } catch {}
+    poll();
+  });
+  $$('.filters .chip').forEach(c => c.addEventListener('click', () => {
+    filter = c.dataset.f; $$('.filters .chip').forEach(x => x.setAttribute('aria-pressed', x === c)); renderBoard(new Set());
+  }));
+
+  // sound
+  let ctx = null;
+  function chime() {
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      [0, .18, .36].forEach((t, i) => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = [880, 1175, 1568][i];
+        g.gain.setValueAtTime(0.0001, ctx.currentTime + t); g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + t + .02); g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + t + .35);
+        o.connect(g).connect(ctx.destination); o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + .4);
+      });
+    } catch {}
+  }
+  function alertNew(n) { if (sound) chime(); if (navigator.vibrate) try { navigator.vibrate([120, 60, 120]); } catch {} }
+  $('#soundBtn').onclick = e => { sound = !sound; e.currentTarget.setAttribute('aria-pressed', sound); if (sound) chime(); };
+
+  // ---------- open switch + settings ----------
+  function fillSettings(j) {
+    $('#openSw').checked = !!S.open; $('#openLbl').textContent = S.open ? 'نستقبل الطلبات' : 'الطلبات متوقفة';
+    ['dinein', 'pickup', 'delivery'].forEach(t => $('#ty-' + t).checked = !!S.types[t]);
+    $('#waIn').value = S.whatsapp || ''; $('#feeIn').value = S.deliveryFee || 0;
+    $('#payCounter').checked = S.payAtCounter !== false; $('#payOnline').checked = S.payOnline !== false && j.online;
+    $('#payOnline').disabled = !j.online;
+    $('#onlineHelp').textContent = j.online ? 'بوابة ميسّر مربوطة.' : 'لتفعيله: أضف مفاتيح ميسّر (MOYASAR_PUBLISHABLE_KEY و MOYASAR_SECRET_KEY) في إعدادات الاستضافة.';
+    $('#stDot').classList.toggle('ok', j.durable);
+    $('#stText').textContent = j.durable ? (j.storage === 'redis' ? 'الطلبات محفوظة في قاعدة البيانات (Upstash).' : 'الطلبات محفوظة في ملف على الخادم.') : 'غير دائم: اربط Upstash Redis (مجاني) عشان تنحفظ الطلبات.';
+    $('#tablesN').value = S.tables || 12;
+  }
+  async function saveSettings(patch, msg) {
+    try { const j = await api('/api/admin-settings', { method: 'PUT', body: JSON.stringify(patch) }); if (j.settings) { S = j.settings; if (msg) { $('#setMsg').textContent = msg; setTimeout(() => $('#setMsg').textContent = '', 2500); } } } catch {}
+  }
+  $('#openSw').addEventListener('change', e => { $('#openLbl').textContent = e.target.checked ? 'نستقبل الطلبات' : 'الطلبات متوقفة'; saveSettings({ open: e.target.checked }); });
+  $('#saveSettings').onclick = () => saveSettings({
+    types: { dinein: $('#ty-dinein').checked, pickup: $('#ty-pickup').checked, delivery: $('#ty-delivery').checked },
+    whatsapp: $('#waIn').value, deliveryFee: $('#feeIn').value,
+    payAtCounter: $('#payCounter').checked, payOnline: $('#payOnline').checked
+  }, 'تم الحفظ ✓');
+
+  // ---------- items ----------
+  function renderItems() {
+    let html = '', last = '';
+    for (const it of MENU) {
+      if (it.cat !== last) { html += `<h3>${CAT[it.cat] || it.cat}</h3>`; last = it.cat; }
+      const on = !S.soldOut.includes(it.id);
+      html += `<div class="row-sw"><span>${esc(it.name)}${it.variant ? ` (${esc(it.variant)})` : ''} <small style="color:var(--ink-2)">${it.price} ر.س</small></span><label class="switch light"><input type="checkbox" data-item="${it.id}" ${on ? 'checked' : ''} aria-label="${esc(it.name)} متوفر"><i></i></label></div>`;
+    }
+    $('#itemsGrid').innerHTML = html;
+  }
+  $('#itemsGrid').addEventListener('change', e => {
+    const id = e.target.dataset.item; if (!id) return;
+    const set = new Set(S.soldOut); e.target.checked ? set.delete(id) : set.add(id);
+    saveSettings({ soldOut: [...set] });
+  });
+
+  // ---------- table QR ----------
+  function renderTables() {
+    const n = Math.max(1, Math.min(300, parseInt($('#tablesN').value, 10) || 12));
+    let html = '';
+    for (let i = 1; i <= n; i++) {
+      let svg = '';
+      try { const q = qrcode(0, 'M'); q.addData(`${location.origin}/?table=${i}#menu`); q.make(); svg = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true }); } catch {}
+      html += `<div class="qr-card"><div class="qr-logo"><img src="/logo-white.webp" alt="" width="228" height="242"></div><div class="qr">${svg}</div><b>طاولة ${i}</b><small>امسح واطلب من مكانك</small></div>`;
+    }
+    $('#qrGrid').innerHTML = html;
+  }
+  $('#tablesN').addEventListener('change', () => { renderTables(); saveSettings({ tables: $('#tablesN').value }); });
+  $('#printBtn').onclick = () => { $('#t-tables').click(); window.print(); };
+
+  if (PIN) api('/api/admin-settings').then(j => j.settings && start(j)).catch(() => {});
+})();
+</script>
+</body>
+</html>

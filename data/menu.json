@@ -1,0 +1,387 @@
+{
+ "currency": "SAR",
+ "note": "أسعار تجريبية حتى الافتتاح",
+ "items": [
+  {
+   "id": "dotd-cold",
+   "name": "قهوة اليوم",
+   "cat": "featured",
+   "price": 14,
+   "variant": "بارد",
+   "featured": true
+  },
+  {
+   "id": "dotd-hot",
+   "name": "قهوة اليوم",
+   "cat": "featured",
+   "price": 12,
+   "variant": "حار",
+   "featured": true
+  },
+  {
+   "id": "v60-cold",
+   "name": "V60",
+   "cat": "featured",
+   "price": 20,
+   "variant": "بارد",
+   "featured": true
+  },
+  {
+   "id": "v60-hot",
+   "name": "V60",
+   "cat": "featured",
+   "price": 18,
+   "variant": "حار",
+   "featured": true
+  },
+  {
+   "id": "tea",
+   "name": "شاي",
+   "cat": "featured",
+   "price": 8,
+   "featured": true
+  },
+  {
+   "id": "hibiscus",
+   "name": "كركديه",
+   "cat": "featured",
+   "price": 12,
+   "featured": true
+  },
+  {
+   "id": "dolce",
+   "name": "دولتشي",
+   "cat": "featured-sweet",
+   "price": 16,
+   "featured": true
+  },
+  {
+   "id": "pecan",
+   "name": "بيكان",
+   "cat": "featured-sweet",
+   "price": 16,
+   "featured": true
+  },
+  {
+   "id": "mango",
+   "name": "مانقو",
+   "cat": "featured-sweet",
+   "price": 15,
+   "featured": true
+  },
+  {
+   "id": "latte-c",
+   "name": "لاتيه",
+   "cat": "cold",
+   "price": 16,
+   "variant": "بارد"
+  },
+  {
+   "id": "mocha-c",
+   "name": "موكا",
+   "cat": "cold",
+   "price": 18,
+   "variant": "بارد"
+  },
+  {
+   "id": "americano-c",
+   "name": "أمريكانو",
+   "cat": "cold",
+   "price": 14,
+   "variant": "بارد"
+  },
+  {
+   "id": "choc-c",
+   "name": "شوكولاتة باردة",
+   "cat": "cold",
+   "price": 16
+  },
+  {
+   "id": "spanish-c",
+   "name": "سبانش لاتيه",
+   "cat": "cold",
+   "price": 18,
+   "variant": "بارد"
+  },
+  {
+   "id": "pina",
+   "name": "بينا كولادا",
+   "cat": "cold",
+   "price": 15
+  },
+  {
+   "id": "orange",
+   "name": "برتقال",
+   "cat": "cold",
+   "price": 13
+  },
+  {
+   "id": "orange-pf",
+   "name": "برتقال باشن فروت",
+   "cat": "cold",
+   "price": 18
+  },
+  {
+   "id": "matcha-c",
+   "name": "ماتشا بارد",
+   "cat": "cold",
+   "price": 20
+  },
+  {
+   "id": "matcha-van",
+   "name": "ماتشا فانيلا",
+   "cat": "cold",
+   "price": 22
+  },
+  {
+   "id": "matcha-pink",
+   "name": "ماتشا وردي",
+   "cat": "cold",
+   "price": 23
+  },
+  {
+   "id": "mojito-straw",
+   "name": "موهيتو فراولة",
+   "cat": "cold",
+   "price": 18
+  },
+  {
+   "id": "mojito-lemon",
+   "name": "موهيتو ليمون نعناع",
+   "cat": "cold",
+   "price": 18
+  },
+  {
+   "id": "mojito-berry",
+   "name": "موهيتو توت أسود",
+   "cat": "cold",
+   "price": 18
+  },
+  {
+   "id": "red-straw",
+   "name": "رد فراولة",
+   "cat": "cold",
+   "price": 18
+  },
+  {
+   "id": "icetea",
+   "name": "آيس تي",
+   "cat": "cold",
+   "price": 14
+  },
+  {
+   "id": "taro",
+   "name": "التارو",
+   "cat": "cold",
+   "price": 15
+  },
+  {
+   "id": "latte-h",
+   "name": "لاتيه",
+   "cat": "hot",
+   "price": 15,
+   "variant": "حار"
+  },
+  {
+   "id": "mocha-h",
+   "name": "موكا",
+   "cat": "hot",
+   "price": 18,
+   "variant": "حار"
+  },
+  {
+   "id": "cortado",
+   "name": "كورتادو",
+   "cat": "hot",
+   "price": 14
+  },
+  {
+   "id": "espresso",
+   "name": "إسبريسو",
+   "cat": "hot",
+   "price": 10
+  },
+  {
+   "id": "americano-h",
+   "name": "أمريكانو",
+   "cat": "hot",
+   "price": 14,
+   "variant": "حار"
+  },
+  {
+   "id": "flatwhite",
+   "name": "فلات وايت",
+   "cat": "hot",
+   "price": 15
+  },
+  {
+   "id": "cappuccino",
+   "name": "كابتشينو",
+   "cat": "hot",
+   "price": 16
+  },
+  {
+   "id": "matcha-h",
+   "name": "ماتشا حار",
+   "cat": "hot",
+   "price": 20
+  },
+  {
+   "id": "spanish-h",
+   "name": "سبانش لاتيه",
+   "cat": "hot",
+   "price": 18,
+   "variant": "حار"
+  },
+  {
+   "id": "choc-h",
+   "name": "شوكولاتة ساخنة",
+   "cat": "hot",
+   "price": 16
+  },
+  {
+   "id": "arabic-cup",
+   "name": "كوب قهوة عربي",
+   "cat": "hot",
+   "price": 5
+  },
+  {
+   "id": "arabic-dallah",
+   "name": "دلة قهوة عربي",
+   "cat": "hot",
+   "price": 20
+  },
+  {
+   "id": "arabic-dallah-l",
+   "name": "دلة قهوة عربي كبيرة",
+   "cat": "hot",
+   "price": 25
+  },
+  {
+   "id": "drip-s",
+   "name": "قهوة مقطّرة صغير",
+   "cat": "drip",
+   "price": 19
+  },
+  {
+   "id": "drip-l",
+   "name": "قهوة مقطّرة كبير",
+   "cat": "drip",
+   "price": 21
+  },
+  {
+   "id": "infusion",
+   "name": "محصول فاخر (إنفيوجن)",
+   "cat": "drip",
+   "price": 21
+  },
+  {
+   "id": "dotd-s",
+   "name": "قهوة اليوم صغير",
+   "cat": "drip",
+   "price": 10
+  },
+  {
+   "id": "dotd-l",
+   "name": "قهوة اليوم كبير",
+   "cat": "drip",
+   "price": 12
+  },
+  {
+   "id": "granola",
+   "name": "جرانولا",
+   "cat": "sweet",
+   "price": 19
+  },
+  {
+   "id": "dabdoob",
+   "name": "دبدوب",
+   "cat": "sweet",
+   "price": 14
+  },
+  {
+   "id": "mangomousse",
+   "name": "مانجوموس",
+   "cat": "sweet",
+   "price": 15
+  },
+  {
+   "id": "cheese-berry",
+   "name": "تشيزكيك بيري",
+   "cat": "sweet",
+   "price": 16
+  },
+  {
+   "id": "cheese-pecan",
+   "name": "تشيزكيك بيكان",
+   "cat": "sweet",
+   "price": 16
+  },
+  {
+   "id": "cookies",
+   "name": "كوكيز",
+   "cat": "sweet",
+   "price": 10
+  },
+  {
+   "id": "cookie-cake",
+   "name": "كوكيز كيك",
+   "cat": "sweet",
+   "price": 12
+  },
+  {
+   "id": "tiramisu",
+   "name": "تراميسو",
+   "cat": "sweet",
+   "price": 18
+  },
+  {
+   "id": "cinnamon",
+   "name": "سينامون رول",
+   "cat": "sweet",
+   "price": 16
+  },
+  {
+   "id": "honeycake",
+   "name": "كيك العسل",
+   "cat": "sweet",
+   "price": 23
+  },
+  {
+   "id": "sansebastian",
+   "name": "سان سباستيان",
+   "cat": "sweet",
+   "price": 24
+  },
+  {
+   "id": "ft3",
+   "name": "فرنش توست ٣ قطع",
+   "cat": "sweet",
+   "price": 19
+  },
+  {
+   "id": "ft-fruit",
+   "name": "فرنش توست بالفواكه",
+   "cat": "sweet",
+   "price": 25
+  },
+  {
+   "id": "ft-brulee",
+   "name": "فرنش بورليه",
+   "cat": "sweet",
+   "price": 29
+  },
+  {
+   "id": "ft-snickers",
+   "name": "فرنش توست سنيكرز",
+   "cat": "sweet",
+   "price": 27
+  },
+  {
+   "id": "ft-pecan",
+   "name": "فرنش توست البيكان",
+   "cat": "sweet",
+   "price": 29
+  }
+ ]
+}
