@@ -198,7 +198,7 @@ body{background:var(--sand);min-height:100svh}
 
   async function api(path, opt = {}) {
     const r = await fetch(path, Object.assign({ headers: H(), cache: 'no-store' }, opt));
-    if (r.status === 401) { logout('رمز الإدارة غير صحيح.'); throw new Error('auth'); }
+    if (r.status === 401 || r.status === 429) { const j = await r.json().catch(() => ({})); logout(j.message || 'رمز الإدارة غير صحيح.'); throw new Error('auth'); }
     return r.json();
   }
 
