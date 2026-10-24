@@ -3,40 +3,24 @@
   "buildCommand": "npm run build",
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/public/index.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/public/admin.html"
-    },
-    {
-      "source": "/wallet",
-      "destination": "/public/wallet.html"
-    },
-    {
       "source": "/order",
-      "destination": "/public/order.html"
+      "destination": "/order.html"
     },
     {
       "source": "/orders",
-      "destination": "/public/orders.html"
+      "destination": "/orders.html"
     },
     {
-      "source": "/cart.js",
-      "destination": "/public/cart.js"
+      "source": "/wallet",
+      "destination": "/wallet.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
     },
     {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "destination": "/api/applepay-domain"
-    },
-    {
-      "source": "/styles.css",
-      "destination": "/public/styles.css"
-    },
-    {
-      "source": "/app.js",
-      "destination": "/public/app.js"
     }
   ],
   "headers": [
