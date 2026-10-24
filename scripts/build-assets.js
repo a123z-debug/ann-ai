@@ -10,7 +10,8 @@ const annMobile=path.join(publicDir,'ann-mobile.webp');
 const crops=[
   {file:'scene-wide.webp',left:0,top:1050,width:2048,height:1600,quality:86,resize:1800},
   {file:'scene-cup.webp',left:0,top:1930,width:1000,height:710,quality:88},
-  {file:'scene-door.webp',left:620,top:1650,width:880,height:850,quality:88}
+  {file:'scene-door.webp',left:620,top:1650,width:880,height:850,quality:88},
+  {file:'scene-tall.webp',left:0,top:1180,width:1320,height:1500,quality:84,resize:1000}
 ];
 
 async function build(){
