@@ -3,106 +3,353 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fbf3e4">
-<title>بطاقة آن coffee — أضف إلى Apple Wallet</title>
-<meta name="description" content="أضف بطاقة آن coffee إلى Apple Wallet وفيها باركود موقعنا.">
+<meta name="theme-color" content="#1a0c07">
+<title>بطاقة آن coffee | Apple Wallet</title>
+<meta name="description" content="أضف بطاقة آن coffee إلى Apple Wallet، وفيها باركود يفتح صفحتنا بمسحة واحدة.">
+<meta property="og:title" content="آن في جيبك">
+<meta property="og:description" content="بطاقة آن coffee في Apple Wallet، وفيها باركود موقعنا.">
+<meta property="og:image" content="/pass/strip@3x.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/pass/strip@2x.png">
 <style>
-:root{--burnt:#4b1f10;--espresso:#22100a;--gold:#e8bd72;--cream:#fbf3e4;--muted:#7b6155;--ease:cubic-bezier(.22,.8,.24,1)}
+:root{
+  --night:#1a0c07;   /* espresso after dark */
+  --roast:#4b1f10;   /* the brand brown, same as the pass */
+  --halo:#f2b366;    /* the backlight behind our sign */
+  --apricot:#f6d2a6; /* the sky at golden hour */
+  --stone:#f3e9dc;   /* the limestone facade */
+  --smoke:#c4ad98;   /* quiet text on dark */
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --spring:cubic-bezier(.18,1.25,.4,1);
+  --u:1;                 /* card scale: the card is 320px × --u */
+  --w:calc(320px * var(--u));
+}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--cream);color:var(--espresso);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-body{min-height:100svh;display:grid;justify-items:center;padding:calc(28px + env(safe-area-inset-top,0px)) 20px calc(36px + env(safe-area-inset-bottom,0px));
-  background:radial-gradient(900px 500px at 50% -10%,rgba(232,189,114,.35),transparent 70%),var(--cream)}
-main{width:min(440px,100%);display:grid;gap:22px;justify-items:center;text-align:center}
-.logo{width:132px;height:auto;filter:drop-shadow(0 12px 22px rgba(75,31,16,.25))}
-h1{margin:0;font-size:clamp(26px,7vw,34px);font-weight:900;color:var(--burnt)}
-.lead{margin:-10px 0 0;color:var(--muted);font-size:17px;line-height:1.9}
+html{background:var(--night);-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;min-height:100svh;color:var(--stone);background:transparent;
+  font-family:"Tajawal",system-ui,sans-serif;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--halo);outline-offset:4px;border-radius:12px}
 
-/* pass preview */
-.pass{width:min(330px,100%);border-radius:20px;overflow:hidden;color:#fff;text-align:start;background:var(--burnt);
-  box-shadow:0 30px 60px rgba(34,16,10,.35),0 2px 0 rgba(255,255,255,.12) inset;transform:rotate(-1.5deg);transition:transform .6s var(--ease)}
-.pass:hover{transform:rotate(0) translateY(-4px)}
-.pass-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
-.pass-head .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px}
-.pass-head .brand img{width:30px;height:auto}
-.pass-head small,.lbl{display:block;color:var(--gold);font-size:11px;font-weight:700}
-.pass-head b{font-size:14px}
-.strip{height:92px;background:url(/pass/strip@2x.png) center/cover}
-.pass-body{padding:14px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pass-body .wide{grid-column:1/-1}
-.pass-body strong{display:block;font-size:22px;font-weight:800;line-height:1.3}
-.pass-body span.v{font-size:14px;font-weight:600}
-.qr{margin:16px auto 18px;width:150px;background:#fff;border-radius:12px;padding:8px;text-align:center}
-.qr img{width:100%;height:auto;display:block}
-.qr small{display:block;color:#3b2a24;font-size:10px;font-weight:600;direction:ltr;margin-top:2px}
+/* ---------- the evening outside the shop ---------- */
+.sky{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:var(--night)}
+.sky::before{content:"";position:absolute;inset:-24px;background:url(/scene-wide.webp) 62% 0/cover no-repeat;filter:blur(6px) saturate(1.1) brightness(.72)}
+.sky::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(110% 55% at 70% 0%,rgba(246,210,166,.22),transparent 60%),
+    linear-gradient(180deg,rgba(26,12,7,.42) 0%,rgba(26,12,7,.86) 28%,var(--night) 56%)}
 
-/* actions */
-.wallet-btn{display:inline-flex;align-items:center;gap:12px;min-height:60px;padding:0 24px;border-radius:14px;border:2px solid #8e8e93;background:#000;color:#fff;
-  text-decoration:none;font-weight:600;cursor:pointer;transition:transform .2s var(--ease),opacity .2s;font-family:inherit}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  width:min(1120px,100%);margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 20px 0}
+.home img{height:40px;width:auto;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+.top .site{font-size:15px;font-weight:700;text-decoration:none;color:var(--stone);opacity:.85;padding:10px 4px}
+.top .site:hover{color:var(--stone)}
+
+/* ---------- layout ---------- */
+.wrap{width:min(1120px,100%);margin:0 auto;padding:0 20px calc(48px + env(safe-area-inset-bottom,0px));
+  display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"intro" "stage" "cta" "steps";
+  justify-items:center;text-align:center;row-gap:28px}
+.intro{grid-area:intro;max-width:30ch}
+.stage{grid-area:stage}
+.cta{grid-area:cta;display:grid;gap:14px;justify-items:center;width:100%;max-width:380px}
+.steps{grid-area:steps;width:100%;max-width:420px}
+
+h1{margin:12px 0 0;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:700;
+  font-size:clamp(46px,13vw,88px);line-height:1.05;letter-spacing:0;color:var(--stone);
+  text-shadow:0 0 34px rgba(242,179,102,.38),0 2px 0 rgba(0,0,0,.25)}
+.lead{margin:14px auto 0;color:var(--smoke);font-size:18px;line-height:1.85;max-width:32ch}
+
+/* ---------- stage + card ---------- */
+.stage{position:relative;display:grid;justify-items:center;padding:10px 0 0;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.halo{position:absolute;z-index:0;left:50%;top:44%;width:min(calc(var(--w) * 1.7),100vw);aspect-ratio:1;translate:-50% -50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(242,179,102,.42),rgba(242,179,102,.12) 55%,transparent);filter:blur(18px);
+  opacity:0;animation:halo 1.6s .35s var(--ease) forwards}
+.holder{position:relative;z-index:1;width:var(--w)}
+.rise{perspective:1100px;animation:rise 1.25s .25s var(--spring) backwards}
+.tilt{all:unset;display:block;width:100%;cursor:pointer;border-radius:calc(18px * var(--u));
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform .6s var(--ease)}
+.stage.is-live .tilt{transition:transform .08s linear}
+.tilt:focus-visible{outline:2px solid var(--halo);outline-offset:6px}
+.flip{position:relative;display:grid;transform-style:preserve-3d;transition:transform .85s var(--ease)}
+.flip.is-flipped{transform:rotateY(180deg)}
+.face{grid-area:1/1;position:relative;overflow:hidden;border-radius:calc(18px * var(--u));background:var(--roast);color:#fff;text-align:start;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  box-shadow:0 40px 70px -20px rgba(0,0,0,.75),0 16px 30px -12px rgba(75,31,16,.8),inset 0 1px 0 rgba(255,255,255,.14)}
+.face::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:overlay;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.back{transform:rotateY(180deg)}
+
+/* glare that follows the finger, and the one light sweep after the card arrives */
+.glare,.sweep{position:absolute;inset:0;pointer-events:none;z-index:3;border-radius:inherit}
+.glare{background:radial-gradient(circle at var(--gx,50%) var(--gy,30%),rgba(255,236,205,.34),rgba(255,236,205,.06) 32%,transparent 55%);
+  mix-blend-mode:soft-light;opacity:0;transition:opacity .4s}
+.stage.is-live .glare{opacity:1}
+.sweep{background:linear-gradient(105deg,transparent 35%,rgba(255,230,190,.32) 48%,rgba(255,255,255,.12) 52%,transparent 64%);
+  background-size:260% 100%;background-position:120% 0;mix-blend-mode:screen;animation:sweep 1.3s 1.25s var(--ease) both}
+
+.p-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(14px * var(--u)) calc(16px * var(--u)) calc(12px * var(--u))}
+.brand{display:flex;align-items:center;gap:calc(8px * var(--u));font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:calc(19px * var(--u));line-height:1}
+.brand img{height:calc(30px * var(--u));width:auto}
+.fld{display:block;min-width:0}
+.fld .l{display:block;color:var(--halo);font-size:calc(11px * var(--u));font-weight:700;line-height:1.5}
+.fld .v{display:block;font-size:calc(15px * var(--u));font-weight:700;line-height:1.35}
+.p-head .fld{text-align:end}
+.strip{position:relative;aspect-ratio:375/123;background:#2a130b url(/pass/strip@2x.png) center/cover}
+.strip .fld{position:absolute;inset-inline-start:calc(16px * var(--u));top:calc(12px * var(--u))}
+.strip .fld .v{font-size:calc(26px * var(--u));font-weight:800;text-shadow:0 2px 12px rgba(0,0,0,.55)}
+.p-row{display:flex;justify-content:space-between;gap:12px;padding:calc(12px * var(--u)) calc(16px * var(--u)) 0}
+.p-row .fld:last-child{text-align:end}
+.code{margin:calc(16px * var(--u)) auto calc(38px * var(--u));width:calc(146px * var(--u));padding:calc(8px * var(--u)) calc(8px * var(--u)) calc(4px * var(--u));background:#fff;border-radius:calc(10px * var(--u));color:#2b1a12;text-align:center}
+.code img{width:100%;height:auto}
+.code small{display:block;direction:ltr;font-size:calc(9.5px * var(--u));font-weight:700;line-height:1.9;letter-spacing:.01em}
+
+.back{padding:calc(18px * var(--u)) calc(18px * var(--u))}
+.back h3{margin:0 0 calc(6px * var(--u));font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:calc(20px * var(--u))}
+.back dl{margin:0}
+.back dl div{padding:calc(12px * var(--u)) 0;border-bottom:1px solid rgba(255,255,255,.12)}
+.back dt{color:var(--halo);font-size:calc(12px * var(--u));font-weight:700}
+.back dd{margin:2px 0 0;font-size:calc(15px * var(--u));line-height:1.7}
+.back dd.ltr{direction:ltr;text-align:end}
+
+/* the wallet the card comes out of */
+.pocket{position:absolute;z-index:2;left:50%;translate:-50% 0;top:calc(100% - 20px * var(--u));width:calc(var(--w) + 30px);height:calc(64px * var(--u));display:grid;place-items:center;padding-top:calc(6px * var(--u));
+  border-radius:14px 14px 22px 22px;pointer-events:none;
+  background:linear-gradient(180deg,#2e160d 0%,#1f0e08 60%,#170a05 100%);
+  box-shadow:0 -1px 0 rgba(255,214,160,.16) inset,0 -14px 22px -10px rgba(0,0,0,.6),0 30px 50px -20px rgba(0,0,0,.8)}
+.pocket::before{content:"";position:absolute;inset:8px 10px 10px;border:1.5px dashed rgba(242,179,102,.28);border-radius:9px 9px 16px 16px}
+.pocket::after{content:"";position:absolute;left:12%;right:12%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,220,170,.35),transparent)}
+.hint{position:relative;z-index:1;margin:0;font-size:13px;font-weight:500;color:rgba(242,179,102,.75);opacity:0;animation:fade .6s 2.2s var(--ease) forwards}
+.holder{margin-bottom:calc(64px * var(--u) - 20px * var(--u))}
+
+/* ---------- actions ---------- */
+.wallet-btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(300px,100%);min-height:58px;padding:0 22px;border-radius:12px;
+  border:1px solid #a6a6a6;background:#000;color:#fff;text-decoration:none;font-family:inherit;cursor:pointer;
+  box-shadow:0 18px 40px -16px rgba(0,0,0,.9);transition:transform .2s var(--ease),opacity .3s,box-shadow .3s}
+.wallet-btn:hover{box-shadow:0 18px 44px -12px rgba(242,179,102,.35)}
 .wallet-btn:active{transform:scale(.97)}
-.wallet-btn svg{width:42px;height:34px;flex:none}
-.wallet-btn span{display:grid;text-align:start;line-height:1.15}
-.wallet-btn small{font-size:14px;font-weight:500}
-.wallet-btn b{font-size:22px;font-weight:600;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;direction:ltr}
-.wallet-btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
-.status{margin:0;font-size:15px;line-height:1.9;color:var(--muted);min-height:1.9em}
-.status.warn{color:#8a4b1c;background:rgba(200,135,63,.14);border:1px solid rgba(200,135,63,.35);border-radius:14px;padding:10px 14px}
-.links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.links a{padding:11px 18px;border-radius:999px;border:1px solid rgba(75,31,16,.25);color:var(--burnt);font-weight:700;text-decoration:none;font-size:15px;background:rgba(255,255,255,.6)}
-.links a:hover{background:#fff}
-:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}.pass{transform:none}}
+.wallet-btn svg{width:38px;height:30px;flex:none}
+.wallet-btn span{display:grid;text-align:start;line-height:1.1}
+.wallet-btn small{font-size:13px;font-weight:500;opacity:.92}
+.wallet-btn b{font-size:21px;font-weight:600;letter-spacing:-.01em;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;direction:ltr}
+.wallet-btn[aria-disabled="true"]{opacity:.38;cursor:not-allowed;box-shadow:none}
+.status{margin:0;min-height:1.8em;font-size:15px;line-height:1.8;color:var(--smoke);max-width:36ch;text-wrap:balance}
+.status.warn{color:var(--apricot)}
+.status.warn::before{content:"";display:inline-block;width:7px;height:7px;margin-inline-end:8px;border-radius:50%;background:var(--halo);box-shadow:0 0 10px var(--halo);vertical-align:middle}
+.save{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:999px;border:1px solid rgba(243,233,220,.26);
+  font-size:15px;font-weight:700;text-decoration:none;color:var(--stone);background:rgba(243,233,220,.04);transition:background .2s,border-color .2s}
+.save:hover{background:rgba(243,233,220,.1);border-color:rgba(243,233,220,.45)}
+.save svg{width:17px;height:17px}
+.cta.is-waiting .save{border-color:var(--halo);color:var(--night);background:var(--halo)}
+
+/* ---------- how it works ---------- */
+.steps{text-align:start;padding-top:22px;border-top:1px solid rgba(243,233,220,.1)}
+.steps h2{margin:0 0 6px;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:22px;color:var(--stone)}
+.steps ol{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;padding:12px 0;color:var(--smoke);font-size:16px;line-height:1.75}
+.steps li::before{content:counter(s,arabic-indic);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(242,179,102,.55);color:var(--halo);font-family:"Reem Kufi",sans-serif;font-size:16px;font-weight:600}
+.steps li b{color:var(--stone);font-weight:700}
+.note{margin:6px 0 0;font-size:14px;color:rgba(196,173,152,.8)}
+
+/* ---------- motion ---------- */
+@keyframes rise{
+  from{transform:translateY(72%) scale(.96);clip-path:inset(-40% -40% 72% -40%)}
+  to{transform:none;clip-path:inset(-40% -40% -40% -40%)}}
+@keyframes tuck{
+  from{transform:none;clip-path:inset(-40% -40% -40% -40%)}
+  to{transform:translateY(72%) scale(.96);clip-path:inset(-40% -40% 72% -40%)}}
+@keyframes halo{to{opacity:1}}
+@keyframes sweep{to{background-position:-60% 0}}
+@keyframes fade{to{opacity:1}}
+.rise.is-tucking{animation:tuck .6s cubic-bezier(.5,0,.75,0) both}
+.rise.is-returning{animation:rise 1s var(--spring) backwards}
+
+/* ---------- desktop ---------- */
+@media (min-width:900px){
+  .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"intro stage" "cta stage" "steps stage";
+    justify-items:start;text-align:start;column-gap:56px;row-gap:26px;padding-top:40px;align-content:start}
+  :root{--u:1.14}
+  .intro{max-width:none;align-self:end;padding-top:40px}
+  .lead{margin-inline:0}
+  .cta{justify-items:start}
+  .stage{justify-self:center;align-self:center;padding-top:30px}
+  .steps{max-width:440px}
+}
+@media (max-width:420px){:root{--u:.9}}
+@media (max-width:380px){:root{--u:.86}}
+@media (max-width:340px){:root{--u:.84}}
+@media (prefers-reduced-motion:reduce){
+  .rise,.rise.is-tucking,.rise.is-returning,.halo,.sweep,.hint{animation:none!important;opacity:1}
+  .sweep{display:none}
+  .tilt,.flip{transition:none}
+}
 </style>
 </head>
 <body>
-<main>
-  <img class="logo" src="/logo.webp" alt="آن coffee" width="220" height="169">
-  <h1>بطاقة آن coffee</h1>
-  <p class="lead">أضف بطاقتنا إلى محفظتك، وفيها باركود موقعنا يوصلك لصفحتنا بمسحة وحدة.</p>
+<div class="sky" aria-hidden="true"></div>
 
-  <section class="pass" aria-label="معاينة البطاقة">
-    <div class="pass-head">
-      <div class="brand"><img src="/logo-white.webp" alt="" width="30" height="28"> آن coffee</div>
-      <div><small>الحالة</small><b>قريبًا الافتتاح</b></div>
-    </div>
-    <div class="strip" aria-hidden="true"></div>
-    <div class="pass-body">
-      <div class="wide"><span class="lbl">مرحبًا</span><strong>ضيفنا الكريم</strong></div>
-      <div><span class="lbl">آن coffee</span><span class="v">قهوة مختصة وأكثر</span></div>
-      <div><span class="lbl">الموقع</span><span class="v">شمال محايل عسير</span></div>
-    </div>
-    <div class="qr"><img src="/qr.svg" alt="باركود موقع آن coffee" width="134" height="134"><small>ann-ai-lac.vercel.app</small></div>
+<header class="top">
+  <a class="home" href="/" aria-label="آن coffee، الصفحة الرئيسية"><img src="/pass/logo@3x.png" alt="" width="182" height="132"></a>
+  <a class="site" href="/">زيارة الموقع</a>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <h1>آن في جيبك</h1>
+    <p class="lead">بطاقة آن coffee في محفظة iPhone. فيها باركود يفتح صفحتنا ومنيونا بمسحة واحدة.</p>
   </section>
 
-  <a id="add" class="wallet-btn" href="/api/pass" aria-disabled="true">
-    <svg viewBox="0 0 42 34" aria-hidden="true"><rect x="2" y="2" width="38" height="30" rx="5" fill="#d9d4c7"/><rect x="2" y="2" width="38" height="8" rx="4" fill="#4a90d9"/><rect x="2" y="8" width="38" height="8" fill="#f4b73f"/><rect x="2" y="14" width="38" height="8" fill="#62b94f"/><path d="M2 20h38v7a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5z" fill="#e5e0d3"/><path d="M2 20h14l2 4h6l2-4h14v-3H2z" fill="#ec6a5e"/></svg>
-    <span><small>أضف إلى</small><b>Apple Wallet</b></span>
-  </a>
-  <p id="status" class="status" role="status">جاري التحقق من جاهزية البطاقة…</p>
+  <section class="stage" id="stage" aria-label="معاينة البطاقة">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="holder">
+      <div class="rise" id="rise">
+        <button class="tilt" id="card" type="button" aria-pressed="false" aria-label="بطاقة آن coffee، اضغط لقلبها">
+          <div class="flip" id="flip">
+            <div class="face front">
+              <div class="p-head">
+                <div class="brand"><img src="/pass/logo@2x.png" alt="" width="122" height="88">آن coffee</div>
+                <div class="fld"><span class="l">الحالة</span><span class="v">قريبًا الافتتاح</span></div>
+              </div>
+              <div class="strip">
+                <div class="fld"><span class="l">مرحبًا</span><span class="v">ضيفنا الكريم</span></div>
+              </div>
+              <div class="p-row">
+                <div class="fld"><span class="l">آن coffee</span><span class="v">قهوة مختصة وأكثر</span></div>
+                <div class="fld"><span class="l">الموقع</span><span class="v">شمال محايل عسير</span></div>
+              </div>
+              <div class="code"><img src="/qr.svg" alt="باركود موقع آن coffee" width="134" height="134"><small>ann-ai-lac.vercel.app</small></div>
+              <span class="glare" aria-hidden="true"></span>
+              <span class="sweep" aria-hidden="true"></span>
+            </div>
+            <div class="face back" aria-hidden="true">
+              <h3>تفاصيل البطاقة</h3>
+              <dl>
+                <div><dt>موقعنا</dt><dd class="ltr">ann-ai-lac.vercel.app</dd></div>
+                <div><dt>عن آن</dt><dd>قهوة مختصة وأكثر في شمال محايل عسير. امسح الباركود لزيارة صفحتنا.</dd></div>
+                <div><dt>الافتتاح</dt><dd>قريبًا، وبنعلن الموعد في صفحتنا.</dd></div>
+              </dl>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="pocket"><p class="hint" id="hint">اضغط البطاقة لتشوف ظهرها</p></div>
+    </div>
+  </section>
 
-  <div class="links">
-    <a href="/qr.png" download="ann-coffee-qr.png">تحميل الباركود</a>
-    <a href="/">العودة للموقع</a>
-  </div>
+  <section class="cta" id="cta">
+    <a id="add" class="wallet-btn" href="/api/pass" aria-disabled="true" aria-describedby="status">
+      <svg viewBox="0 0 42 34" aria-hidden="true"><rect x="1" y="1" width="40" height="32" rx="6" fill="#e9e5dc"/><rect x="1" y="1" width="40" height="9" rx="5" fill="#3f8fd8"/><rect x="1" y="7.5" width="40" height="8" fill="#f5b83d"/><rect x="1" y="13.5" width="40" height="8" fill="#5bbf4f"/><path d="M1 19.5h40V27a6 6 0 0 1-6 6H7a6 6 0 0 1-6-6z" fill="#efebe3"/><path d="M1 19.5h14.5l2 4.2h7l2-4.2H41v-2.6H1z" fill="#ee6a5c"/></svg>
+      <span><small>أضف إلى</small><b>Apple Wallet</b></span>
+    </a>
+    <p id="status" class="status" role="status">نتأكد من جاهزية البطاقة…</p>
+    <a class="save" href="/qr.png" download="ann-coffee-qr.png">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
+      حفظ الباركود كصورة
+    </a>
+  </section>
+
+  <section class="steps" aria-labelledby="how">
+    <h2 id="how">كيف تضيفها</h2>
+    <ol>
+      <li><span>اضغط <b>أضف إلى Apple Wallet</b> من جوال iPhone.</span></li>
+      <li><span>تطلع لك البطاقة، اضغط <b>إضافة</b> أعلى الشاشة.</span></li>
+      <li><span>افتح تطبيق <b>المحفظة</b> وقت ما تبي، وامسح الباركود لصفحتنا.</span></li>
+    </ol>
+    <p class="note">على أندرويد؟ احفظ الباركود كصورة وافتحه وقت الحاجة.</p>
+  </section>
 </main>
+
 <script>
-(async () => {
+(() => {
+  const stage = document.getElementById('stage');
+  const card = document.getElementById('card');
+  const flip = document.getElementById('flip');
+  const rise = document.getElementById('rise');
   const btn = document.getElementById('add');
   const status = document.getElementById('status');
-  const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
-  try {
-    const r = await fetch('/api/pass?check=1', { cache: 'no-store' });
-    const j = await r.json();
-    if (j.ready) {
-      btn.removeAttribute('aria-disabled');
-      status.textContent = isApple ? 'اضغط الزر وبتنضاف البطاقة لمحفظتك.' : 'البطاقة تعمل على أجهزة iPhone وApple Watch.';
-      return;
-    }
-  } catch (e) {}
-  status.classList.add('warn');
-  status.textContent = 'إضافة البطاقة لمحفظة Apple تتفعّل قريبًا. الباركود جاهز للتحميل بالأسفل.';
+  const cta = document.getElementById('cta');
+  const hint = document.getElementById('hint');
+  const back = flip.querySelector('.back');
+  const front = flip.querySelector('.front');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ua = navigator.userAgent;
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  let ready = false;
+
+  /* tilt toward the finger or cursor */
+  if (!still) {
+    let raf = 0;
+    stage.addEventListener('pointermove', e => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = card.getBoundingClientRect();
+        const x = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
+        const y = Math.min(Math.max((e.clientY - r.top) / r.height, 0), 1);
+        stage.classList.add('is-live');
+        card.style.setProperty('--ry', ((x - .5) * 16).toFixed(2) + 'deg');
+        card.style.setProperty('--rx', ((.5 - y) * 12).toFixed(2) + 'deg');
+        card.style.setProperty('--gx', (x * 100).toFixed(1) + '%');
+        card.style.setProperty('--gy', (y * 100).toFixed(1) + '%');
+      });
+    });
+    const rest = () => {
+      stage.classList.remove('is-live');
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+    };
+    stage.addEventListener('pointerleave', rest);
+    stage.addEventListener('pointercancel', rest);
+    stage.addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') rest(); });
+  }
+
+  /* flip to see the back */
+  card.addEventListener('click', () => {
+    const on = !flip.classList.contains('is-flipped');
+    flip.classList.toggle('is-flipped', on);
+    card.setAttribute('aria-pressed', on ? 'true' : 'false');
+    back.setAttribute('aria-hidden', on ? 'false' : 'true');
+    front.setAttribute('aria-hidden', on ? 'true' : 'false');
+    hint.textContent = on ? 'اضغط البطاقة للرجوع' : 'اضغط البطاقة لتشوف ظهرها';
+  });
+
+  /* add to wallet: the card slips into the pocket, then the pass downloads */
+  btn.addEventListener('click', e => {
+    if (!ready) { e.preventDefault(); return; }
+    if (still) return;
+    e.preventDefault();
+    if (flip.classList.contains('is-flipped')) card.click();
+    rise.classList.remove('is-returning');
+    rise.classList.add('is-tucking');
+    setTimeout(() => { location.href = btn.href; }, 560);
+    setTimeout(() => {
+      rise.classList.remove('is-tucking');
+      rise.classList.add('is-returning');
+      status.classList.remove('warn');
+      status.textContent = 'إذا طلعت لك البطاقة، اضغط «إضافة» أعلى الشاشة.';
+    }, 1700);
+  });
+
+  (async () => {
+    try {
+      const r = await fetch('/api/pass?check=1', { cache: 'no-store' });
+      const j = await r.json();
+      if (j.ready) {
+        ready = true;
+        btn.removeAttribute('aria-disabled');
+        status.textContent = isApple
+          ? 'تنضاف لمحفظتك بضغطة، وتشتغل على iPhone وApple Watch.'
+          : isAndroid ? 'البطاقة لأجهزة iPhone. على أندرويد احفظ الباركود كصورة.' : 'افتح الصفحة من جوال iPhone لإضافة البطاقة.';
+        return;
+      }
+    } catch (err) {}
+    cta.classList.add('is-waiting');
+    status.classList.add('warn');
+    status.textContent = 'الإضافة للمحفظة تتفعّل قريبًا، واحفظ الباركود الحين.';
+  })();
 })();
 </script>
 </body>
