@@ -2,22 +2,45 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run build",
   "rewrites": [
-    { "source": "/", "destination": "/public/index.html" },
-    { "source": "/admin", "destination": "/public/admin.html" },
-    { "source": "/styles.css", "destination": "/public/styles.css" },
-    { "source": "/app.js", "destination": "/public/app.js" }
+    {
+      "source": "/",
+      "destination": "/public/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/public/admin.html"
+    },
+    {
+      "source": "/wallet",
+      "destination": "/public/wallet.html"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/public/styles.css"
+    },
+    {
+      "source": "/app.js",
+      "destination": "/public/app.js"
+    }
   ],
   "headers": [
     {
       "source": "/hero-8k.avif",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ],
   "functions": {
     "api/*.js": {
       "maxDuration": 10
+    },
+    "api/pass.js": {
+      "maxDuration": 10,
+      "includeFiles": "public/pass/**"
     }
   }
 }

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fbf3e4">
+<title>بطاقة آن coffee — أضف إلى Apple Wallet</title>
+<meta name="description" content="أضف بطاقة آن coffee إلى Apple Wallet وفيها باركود موقعنا.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--burnt:#4b1f10;--espresso:#22100a;--gold:#e8bd72;--cream:#fbf3e4;--muted:#7b6155;--ease:cubic-bezier(.22,.8,.24,1)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--cream);color:var(--espresso);font-family:"Tajawal",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100svh;display:grid;justify-items:center;padding:calc(28px + env(safe-area-inset-top,0px)) 20px calc(36px + env(safe-area-inset-bottom,0px));
+  background:radial-gradient(900px 500px at 50% -10%,rgba(232,189,114,.35),transparent 70%),var(--cream)}
+main{width:min(440px,100%);display:grid;gap:22px;justify-items:center;text-align:center}
+.logo{width:132px;height:auto;filter:drop-shadow(0 12px 22px rgba(75,31,16,.25))}
+h1{margin:0;font-size:clamp(26px,7vw,34px);font-weight:900;color:var(--burnt)}
+.lead{margin:-10px 0 0;color:var(--muted);font-size:17px;line-height:1.9}
+
+/* pass preview */
+.pass{width:min(330px,100%);border-radius:20px;overflow:hidden;color:#fff;text-align:start;background:var(--burnt);
+  box-shadow:0 30px 60px rgba(34,16,10,.35),0 2px 0 rgba(255,255,255,.12) inset;transform:rotate(-1.5deg);transition:transform .6s var(--ease)}
+.pass:hover{transform:rotate(0) translateY(-4px)}
+.pass-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
+.pass-head .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:17px}
+.pass-head .brand img{width:30px;height:auto}
+.pass-head small,.lbl{display:block;color:var(--gold);font-size:11px;font-weight:700}
+.pass-head b{font-size:14px}
+.strip{height:92px;background:url(/pass/strip@2x.png) center/cover}
+.pass-body{padding:14px 16px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pass-body .wide{grid-column:1/-1}
+.pass-body strong{display:block;font-size:22px;font-weight:800;line-height:1.3}
+.pass-body span.v{font-size:14px;font-weight:600}
+.qr{margin:16px auto 18px;width:150px;background:#fff;border-radius:12px;padding:8px;text-align:center}
+.qr img{width:100%;height:auto;display:block}
+.qr small{display:block;color:#3b2a24;font-size:10px;font-weight:600;direction:ltr;margin-top:2px}
+
+/* actions */
+.wallet-btn{display:inline-flex;align-items:center;gap:12px;min-height:60px;padding:0 24px;border-radius:14px;border:2px solid #8e8e93;background:#000;color:#fff;
+  text-decoration:none;font-weight:600;cursor:pointer;transition:transform .2s var(--ease),opacity .2s;font-family:inherit}
+.wallet-btn:active{transform:scale(.97)}
+.wallet-btn svg{width:42px;height:34px;flex:none}
+.wallet-btn span{display:grid;text-align:start;line-height:1.15}
+.wallet-btn small{font-size:14px;font-weight:500}
+.wallet-btn b{font-size:22px;font-weight:600;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;direction:ltr}
+.wallet-btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.status{margin:0;font-size:15px;line-height:1.9;color:var(--muted);min-height:1.9em}
+.status.warn{color:#8a4b1c;background:rgba(200,135,63,.14);border:1px solid rgba(200,135,63,.35);border-radius:14px;padding:10px 14px}
+.links{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.links a{padding:11px 18px;border-radius:999px;border:1px solid rgba(75,31,16,.25);color:var(--burnt);font-weight:700;text-decoration:none;font-size:15px;background:rgba(255,255,255,.6)}
+.links a:hover{background:#fff}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.pass{transform:none}}
+</style>
+</head>
+<body>
+<main>
+  <img class="logo" src="/logo.webp" alt="آن coffee" width="220" height="169">
+  <h1>بطاقة آن coffee</h1>
+  <p class="lead">أضف بطاقتنا إلى محفظتك، وفيها باركود موقعنا يوصلك لصفحتنا بمسحة وحدة.</p>
+
+  <section class="pass" aria-label="معاينة البطاقة">
+    <div class="pass-head">
+      <div class="brand"><img src="/logo-white.webp" alt="" width="30" height="28"> آن coffee</div>
+      <div><small>الحالة</small><b>قريبًا الافتتاح</b></div>
+    </div>
+    <div class="strip" aria-hidden="true"></div>
+    <div class="pass-body">
+      <div class="wide"><span class="lbl">مرحبًا</span><strong>ضيفنا الكريم</strong></div>
+      <div><span class="lbl">آن coffee</span><span class="v">قهوة مختصة وأكثر</span></div>
+      <div><span class="lbl">الموقع</span><span class="v">شمال محايل عسير</span></div>
+    </div>
+    <div class="qr"><img src="/qr.svg" alt="باركود موقع آن coffee" width="134" height="134"><small>ann-ai-lac.vercel.app</small></div>
+  </section>
+
+  <a id="add" class="wallet-btn" href="/api/pass" aria-disabled="true">
+    <svg viewBox="0 0 42 34" aria-hidden="true"><rect x="2" y="2" width="38" height="30" rx="5" fill="#d9d4c7"/><rect x="2" y="2" width="38" height="8" rx="4" fill="#4a90d9"/><rect x="2" y="8" width="38" height="8" fill="#f4b73f"/><rect x="2" y="14" width="38" height="8" fill="#62b94f"/><path d="M2 20h38v7a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5z" fill="#e5e0d3"/><path d="M2 20h14l2 4h6l2-4h14v-3H2z" fill="#ec6a5e"/></svg>
+    <span><small>أضف إلى</small><b>Apple Wallet</b></span>
+  </a>
+  <p id="status" class="status" role="status">جاري التحقق من جاهزية البطاقة…</p>
+
+  <div class="links">
+    <a href="/qr.png" download="ann-coffee-qr.png">تحميل الباركود</a>
+    <a href="/">العودة للموقع</a>
+  </div>
+</main>
+<script>
+(async () => {
+  const btn = document.getElementById('add');
+  const status = document.getElementById('status');
+  const isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent);
+  try {
+    const r = await fetch('/api/pass?check=1', { cache: 'no-store' });
+    const j = await r.json();
+    if (j.ready) {
+      btn.removeAttribute('aria-disabled');
+      status.textContent = isApple ? 'اضغط الزر وبتنضاف البطاقة لمحفظتك.' : 'البطاقة تعمل على أجهزة iPhone وApple Watch.';
+      return;
+    }
+  } catch (e) {}
+  status.classList.add('warn');
+  status.textContent = 'إضافة البطاقة لمحفظة Apple تتفعّل قريبًا. الباركود جاهز للتحميل بالأسفل.';
+})();
+</script>
+</body>
+</html>

@@ -5,6 +5,7 @@ const PUBLIC=path.join(__dirname,'public');
 const KB=path.join(__dirname,'data','knowledge.json');
 const ADMIN_PIN=process.env.ADMIN_PIN||'change-me';
 
+const {buildPass,missingConfig}=require('./lib/pass');
 const readKB=()=>JSON.parse(fs.readFileSync(KB,'utf8'));
 const send=(res,code,obj)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj));};
 const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>1024*1024)reject(new Error('too_large'));});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(e)}});req.on('error',reject);});
@@ -32,6 +33,7 @@ function serve(req,res){
   let p=decodeURIComponent(req.url.split('?')[0]);
   if(p==='/') p='/index.html';
   if(p==='/admin') p='/admin.html';
+  if(p==='/wallet') p='/wallet.html';
   const f=path.normalize(path.join(PUBLIC,p));
   if(!f.startsWith(PUBLIC)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
   const ext=path.extname(f);
@@ -44,6 +46,17 @@ function serve(req,res){
 http.createServer(async(req,res)=>{
   try{
     if(req.method==='GET'&&req.url.startsWith('/health')) return send(res,200,{ok:true,service:'ann-ai'});
+    if(req.method==='GET'&&req.url.startsWith('/api/pass')){
+      if(/[?&]check=1/.test(req.url)) return send(res,200,{ready:missingConfig().length===0});
+      try{
+        const buf=buildPass();
+        res.writeHead(200,{'Content-Type':'application/vnd.apple.pkpass','Content-Disposition':'attachment; filename="ann-coffee.pkpass"','Cache-Control':'no-store'});
+        return res.end(buf);
+      }catch(e){
+        if(e.code==='NOT_CONFIGURED') return send(res,503,{error:'wallet_not_configured'});
+        return send(res,500,{error:'pass_build_failed'});
+      }
+    }
     if(req.method==='GET'&&req.url.startsWith('/api/knowledge')){
       if(!auth(req)) return send(res,401,{error:'unauthorized'});
       return send(res,200,readKB());
