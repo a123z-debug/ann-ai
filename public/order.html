@@ -203,7 +203,7 @@ body{background:linear-gradient(180deg,var(--roast) 0,var(--roast) 260px,var(--s
   async function load(first) {
     try {
       const r = await fetch('/api/order?id=' + encodeURIComponent(id), { cache: 'no-store' });
-      if (r.ok) { order = (await r.json()).order; stored = true; put('ann-order-' + id, Object.assign({}, order, { stored: true })); }
+      if (r.ok) { const j = await r.json(); order = j.order; stored = j.stored !== false; put('ann-order-' + id, Object.assign({}, order, { stored })); }
       else if (first) {
         const local = get('ann-order-' + id);
         if (!local) { app.innerHTML = '<div class="o-card o-hero"><h1>ما لقينا الطلب</h1><p>تأكد من الرابط أو اطلب من جديد.</p><a class="btn btn-roast" href="/#menu">القائمة</a></div>'; return; }
