@@ -9,11 +9,13 @@
 <meta property="og:title" content="آن في جيبك">
 <meta property="og:description" content="بطاقة آن coffee في Apple Wallet، وفيها باركود موقعنا.">
 <meta property="og:image" content="/pass/strip@3x.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" as="image" href="/pass/strip@2x.png">
 <style>
+@font-face{font-family:"Zain";src:url(/fonts/zain-regular.woff) format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Zain";src:url(/fonts/zain-bold.woff) format("woff");font-weight:700;font-display:swap}
+@font-face{font-family:"Zain";src:url(/fonts/zain-extrabold.woff) format("woff");font-weight:800;font-display:swap}
+@font-face{font-family:"Zain";src:url(/fonts/zain-black.woff) format("woff");font-weight:900;font-display:swap}
 :root{
   --night:#1a0c07;   /* espresso after dark */
   --roast:#4b1f10;   /* the brand brown, same as the pass */
@@ -29,7 +31,7 @@
 *{box-sizing:border-box}
 html{background:var(--night);-webkit-text-size-adjust:100%;overflow-x:clip}
 body{margin:0;min-height:100svh;color:var(--stone);background:transparent;
-  font-family:"Tajawal",system-ui,sans-serif;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:clip}
+  font-family:"Zain",system-ui,sans-serif;font-size:17px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:clip}
 img{display:block;max-width:100%}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--halo);outline-offset:4px;border-radius:12px}
@@ -56,7 +58,7 @@ a{color:inherit}
 .cta{grid-area:cta;display:grid;gap:14px;justify-items:center;width:100%;max-width:380px}
 .steps{grid-area:steps;width:100%;max-width:420px}
 
-h1{margin:12px 0 0;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:700;
+h1{margin:12px 0 0;font-family:"Zain",sans-serif;font-weight:900;
   font-size:clamp(46px,13vw,88px);line-height:1.05;letter-spacing:0;color:var(--stone);
   text-shadow:0 0 34px rgba(242,179,102,.38),0 2px 0 rgba(0,0,0,.25)}
 .lead{margin:14px auto 0;color:var(--smoke);font-size:18px;line-height:1.85;max-width:32ch}
@@ -90,7 +92,7 @@ h1{margin:12px 0 0;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:700;
   background-size:260% 100%;background-position:120% 0;mix-blend-mode:screen;animation:sweep 1.3s 1.25s var(--ease) both}
 
 .p-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(14px * var(--u)) calc(16px * var(--u)) calc(12px * var(--u))}
-.brand{display:flex;align-items:center;gap:calc(8px * var(--u));font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:calc(19px * var(--u));line-height:1}
+.brand{display:flex;align-items:center;gap:calc(8px * var(--u));font-family:"Zain",sans-serif;font-weight:800;font-size:calc(19px * var(--u));line-height:1}
 .brand img{height:calc(30px * var(--u));width:auto}
 .fld{display:block;min-width:0}
 .fld .l{display:block;color:var(--halo);font-size:calc(11px * var(--u));font-weight:700;line-height:1.5}
@@ -106,7 +108,7 @@ h1{margin:12px 0 0;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:700;
 .code small{display:block;direction:ltr;font-size:calc(9.5px * var(--u));font-weight:700;line-height:1.9;letter-spacing:.01em}
 
 .back{padding:calc(18px * var(--u)) calc(18px * var(--u))}
-.back h3{margin:0 0 calc(6px * var(--u));font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:calc(20px * var(--u))}
+.back h3{margin:0 0 calc(6px * var(--u));font-family:"Zain",sans-serif;font-weight:800;font-size:calc(20px * var(--u))}
 .back dl{margin:0}
 .back dl div{padding:calc(12px * var(--u)) 0;border-bottom:1px solid rgba(255,255,255,.12)}
 .back dt{color:var(--halo);font-size:calc(12px * var(--u));font-weight:700}
@@ -145,11 +147,11 @@ h1{margin:12px 0 0;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:700;
 
 /* ---------- how it works ---------- */
 .steps{text-align:start;padding-top:22px;border-top:1px solid rgba(243,233,220,.1)}
-.steps h2{margin:0 0 6px;font-family:"Reem Kufi","Tajawal",sans-serif;font-weight:600;font-size:22px;color:var(--stone)}
+.steps h2{margin:0 0 6px;font-family:"Zain",sans-serif;font-weight:800;font-size:22px;color:var(--stone)}
 .steps ol{list-style:none;margin:0;padding:0;counter-reset:s}
 .steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;padding:12px 0;color:var(--smoke);font-size:16px;line-height:1.75}
 .steps li::before{content:counter(s,arabic-indic);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(242,179,102,.55);color:var(--halo);font-family:"Reem Kufi",sans-serif;font-size:16px;font-weight:600}
+  border:1px solid rgba(242,179,102,.55);color:var(--halo);font-family:"Zain",sans-serif;font-size:16px;font-weight:800}
 .steps li b{color:var(--stone);font-weight:700}
 .note{margin:6px 0 0;font-size:14px;color:rgba(196,173,152,.8)}
 
