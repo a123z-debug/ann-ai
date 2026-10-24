@@ -1,3 +1,12 @@
 {
-  "whatsapp": "0507513834"
+  "whatsapp": "0507513834",
+  "tempAdmin": {
+    "algo": "scrypt",
+    "N": 16384,
+    "r": 8,
+    "p": 1,
+    "salt": "xfTF4tAojCUBOo9VIdOjBg==",
+    "hash": "Hpu7T3H+n0a3kJDYmoBclSVxRhFBVB/N18zdKEV5zUg=",
+    "note": "Temporary dashboard code. Ignored once ADMIN_PIN is set in the hosting environment."
+  }
 }

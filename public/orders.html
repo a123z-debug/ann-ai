@@ -231,7 +231,8 @@ body{background:var(--sand);min-height:100svh}
     try {
       const j = await api('/api/orders?hours=24');
       ORDERS = j.orders || [];
-      $('#storageWarn').innerHTML = j.durable ? '' : '<p class="warn-box">الطلبات هنا مؤقتة لأن قاعدة البيانات غير مربوطة. اربط Upstash من الإعدادات عشان ما تضيع، وإلى ذلك الحين تابع الطلبات على واتساب.</p>';
+      $('#storageWarn').innerHTML = j.durable ? '' : '<p class="warn-box"><b>الطلبات توصلك الحين على واتساب المحل.</b><br>اللوحة تبدأ تعرض الطلبات أول بأول بعد ربط قاعدة البيانات المجانية (Upstash) في Vercel. باركود الطاولات شغّال من الحين.</p>';
+      $('#board').hidden = !j.durable; document.querySelector('.filters').hidden = !j.durable;
       const fresh = ORDERS.filter(o => o.status === 'new' && !seen.has(o.id));
       if (!firstLoad && fresh.length) alertNew(fresh.length);
       ORDERS.forEach(o => { if (o.status === 'new') seen.add(o.id); });
