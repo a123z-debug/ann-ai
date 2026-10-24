@@ -16,6 +16,7 @@ function localAnswer(message,kb){
   for(const item of kb.facts||[]){
     let s=0;
     for(const k of item.keywords||[]) if(q.includes(norm(k))) s+=norm(k).length;
+    s*=(item.weight||1);
     if(s>score){score=s;best=item;}
   }
   return best?best.answer:kb.fallback;

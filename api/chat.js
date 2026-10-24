@@ -22,6 +22,7 @@ function answer(message) {
       const k = normalize(keyword);
       if (k && q.includes(k)) current += k.length;
     }
+    current *= (item.weight || 1);
     if (current > score) {
       score = current;
       best = item;

@@ -188,3 +188,30 @@ if (chatBackdrop && !chatBackdrop.classList.contains('visible')) {
     }
   }, { passive: true });
 })();
+
+/* ---------- menu tabs ---------- */
+(() => {
+  const tabs = $$('.menu-tabs .tab');
+  if (!tabs.length) return;
+  const show = tab => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.classList.toggle('is-on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.tabIndex = on ? 0 : -1;
+      const p = document.getElementById(t.getAttribute('aria-controls'));
+      if (p) p.hidden = !on;
+    });
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => show(tab));
+    tab.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      // RTL: ArrowLeft moves to the next tab visually.
+      const step = e.key === 'ArrowLeft' ? 1 : -1;
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      show(next); next.focus();
+    });
+  });
+})();

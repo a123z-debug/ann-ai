@@ -136,6 +136,7 @@
       <h2 data-reveal style="--d:.06s">قهوة مختصة وأكثر</h2>
       <p class="sub" data-reveal style="--d:.12s">مشروبات وحلويات آن coffee.</p>
     </div>
+    <h3 class="menu-sub first" data-reveal>المشروبات المميزة</h3>
     <div class="drink-grid">
       <article class="drink" data-reveal>
         <div class="drink-art"><svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><defs>
@@ -222,7 +223,7 @@
         </div>
       </article>
     </div>
-    <h3 class="menu-sub" data-reveal>الحلويات</h3>
+    <h3 class="menu-sub" data-reveal>الحلويات المميزة</h3>
     <div class="drink-grid dessert-grid">
       <article class="drink" data-reveal>
         <div class="drink-art"><svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><defs>
@@ -251,6 +252,74 @@
           <div class="price"><b>15</b> ر.س <small>سعر تجريبي</small></div>
         </div>
       </article>
+    </div>
+    <h3 class="menu-sub" data-reveal>القائمة الكاملة</h3>
+    <div class="menu-tabs" data-reveal>
+      <div class="tablist" role="tablist" aria-label="أقسام القائمة">
+        <button class="tab is-on" role="tab" id="tab-cold" aria-controls="panel-cold" aria-selected="true" tabindex="0" type="button">المشروبات الباردة</button>
+        <button class="tab" role="tab" id="tab-hot" aria-controls="panel-hot" aria-selected="false" tabindex="-1" type="button">المشروبات الساخنة</button>
+        <button class="tab" role="tab" id="tab-drip" aria-controls="panel-drip" aria-selected="false" tabindex="-1" type="button">القهوة المقطّرة</button>
+        <button class="tab" role="tab" id="tab-sweet" aria-controls="panel-sweet" aria-selected="false" tabindex="-1" type="button">الحلويات</button>
+      </div>
+      <ul class="price-list" role="tabpanel" id="panel-cold" aria-labelledby="tab-cold">
+        <li><span class="n">لاتيه</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">موكا</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">أمريكانو</span><i aria-hidden="true"></i><span class="p"><b>14</b> ر.س</span></li>
+        <li><span class="n">شوكولاتة باردة</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">سبانش لاتيه</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">بينا كولادا</span><i aria-hidden="true"></i><span class="p"><b>15</b> ر.س</span></li>
+        <li><span class="n">برتقال</span><i aria-hidden="true"></i><span class="p"><b>13</b> ر.س</span></li>
+        <li><span class="n">برتقال باشن فروت</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">ماتشا بارد</span><i aria-hidden="true"></i><span class="p"><b>20</b> ر.س</span></li>
+        <li><span class="n">ماتشا فانيلا</span><i aria-hidden="true"></i><span class="p"><b>22</b> ر.س</span></li>
+        <li><span class="n">ماتشا وردي</span><i aria-hidden="true"></i><span class="p"><b>23</b> ر.س</span></li>
+        <li><span class="n">موهيتو فراولة</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">موهيتو ليمون نعناع</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">موهيتو توت أسود</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">رد فراولة</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">آيس تي</span><i aria-hidden="true"></i><span class="p"><b>14</b> ر.س</span></li>
+        <li><span class="n">التارو</span><i aria-hidden="true"></i><span class="p"><b>15</b> ر.س</span></li>
+      </ul>
+      <ul class="price-list" role="tabpanel" id="panel-hot" aria-labelledby="tab-hot" hidden>
+        <li><span class="n">لاتيه</span><i aria-hidden="true"></i><span class="p"><b>15</b> ر.س</span></li>
+        <li><span class="n">موكا</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">كورتادو</span><i aria-hidden="true"></i><span class="p"><b>14</b> ر.س</span></li>
+        <li><span class="n">إسبريسو</span><i aria-hidden="true"></i><span class="p"><b>10</b> ر.س</span></li>
+        <li><span class="n">أمريكانو</span><i aria-hidden="true"></i><span class="p"><b>14</b> ر.س</span></li>
+        <li><span class="n">فلات وايت</span><i aria-hidden="true"></i><span class="p"><b>15</b> ر.س</span></li>
+        <li><span class="n">كابتشينو</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">ماتشا حار</span><i aria-hidden="true"></i><span class="p"><b>20</b> ر.س</span></li>
+        <li><span class="n">سبانش لاتيه</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">شوكولاتة ساخنة</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">كوب قهوة عربي</span><i aria-hidden="true"></i><span class="p"><b>5</b> ر.س</span></li>
+        <li><span class="n">دلة قهوة عربي</span><i aria-hidden="true"></i><span class="p"><b>20</b> ر.س</span></li>
+        <li><span class="n">دلة قهوة عربي كبيرة</span><i aria-hidden="true"></i><span class="p"><b>25</b> ر.س</span></li>
+      </ul>
+      <ul class="price-list" role="tabpanel" id="panel-drip" aria-labelledby="tab-drip" hidden>
+        <li><span class="n">قهوة مقطّرة صغير</span><i aria-hidden="true"></i><span class="p"><b>19</b> ر.س</span></li>
+        <li><span class="n">قهوة مقطّرة كبير</span><i aria-hidden="true"></i><span class="p"><b>21</b> ر.س</span></li>
+        <li><span class="n">محصول فاخر (إنفيوجن)</span><i aria-hidden="true"></i><span class="p"><b>21</b> ر.س</span></li>
+        <li><span class="n">قهوة اليوم صغير</span><i aria-hidden="true"></i><span class="p"><b>10</b> ر.س</span></li>
+        <li><span class="n">قهوة اليوم كبير</span><i aria-hidden="true"></i><span class="p"><b>12</b> ر.س</span></li>
+      </ul>
+      <ul class="price-list" role="tabpanel" id="panel-sweet" aria-labelledby="tab-sweet" hidden>
+        <li><span class="n">جرانولا</span><i aria-hidden="true"></i><span class="p"><b>19</b> ر.س</span></li>
+        <li><span class="n">دبدوب</span><i aria-hidden="true"></i><span class="p"><b>14</b> ر.س</span></li>
+        <li><span class="n">مانجوموس</span><i aria-hidden="true"></i><span class="p"><b>15</b> ر.س</span></li>
+        <li><span class="n">تشيزكيك بيري</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">تشيزكيك بيكان</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">كوكيز</span><i aria-hidden="true"></i><span class="p"><b>10</b> ر.س</span></li>
+        <li><span class="n">كوكيز كيك</span><i aria-hidden="true"></i><span class="p"><b>12</b> ر.س</span></li>
+        <li><span class="n">تراميسو</span><i aria-hidden="true"></i><span class="p"><b>18</b> ر.س</span></li>
+        <li><span class="n">سينامون رول</span><i aria-hidden="true"></i><span class="p"><b>16</b> ر.س</span></li>
+        <li><span class="n">كيك العسل</span><i aria-hidden="true"></i><span class="p"><b>23</b> ر.س</span></li>
+        <li><span class="n">سان سباستيان</span><i aria-hidden="true"></i><span class="p"><b>24</b> ر.س</span></li>
+        <li><span class="n">فرنش توست ٣ قطع</span><i aria-hidden="true"></i><span class="p"><b>19</b> ر.س</span></li>
+        <li><span class="n">فرنش توست بالفواكه</span><i aria-hidden="true"></i><span class="p"><b>25</b> ر.س</span></li>
+        <li><span class="n">فرنش بورليه</span><i aria-hidden="true"></i><span class="p"><b>29</b> ر.س</span></li>
+        <li><span class="n">فرنش توست سنيكرز</span><i aria-hidden="true"></i><span class="p"><b>27</b> ر.س</span></li>
+        <li><span class="n">فرنش توست البيكان</span><i aria-hidden="true"></i><span class="p"><b>29</b> ر.س</span></li>
+      </ul>
     </div>
     <p class="menu-note" data-reveal>الأسعار الظاهرة تجريبية ومؤقتة، وتُعتمد رسميًا مع الافتتاح.</p>
     <div class="center" data-reveal>
