@@ -114,6 +114,22 @@ section[id]{scroll-margin-top:84px}
 .door img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
 .cup{position:absolute;inset-inline-end:0;bottom:0;width:46%;aspect-ratio:1;overflow:hidden;border-radius:50%;border:8px solid var(--sand);box-shadow:0 26px 50px -24px rgba(46,20,11,.7)}
 .cup img{width:100%;height:100%;object-fit:cover;object-position:12% 60%}
+/* moving pieces: the stamp turns and floats, the cup and beans drift */
+.stamp{position:absolute;z-index:3;top:9%;inset-inline-start:-18px;width:clamp(104px,12vw,138px);aspect-ratio:1;display:grid;place-items:center;
+  filter:drop-shadow(0 18px 24px rgba(46,20,11,.45));animation:bob 5.5s ease-in-out infinite}
+.stamp-ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 22s linear infinite}
+.stamp-ring text{font-family:var(--display);font-weight:600;font-size:12.4px;fill:#f2b366}
+.stamp img{position:relative;width:42%}
+.cup{animation:bob 6.5s -2s ease-in-out infinite}
+.bean{position:absolute;z-index:2;width:20px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#8a4f2c,#3a180b 72%);
+  box-shadow:0 8px 14px -6px rgba(46,20,11,.6);animation:drift 7s ease-in-out infinite}
+.bean::after{content:"";position:absolute;inset:4px 50% 4px auto;width:2px;margin-inline-end:-1px;border-radius:2px;background:rgba(0,0,0,.45);transform:rotate(8deg)}
+.bean.b1{bottom:14%;inset-inline-start:2%;--r:-28deg;animation-delay:-1s}
+.bean.b2{top:46%;inset-inline-end:2%;width:16px;height:23px;--r:34deg;animation-delay:-3.5s}
+.bean.b3{bottom:2%;inset-inline-start:30%;width:14px;height:20px;--r:12deg;animation-delay:-5s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes spin{to{transform:rotate(-360deg)}}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-12px) rotate(calc(var(--r,0deg) + 18deg))}}
 .about-copy h2{font-size:clamp(32px,4.2vw,52px);color:var(--roast);max-width:14ch}
 .about-copy p{margin-top:20px;font-size:18px;color:var(--ink-2);max-width:46ch;line-height:1.95}
 .points{margin-top:26px;display:grid;gap:4px}
@@ -314,6 +330,8 @@ section[id]{scroll-margin-top:84px}
   .about{padding:72px 20px 96px}
   .about-visual{padding-inline-end:44px;padding-bottom:50px}
   .cup{border-width:6px}
+  .stamp{width:96px;top:6%;inset-inline-start:-6px}
+  .stamp-ring text{font-size:12.6px}
 
   .menu,.gallery{padding:88px 20px}
   .sec-head{margin-bottom:32px}
