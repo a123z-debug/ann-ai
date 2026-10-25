@@ -52,9 +52,14 @@ http.createServer(async(req,res)=>{
   try{
     if(req.method==='GET'&&req.url.startsWith('/health')) return send(res,200,{ok:true,service:'ann-ai'});
     const u=new URL(req.url,'http://x');
-    if(u.pathname.startsWith('/api/v1/')){
+    // /api/v1/<path>, or the rewritten form /api/gateway?p=<path> (Vercel may hand that to this file)
+    const gw=/^\/api\/(?:gateway|app)\/?$/.test(u.pathname);
+    if(u.pathname.startsWith('/api/v1/')||gw){
+      const query=Object.fromEntries(u.searchParams);
+      const path=gw?(query.p||''):u.pathname.slice(8);
+      delete query.p;
       const body=(req.method==='GET')?{}:await parse(req);
-      const r=await router.handle(req.method,u.pathname.slice(8),{query:Object.fromEntries(u.searchParams),body,headers:req.headers});
+      const r=await router.handle(req.method,path,{query,body,headers:req.headers});
       return send(res,r.status,r.body);
     }
     if(u.pathname==='/.well-known/apple-developer-merchantid-domain-association'){
