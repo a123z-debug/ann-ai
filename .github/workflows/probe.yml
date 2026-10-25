@@ -1,0 +1,11 @@
+name: probe
+on:
+  push:
+    branches: [probe]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for u in "/api/app?diag=1" "/api/v1/settings" "/api/pass?check=1" "/api/app" "/account"; do
+            echo "=== $u"; curl -s -o /tmp/b -D - "https://ann-ai-lac.vercel.app$u" | grep -iE "^HTTP|x-vercel-error|x-matched-path|content-type|x-vercel-id"; head -c 300 /tmp/b; echo; done
