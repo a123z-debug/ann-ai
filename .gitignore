@@ -7,3 +7,4 @@ public/ann-mobile.webp
 *.cer
 data/orders.local.json
 data/orders.local.json.tmp
+data/store.local.json

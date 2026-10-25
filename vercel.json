@@ -3,6 +3,10 @@
   "buildCommand": "npm run build",
   "rewrites": [
     {
+      "source": "/api/v1/:p*",
+      "destination": "/api/app?p=:p*"
+    },
+    {
       "source": "/order",
       "destination": "/order.html"
     },
@@ -19,13 +23,34 @@
       "destination": "/admin.html"
     },
     {
+      "source": "/account",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/gift",
+      "destination": "/gift.html"
+    },
+    {
       "source": "/.well-known/apple-developer-merchantid-domain-association",
       "destination": "/api/applepay-domain"
     }
   ],
   "headers": [
     {
-      "source": "/hero-8k.avif",
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        },
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        }
+      ]
+    },
+    {
+      "source": "/fonts/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

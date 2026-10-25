@@ -13,7 +13,12 @@
 <link rel="preload" href="/scene-tall.webp" as="image" type="image/webp" media="(max-width:700px)">
 <link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zain-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=4">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="آن coffee">
 </head>
 <body>
 
@@ -41,8 +46,8 @@
     <img src="/logo-white.webp" alt="آن coffee، قهوة مختصة وأكثر" width="228" height="242">
   </a>
   <nav class="links end" aria-label="روابط أخرى">
-    <a href="#gallery">المعرض</a>
     <a href="#location">موقعنا</a>
+    <a class="acct" href="/account"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c.9-3.8 3.9-6 7.5-6s6.6 2.2 7.5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>حسابي</a>
     <button class="pill cart-btn" type="button" data-open-cart><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 8.5h13l-1 11a1.5 1.5 0 0 1-1.5 1.4H8a1.5 1.5 0 0 1-1.5-1.4l-1-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>السلة</span><b class="cart-count" hidden>0</b></button>
   </nav>
 </header>
@@ -271,6 +276,30 @@
     </div>
   </section>
 
+  <!-- REWARDS: stamps, wallet, gifts, app -->
+  <section class="rewards" id="rewards" aria-labelledby="rw-title">
+    <div class="rw-grid">
+      <div class="rw-copy">
+        <h2 id="rw-title">اشرب ٨، والتاسع علينا</h2>
+        <p>كل مشروب تطلبه من آن يضيف ختم في بطاقتك. اكتمل ٨ أختام؟ مشروبك الجاي مجاني، تستخدمه بضغطة وقت الطلب.</p>
+        <ul class="rw-perks">
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M3 10.5h18M16 15h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><b>محفظة آن</b><span>اشحن رصيدك أونلاين أو من الكاشير، وادفع طلبك بلمسة.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 9h19M12 9v11M12 9c-1.5-3.5-6-4-6-1.2C6 9 9 9 12 9Zm0 0c1.5-3.5 6-4 6-1.2C18 9 15 9 12 9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b>بطاقات هدايا</b><span>أهدِ أحد تحبه قهوته، يوصله رابط ويضيفها لرصيده.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M10.5 18.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 7v6m0 0-2.5-2.5M12 13l2.5-2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><b>تطبيق آن</b><span>ثبّته على جوالك، وتوصلك إشعارة أول ما يجهز طلبك.</span></li>
+        </ul>
+        <div class="rw-cta">
+          <a class="btn btn-halo" href="/account">افتح حسابي</a>
+          <button class="btn btn-line" type="button" data-install hidden>ثبّت التطبيق</button>
+        </div>
+      </div>
+      <a class="stampcard" href="/account" aria-label="بطاقة الأختام، افتح حسابك">
+        <span class="sc-head"><b>بطاقة أختام آن</b><img src="/logo.webp" alt="" width="220" height="169" loading="lazy"></span>
+        <span class="sc-grid" aria-hidden="true"><i class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i><i class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i><i class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i><i class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i><i class="on"><svg viewBox="0 0 24 24" fill="none"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></i><i>٦</i><i>٧</i><i>٨</i><i class="free">مجاني</i></span>
+        <span class="sc-foot">باقي ٣ أختام على مشروبك المجاني</span>
+      </a>
+    </div>
+  </section>
+
   <!-- WALLET CARD -->
   <section class="card-promo" id="card" aria-labelledby="card-title">
     <div class="card-copy">
@@ -309,6 +338,8 @@
   <p class="f-line">وجهة جديدة لعشاق القهوة في شمال محايل عسير</p>
   <nav class="f-links" aria-label="روابط الموقع">
     <a href="#menu">القائمة</a>
+    <a href="/account">حسابي</a>
+    <a href="/account#gifts">بطاقات الهدايا</a>
     <a href="/wallet">بطاقة آن</a>
     <a href="#location">موقعنا</a>
     <button type="button" data-open-chat>اسأل آن</button>
@@ -322,7 +353,7 @@
   <a href="#top" class="is-current"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.8 10.7 12 4l8.2 6.7v8.1a1.2 1.2 0 0 1-1.2 1.2h-4.5v-5.6h-5V20H5a1.2 1.2 0 0 1-1.2-1.2v-8.1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><span>الرئيسية</span></a>
   <a href="#menu"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="1.7"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15M8 5.2c1 .8 1 1.7 0 2.5M11.5 5.2c1 .8 1 1.7 0 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>القائمة</span></a>
   <button type="button" class="nav-cart" data-open-cart><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 8.5h13l-1 11a1.5 1.5 0 0 1-1.5 1.4H8a1.5 1.5 0 0 1-1.5-1.4l-1-11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10.5V7a3 3 0 0 1 6 0v3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>السلة</span><b class="cart-count" hidden>0</b></button>
-  <a href="#location"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.7"/></svg><span>موقعنا</span></a>
+  <a href="/account"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c.9-3.8 3.9-6 7.5-6s6.6 2.2 7.5 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>حسابي</span></a>
 </nav>
 
 
@@ -384,7 +415,16 @@
   </form>
 </aside>
 
-<script src="/app.js"></script>
-<script src="/cart.js"></script>
+<script src="/ann.js?v=4"></script>
+<script src="/app.js?v=4"></script>
+<script src="/cart.js?v=4"></script>
+<script>
+(() => {
+  const b = document.querySelector('[data-install]');
+  const show = () => { if (b && window.Ann && Ann.canInstall()) b.hidden = false; };
+  document.addEventListener('ann:installable', show); show();
+  b && b.addEventListener('click', () => Ann.install());
+})();
+</script>
 </body>
 </html>

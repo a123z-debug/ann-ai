@@ -8,7 +8,12 @@
    "cat": "featured",
    "price": 14,
    "variant": "بارد",
-   "featured": true
+   "featured": true,
+   "opts": [
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "dotd-hot",
@@ -16,7 +21,11 @@
    "cat": "featured",
    "price": 12,
    "variant": "حار",
-   "featured": true
+   "featured": true,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "v60-cold",
@@ -24,7 +33,12 @@
    "cat": "featured",
    "price": 20,
    "variant": "بارد",
-   "featured": true
+   "featured": true,
+   "opts": [
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "v60-hot",
@@ -32,356 +46,743 @@
    "cat": "featured",
    "price": 18,
    "variant": "حار",
-   "featured": true
+   "featured": true,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "tea",
    "name": "شاي",
    "cat": "featured",
    "price": 8,
-   "featured": true
+   "featured": true,
+   "opts": [
+    "sugar",
+    "flavor"
+   ],
+   "drink": true
   },
   {
    "id": "hibiscus",
    "name": "كركديه",
    "cat": "featured",
    "price": 12,
-   "featured": true
+   "featured": true,
+   "opts": [
+    "size",
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "dolce",
    "name": "دولتشي",
    "cat": "featured-sweet",
    "price": 16,
-   "featured": true
+   "featured": true,
+   "drink": false
   },
   {
    "id": "pecan",
    "name": "بيكان",
    "cat": "featured-sweet",
    "price": 16,
-   "featured": true
+   "featured": true,
+   "drink": false
   },
   {
    "id": "mango",
    "name": "مانقو",
    "cat": "featured-sweet",
    "price": 15,
-   "featured": true
+   "featured": true,
+   "drink": false
   },
   {
    "id": "latte-c",
    "name": "لاتيه",
    "cat": "cold",
    "price": 16,
-   "variant": "بارد"
+   "variant": "بارد",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "mocha-c",
    "name": "موكا",
    "cat": "cold",
    "price": 18,
-   "variant": "بارد"
+   "variant": "بارد",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "americano-c",
    "name": "أمريكانو",
    "cat": "cold",
    "price": 14,
-   "variant": "بارد"
+   "variant": "بارد",
+   "opts": [
+    "size",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "choc-c",
    "name": "شوكولاتة باردة",
    "cat": "cold",
-   "price": 16
+   "price": 16,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "spanish-c",
    "name": "سبانش لاتيه",
    "cat": "cold",
    "price": 18,
-   "variant": "بارد"
+   "variant": "بارد",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "pina",
    "name": "بينا كولادا",
    "cat": "cold",
-   "price": 15
+   "price": 15,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "orange",
    "name": "برتقال",
    "cat": "cold",
-   "price": 13
+   "price": 13,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "orange-pf",
    "name": "برتقال باشن فروت",
    "cat": "cold",
-   "price": 18
+   "price": 18,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "matcha-c",
    "name": "ماتشا بارد",
    "cat": "cold",
-   "price": 20
+   "price": 20,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "matcha-van",
    "name": "ماتشا فانيلا",
    "cat": "cold",
-   "price": 22
+   "price": 22,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "matcha-pink",
    "name": "ماتشا وردي",
    "cat": "cold",
-   "price": 23
+   "price": 23,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "mojito-straw",
    "name": "موهيتو فراولة",
    "cat": "cold",
-   "price": 18
+   "price": 18,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "mojito-lemon",
    "name": "موهيتو ليمون نعناع",
    "cat": "cold",
-   "price": 18
+   "price": 18,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "mojito-berry",
    "name": "موهيتو توت أسود",
    "cat": "cold",
-   "price": 18
+   "price": 18,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "red-straw",
    "name": "رد فراولة",
    "cat": "cold",
-   "price": 18
+   "price": 18,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "icetea",
    "name": "آيس تي",
    "cat": "cold",
-   "price": 14
+   "price": 14,
+   "opts": [
+    "size",
+    "sugar",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "taro",
    "name": "التارو",
    "cat": "cold",
-   "price": 15
+   "price": 15,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras",
+    "ice"
+   ],
+   "drink": true
   },
   {
    "id": "latte-h",
    "name": "لاتيه",
    "cat": "hot",
    "price": 15,
-   "variant": "حار"
+   "variant": "حار",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "mocha-h",
    "name": "موكا",
    "cat": "hot",
    "price": 18,
-   "variant": "حار"
+   "variant": "حار",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "cortado",
    "name": "كورتادو",
    "cat": "hot",
-   "price": 14
+   "price": 14,
+   "opts": [
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "espresso",
    "name": "إسبريسو",
    "cat": "hot",
-   "price": 10
+   "price": 10,
+   "opts": [
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "americano-h",
    "name": "أمريكانو",
    "cat": "hot",
    "price": 14,
-   "variant": "حار"
+   "variant": "حار",
+   "opts": [
+    "size",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "flatwhite",
    "name": "فلات وايت",
    "cat": "hot",
-   "price": 15
+   "price": 15,
+   "opts": [
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "cappuccino",
    "name": "كابتشينو",
    "cat": "hot",
-   "price": 16
+   "price": 16,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "matcha-h",
    "name": "ماتشا حار",
    "cat": "hot",
-   "price": 20
+   "price": 20,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "spanish-h",
    "name": "سبانش لاتيه",
    "cat": "hot",
    "price": 18,
-   "variant": "حار"
+   "variant": "حار",
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "choc-h",
    "name": "شوكولاتة ساخنة",
    "cat": "hot",
-   "price": 16
+   "price": 16,
+   "opts": [
+    "size",
+    "milk",
+    "sugar",
+    "extras"
+   ],
+   "drink": true
   },
   {
    "id": "arabic-cup",
    "name": "كوب قهوة عربي",
    "cat": "hot",
-   "price": 5
+   "price": 5,
+   "drink": true
   },
   {
    "id": "arabic-dallah",
    "name": "دلة قهوة عربي",
    "cat": "hot",
-   "price": 20
+   "price": 20,
+   "drink": true
   },
   {
    "id": "arabic-dallah-l",
    "name": "دلة قهوة عربي كبيرة",
    "cat": "hot",
-   "price": 25
+   "price": 25,
+   "drink": true
   },
   {
    "id": "drip-s",
    "name": "قهوة مقطّرة صغير",
    "cat": "drip",
-   "price": 19
+   "price": 19,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "drip-l",
    "name": "قهوة مقطّرة كبير",
    "cat": "drip",
-   "price": 21
+   "price": 21,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "infusion",
    "name": "محصول فاخر (إنفيوجن)",
    "cat": "drip",
-   "price": 21
+   "price": 21,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "dotd-s",
    "name": "قهوة اليوم صغير",
    "cat": "drip",
-   "price": 10
+   "price": 10,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "dotd-l",
    "name": "قهوة اليوم كبير",
    "cat": "drip",
-   "price": 12
+   "price": 12,
+   "opts": [
+    "sugar"
+   ],
+   "drink": true
   },
   {
    "id": "granola",
    "name": "جرانولا",
    "cat": "sweet",
-   "price": 19
+   "price": 19,
+   "drink": false
   },
   {
    "id": "dabdoob",
    "name": "دبدوب",
    "cat": "sweet",
-   "price": 14
+   "price": 14,
+   "drink": false
   },
   {
    "id": "mangomousse",
    "name": "مانجوموس",
    "cat": "sweet",
-   "price": 15
+   "price": 15,
+   "drink": false
   },
   {
    "id": "cheese-berry",
    "name": "تشيزكيك بيري",
    "cat": "sweet",
-   "price": 16
+   "price": 16,
+   "drink": false
   },
   {
    "id": "cheese-pecan",
    "name": "تشيزكيك بيكان",
    "cat": "sweet",
-   "price": 16
+   "price": 16,
+   "drink": false
   },
   {
    "id": "cookies",
    "name": "كوكيز",
    "cat": "sweet",
-   "price": 10
+   "price": 10,
+   "drink": false
   },
   {
    "id": "cookie-cake",
    "name": "كوكيز كيك",
    "cat": "sweet",
-   "price": 12
+   "price": 12,
+   "drink": false
   },
   {
    "id": "tiramisu",
    "name": "تراميسو",
    "cat": "sweet",
-   "price": 18
+   "price": 18,
+   "drink": false
   },
   {
    "id": "cinnamon",
    "name": "سينامون رول",
    "cat": "sweet",
-   "price": 16
+   "price": 16,
+   "drink": false
   },
   {
    "id": "honeycake",
    "name": "كيك العسل",
    "cat": "sweet",
-   "price": 23
+   "price": 23,
+   "drink": false
   },
   {
    "id": "sansebastian",
    "name": "سان سباستيان",
    "cat": "sweet",
-   "price": 24
+   "price": 24,
+   "drink": false
   },
   {
    "id": "ft3",
    "name": "فرنش توست ٣ قطع",
    "cat": "sweet",
-   "price": 19
+   "price": 19,
+   "drink": false
   },
   {
    "id": "ft-fruit",
    "name": "فرنش توست بالفواكه",
    "cat": "sweet",
-   "price": 25
+   "price": 25,
+   "drink": false
   },
   {
    "id": "ft-brulee",
    "name": "فرنش بورليه",
    "cat": "sweet",
-   "price": 29
+   "price": 29,
+   "drink": false
   },
   {
    "id": "ft-snickers",
    "name": "فرنش توست سنيكرز",
    "cat": "sweet",
-   "price": 27
+   "price": 27,
+   "drink": false
   },
   {
    "id": "ft-pecan",
    "name": "فرنش توست البيكان",
    "cat": "sweet",
-   "price": 29
+   "price": 29,
+   "drink": false
   }
- ]
+ ],
+ "optionGroups": {
+  "size": {
+   "label": "الحجم",
+   "type": "one",
+   "default": "s",
+   "choices": [
+    {
+     "id": "s",
+     "label": "صغير",
+     "price": 0
+    },
+    {
+     "id": "m",
+     "label": "وسط",
+     "price": 3
+    },
+    {
+     "id": "l",
+     "label": "كبير",
+     "price": 5
+    }
+   ]
+  },
+  "milk": {
+   "label": "الحليب",
+   "type": "one",
+   "default": "full",
+   "choices": [
+    {
+     "id": "full",
+     "label": "حليب كامل",
+     "price": 0
+    },
+    {
+     "id": "skim",
+     "label": "قليل الدسم",
+     "price": 0
+    },
+    {
+     "id": "lactose",
+     "label": "خالي اللاكتوز",
+     "price": 2
+    },
+    {
+     "id": "oat",
+     "label": "شوفان",
+     "price": 3
+    },
+    {
+     "id": "almond",
+     "label": "لوز",
+     "price": 3
+    }
+   ]
+  },
+  "sugar": {
+   "label": "السكر",
+   "type": "one",
+   "default": "normal",
+   "choices": [
+    {
+     "id": "none",
+     "label": "بدون سكر",
+     "price": 0
+    },
+    {
+     "id": "light",
+     "label": "خفيف",
+     "price": 0
+    },
+    {
+     "id": "normal",
+     "label": "عادي",
+     "price": 0
+    },
+    {
+     "id": "extra",
+     "label": "زيادة",
+     "price": 0
+    }
+   ]
+  },
+  "ice": {
+   "label": "الثلج",
+   "type": "one",
+   "default": "normal",
+   "choices": [
+    {
+     "id": "normal",
+     "label": "عادي",
+     "price": 0
+    },
+    {
+     "id": "light",
+     "label": "خفيف",
+     "price": 0
+    },
+    {
+     "id": "extra",
+     "label": "زيادة",
+     "price": 0
+    }
+   ]
+  },
+  "extras": {
+   "label": "إضافات",
+   "type": "many",
+   "choices": [
+    {
+     "id": "shot",
+     "label": "شوت إسبريسو",
+     "price": 4
+    },
+    {
+     "id": "vanilla",
+     "label": "سيرب فانيلا",
+     "price": 3
+    },
+    {
+     "id": "caramel",
+     "label": "سيرب كراميل",
+     "price": 3
+    },
+    {
+     "id": "hazelnut",
+     "label": "سيرب بندق",
+     "price": 3
+    }
+   ]
+  },
+  "flavor": {
+   "label": "إضافات",
+   "type": "many",
+   "choices": [
+    {
+     "id": "mint",
+     "label": "نعناع",
+     "price": 0
+    },
+    {
+     "id": "lemon",
+     "label": "ليمون",
+     "price": 0
+    }
+   ]
+  }
+ }
 }

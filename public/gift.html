@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4b1f10">
+<meta name="robots" content="noindex">
+<title>بطاقة هدية من آن coffee</title>
+<meta property="og:title" content="وصلتك بطاقة هدية من آن coffee 🎁">
+<meta property="og:description" content="افتح الرابط وأضف الهدية لرصيدك في آن coffee.">
+<meta property="og:image" content="/scene-cup.webp">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico">
+<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=4">
+</head>
+<body class="page">
+<header class="o-top">
+  <a href="/" aria-label="آن coffee، الرئيسية"><img src="/logo-white.webp" alt="آن coffee" width="228" height="242"></a>
+  <nav aria-label="روابط"><a href="/#menu">القائمة</a><a href="/account">حسابي</a></nav>
+</header>
+<main class="o-wrap" id="app" aria-live="polite">
+  <p class="loading">نجيب البطاقة…</p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/ann.js?v=4"></script>
+<script>
+(() => {
+  const A = window.Ann, { esc, money } = A;
+  const app = document.getElementById('app');
+  const qp = new URLSearchParams(location.search);
+  let code = (qp.get('c') || '').trim();
+
+  function card(g) {
+    return `<div class="giftcard" role="img" aria-label="بطاقة هدية بقيمة ${money(g.amount)} ريال">
+      <div class="gc-top"><img src="/logo-white.webp" alt="" width="228" height="242"><small>بطاقة هدية</small></div>
+      <div class="gc-amt">${money(g.amount)} <span>ر.س</span></div>
+      <div class="gc-to">${g.to ? `إلى <b>${esc(g.to)}</b>` : ''}${g.to && g.from ? ' · ' : ''}${g.from ? `من <b>${esc(g.from)}</b>` : ''}</div>
+    </div>`;
+  }
+
+  // the buyer, back from the payment page: show the code and how to send it
+  async function bought(ref, paymentId) {
+    const r = await A.api('POST', 'pay', { kind: 'gift', ref, payment: paymentId });
+    if (!r.ok) {
+      app.innerHTML = `<div class="o-card o-hero"><h1>ما تأكد الدفع</h1><p>${esc(r.data.message || 'جرّب مرة ثانية.')}</p><a class="btn btn-roast" href="/account#gifts">ارجع لبطاقات الهدايا</a></div>`;
+      return;
+    }
+    const g = r.data.gift;
+    const link = `${location.origin}/gift?c=${encodeURIComponent(g.code)}`;
+    const text = `${g.to ? `هلا ${g.to}! ` : ''}وصلتك بطاقة هدية من آن coffee بقيمة ${money(g.amount)} ريال${g.from ? ` من ${g.from}` : ''} 🎁\n${g.message ? g.message + '\n' : ''}افتحها وأضفها لرصيدك:\n${link}`;
+    history.replaceState(null, '', '/gift?c=' + encodeURIComponent(g.code));
+    app.innerHTML = `<section class="o-card o-hero"><h1>بطاقتك جاهزة 🎁</h1><p>أرسل الرابط للي تحب، ويضيف الهدية لرصيده بضغطة.</p></section>
+      ${card(g)}
+      ${g.message ? `<p class="gc-msg">${esc(g.message)}</p>` : ''}
+      <section class="o-card o-sec stack">
+        <div class="gc-code">${esc(g.code)}</div>
+        <a class="btn btn-wa" style="background:#1f9d55;color:#fff;border-radius:16px;min-height:56px" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">أرسلها على واتساب</a>
+        <button class="btn btn-line" type="button" data-copy>انسخ الرابط</button>
+        <p class="muted">احتفظ بالرمز، وكل بطاقة تُستخدم مرة وحدة.</p>
+      </section>`;
+    app.querySelector('[data-copy]').addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(link); A.toast('نسخنا الرابط ✓'); } catch { A.toast(link); }
+    });
+  }
+
+  async function show() {
+    if (!code) return ask();
+    const r = await A.api('GET', 'gift?code=' + encodeURIComponent(code));
+    if (!r.ok) return ask(r.data.message || 'رمز البطاقة غير صحيح.');
+    const g = r.data.gift;
+    const used = g.status === 'redeemed';
+    app.innerHTML = `<section class="o-card o-hero"><h1>${used ? 'هذه البطاقة مستخدمة' : `وصلتك هدية${g.to ? ` يا ${esc(g.to)}` : ''} 🎁`}</h1>
+        <p>${used ? 'انضافت لرصيد صاحبها من قبل.' : 'أضفها لرصيدك في آن، واطلب فيها اللي تحب.'}</p></section>
+      ${card(g)}
+      ${g.message ? `<p class="gc-msg">${esc(g.message)}</p>` : ''}
+      ${used ? '<a class="btn btn-roast" href="/#menu">تصفّح القائمة</a>' : `<button class="cta" type="button" data-redeem>أضفها لرصيدي</button><p class="o-err" id="err" hidden></p>`}`;
+    const b = app.querySelector('[data-redeem]');
+    if (b) b.addEventListener('click', async () => {
+      b.disabled = true;
+      const x = await A.api('POST', 'gift/redeem', { code });
+      if (!x.ok) { b.disabled = false; const e = document.getElementById('err'); e.textContent = x.data.message || 'ما قدرنا نضيفها.'; e.hidden = false; return; }
+      app.innerHTML = `<section class="o-card o-hero"><h1>انضافت لرصيدك ✓</h1><p>رصيدك الحين <b>${money(x.data.account.balance)} ر.س</b>. ادفع فيه طلبك القادم من المحفظة.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px"><a class="btn btn-roast" href="/#menu">اطلب الحين</a><a class="btn btn-line" href="/account#wallet">حسابي</a></div></section>`;
+    });
+  }
+
+  function ask(msg) {
+    app.innerHTML = `<section class="o-card o-hero"><h1>عندك بطاقة هدية؟</h1><p>اكتب رمز البطاقة، ونوريك قيمتها.</p></section>
+      <form class="o-card stack" id="f" novalidate>
+        <label class="fld"><span>رمز البطاقة</span><input name="c" dir="ltr" maxlength="16" autocapitalize="characters" autocomplete="off" placeholder="ANN-XXXX-XXXX" value="${esc(code)}"></label>
+        ${msg ? `<p class="o-err">${esc(msg)}</p>` : ''}
+        <button class="cta" type="submit">افتح البطاقة</button>
+      </form>`;
+    app.querySelector('#f').addEventListener('submit', e => { e.preventDefault(); code = e.target.c.value.trim(); if (code) { history.replaceState(null, '', '/gift?c=' + encodeURIComponent(code)); show(); } });
+  }
+
+  if (qp.get('ref') && qp.get('id')) bought(qp.get('ref'), qp.get('id'));
+  else show();
+})();
+</script>
+</body>
+</html>

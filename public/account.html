@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4b1f10">
+<meta name="robots" content="noindex">
+<title>حسابي | آن coffee</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" href="/favicon.ico">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="آن coffee">
+<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=4">
+</head>
+<body class="page">
+<header class="o-top">
+  <a href="/" aria-label="آن coffee، الرئيسية"><img src="/logo-white.webp" alt="آن coffee" width="228" height="242"></a>
+  <nav aria-label="روابط"><a href="/#menu">القائمة</a><a href="/account" aria-current="page">حسابي</a></nav>
+</header>
+<main class="o-wrap" id="app" aria-live="polite">
+  <p class="loading">نجيب حسابك…</p>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/vendor/qrcode.js"></script>
+<script src="/ann.js?v=4"></script>
+<script>
+(() => {
+  const A = window.Ann, { esc, money, ar, when } = A;
+  const app = document.getElementById('app');
+  const qp = new URLSearchParams(location.search);
+  let S = {}, ACC = null, giftTab = location.hash === '#redeem' ? 'redeem' : 'send', otp = null, busy = false;
+
+  const STATUS = { awaiting_payment: ['بانتظار الدفع', 'wait'], new: ['استلمناه', 'new'], preparing: ['قيد التحضير', 'prep'], ready: ['جاهز', 'ready'], done: ['تم التسليم', 'done'], cancelled: ['ملغي', 'x'] };
+  const LEDGER = { topup: 'شحن رصيد', cashier: 'شحن من الكاشير', bonus: 'مكافأة', gift: 'بطاقة هدية', order: 'طلب', refund: 'استرجاع' };
+  const CUP = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 9h10v5.2A4.8 4.8 0 0 1 10.2 19H9.8A4.8 4.8 0 0 1 5 14.2V9Z" stroke="currentColor" stroke-width="2"/><path d="M15 10.5h1.7a2.3 2.3 0 0 1 0 4.6H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  const PERSON = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8" stroke="currentColor" stroke-width="2"/><path d="M4.5 20c.9-3.8 3.9-6 7.5-6s6.6 2.2 7.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  const BELL = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
+  const per = () => Math.max(2, Number(S.loyalty && S.loyalty.stamps) || 8);
+
+  // ---------- sections ----------
+  function hero() {
+    const first = (ACC.name || '').split(' ')[0];
+    return `<section class="o-card o-hero acc-hero">
+      <span class="acc-av" aria-hidden="true">${first ? esc(first[0]) : PERSON}</span>
+      <h1>${first ? `هلا ${esc(first)} 🤎` : 'حسابك في آن'}</h1>
+      <p>${ACC.phoneVerified ? `حسابك مربوط برقم <span dir="ltr">${esc(ACC.phone)}</span>.` : 'أختامك ورصيدك وطلباتك، كلها هنا.'}</p>
+      <button class="acc-code" type="button" data-showcode><small>رمز حسابك</small><b dir="ltr">${esc(ACC.code)}</b><span>اضغط وورّه للكاشير</span></button>
+      <div class="acc-stats">
+        <a href="#stamps"><b>${ar(ACC.stamps)}</b><small>من ${ar(per())} أختام</small></a>
+        <a href="#wallet"><b>${money(ACC.balance)}</b><small>ر.س رصيد</small></a>
+        <a href="#stamps"><b>${ar(ACC.rewards)}</b><small>مشروب مجاني</small></a>
+      </div>
+    </section>`;
+  }
+
+  function stamps() {
+    if (!S.loyalty || !S.loyalty.enabled) return '';
+    const n = per(), have = Math.min(ACC.stamps || 0, n), left = n - have, rw = ACC.rewards || 0;
+    const cols = n + 1 <= 9 ? 3 : n + 1 <= 12 ? 4 : 5;
+    const cells = Array.from({ length: n }, (_, i) => i < have ? `<i class="on">${CUP}</i>` : `<i>${ar(i + 1)}</i>`).join('') + '<i class="free">مجاني</i>';
+    return `<section class="o-card o-sec stamps-card" id="stamps">
+      <div class="sec-row"><h2>بطاقة أختامك</h2>${rw ? `<span class="pill-ok">${rw === 1 ? 'مشروب مجاني' : ar(rw) + ' مشروبات مجانية'}</span>` : ''}</div>
+      <div class="sc-grid" style="--cols:${cols}" role="img" aria-label="${ar(have)} من ${ar(n)} أختام">${cells}</div>
+      <p class="muted" style="margin-top:14px;text-align:center">${rw ? 'استخدم مشروبك المجاني من السلة وقت الطلب، أو ورّ الكاشير رمز حسابك.<br>' : ''}${left === n && !rw ? `كل مشروب تطلبه يضيف ختم. اجمع ${ar(n)} والمشروب الجاي علينا.` : `باقي ${ar(left)} ${left === 1 ? 'ختم' : left <= 10 ? 'أختام' : 'ختم'} على مشروبك المجاني.`}</p>
+      <p class="muted" style="text-align:center;font-size:14px">طلبت من الكاشير مباشرة؟ ورّه رمزك ويضيف أختامك.</p>
+    </section>`;
+  }
+
+  function wallet() {
+    const amounts = (S.topupAmounts && S.topupAmounts.length ? S.topupAmounts : [50, 100, 200]);
+    const led = (ACC.ledger || []).slice(0, 15);
+    return `<section class="o-card o-sec" id="wallet">
+      <div class="wallet-top"><div><small>رصيد محفظة آن</small><b>${money(ACC.balance)} <span>ر.س</span></b></div><img src="/logo-white.webp" alt="" width="228" height="242"></div>
+      ${S.payOnline ? `<h2 style="font-size:18px;margin-bottom:8px">اشحن رصيدك</h2>
+        <div class="chips" role="group" aria-label="مبلغ الشحن">${amounts.map(a => `<button type="button" class="amt" data-topup="${a}">${a} ر.س</button>`).join('')}</div>
+        ${S.walletBonus ? `<p class="bonus">+${S.walletBonus}% مكافأة على كل شحنة</p>` : ''}
+        <p class="muted" style="margin-top:8px">أو اشحن من الكاشير كاش أو شبكة: ورّه رمز حسابك.</p>`
+      : `<p class="muted">اشحن رصيدك من الكاشير كاش أو شبكة: ورّه رمز حسابك، وينضاف الرصيد فورًا.${S.walletBonus ? ` وتاخذ مكافأة ${S.walletBonus}% على كل شحنة.` : ''} وبعدها ادفع طلباتك من المحفظة بضغطة.</p>`}
+      ${led.length ? `<details class="ledger"><summary>سجل الحركات</summary><ul>${led.map(e => `<li><span>${esc(e.note || LEDGER[e.type] || 'حركة')}</span><span class="${e.amount > 0 ? 'amt-in' : 'amt-out'}" dir="ltr">${e.amount > 0 ? '+' : ''}${money(e.amount)}</span><small>${when(e.at)}</small></li>`).join('')}</ul></details>` : ''}
+    </section>`;
+  }
+
+  function gifts() {
+    const amounts = (S.giftAmounts && S.giftAmounts.length ? S.giftAmounts : [50, 100, 200]);
+    const send = S.payOnline ? `<form class="stack" id="giftForm" novalidate>
+        <fieldset class="opt-grp"><legend>قيمة البطاقة</legend><div class="chips">${amounts.map((a, i) => `<label class="chip-opt"><input type="radio" name="amount" value="${a}" ${i === 1 || amounts.length === 1 ? 'checked' : ''}><span>${a} ر.س</span></label>`).join('')}</div></fieldset>
+        <label class="fld"><span>اسم المُهدى إليه</span><input name="to" maxlength="40" placeholder="مثال: سارة"></label>
+        <label class="fld"><span>من</span><input name="from" maxlength="40" value="${esc(ACC.name || '')}" placeholder="اسمك"></label>
+        <label class="fld"><span>رسالتك <small>(اختياري)</small></span><textarea name="message" rows="2" maxlength="160" placeholder="قهوتك علي اليوم ☕"></textarea></label>
+        <p class="o-err" id="giftErr" hidden></p>
+        <button class="cta" type="submit">ادفع وجهّز البطاقة</button>
+        <p class="muted">بعد الدفع يطلع لك رابط البطاقة ترسله بالواتساب.</p>
+      </form>` : `<p class="muted">بطاقات الهدايا متوفرة عند الكاشير بأي قيمة، وقريبًا تقدر تشتريها من هنا وترسلها برابط.</p>`;
+    const redeem = `<form class="stack" id="redeemForm" novalidate>
+        <label class="fld"><span>رمز البطاقة</span><input name="code" dir="ltr" maxlength="16" autocapitalize="characters" autocomplete="off" placeholder="ANN-XXXX-XXXX"></label>
+        <p class="o-err" id="redeemErr" hidden></p>
+        <button class="cta" type="submit">أضفها لرصيدي</button>
+      </form>`;
+    return `<section class="o-card o-sec" id="gifts">
+      <div class="sec-row"><h2>بطاقات الهدايا</h2></div>
+      <div class="seg2" role="tablist" aria-label="بطاقات الهدايا">
+        <button type="button" role="tab" data-gtab="send" aria-selected="${giftTab === 'send'}">أهدِ بطاقة</button>
+        <button type="button" role="tab" data-gtab="redeem" aria-selected="${giftTab === 'redeem'}">عندي بطاقة</button>
+      </div>
+      ${giftTab === 'send' ? send : redeem}
+    </section>`;
+  }
+
+  function orders() {
+    let list = ACC.orders || [];
+    const local = A.ls.get('ann-orders', []).filter(x => !list.some(o => o.id === x.id));
+    const items = l => l.lines.map(x => `${ar(x.qty)}× ${esc(x.name)}${x.variant ? ` (${esc(x.variant)})` : ''}`).join('، ');
+    const body = list.length || local.length ? `<ul class="ords">${list.map((o, i) => {
+      const [label, cls] = STATUS[o.status] || ['', ''];
+      return `<li class="ord"><div class="ord-top"><b>#${o.number}</b><span class="st st-${cls}">${label}</span>${o.rating ? `<span class="stars-mini" aria-label="${o.rating} من ٥">${'★'.repeat(o.rating)}</span>` : ''}<span class="ord-total">${money(o.total)} ر.س</span></div>
+        <p class="ord-items">${items(o)}</p>
+        <div class="ord-act"><small>${when(o.createdAt)}</small><a href="/order?o=${encodeURIComponent(o.id)}">التفاصيل</a><button type="button" data-reorder="${i}">اطلبه مرة ثانية</button></div></li>`;
+    }).join('')}${local.map(o => `<li class="ord"><div class="ord-top"><b>#${o.number}</b><span class="ord-total"></span></div><div class="ord-act"><small>${when(o.at)}</small><a href="/order?o=${encodeURIComponent(o.id)}">التفاصيل</a></div></li>`).join('')}</ul>`
+      : `<p class="muted">ما طلبت للحين. <a href="/#menu" style="color:var(--roast);font-weight:800;text-decoration:underline">القائمة تنتظرك</a>.</p>`;
+    return `<section class="o-card o-sec" id="orders"><div class="sec-row"><h2>طلباتي</h2></div>${body}</section>`;
+  }
+
+  function profile() {
+    const login = S.smsLogin && !ACC.phoneVerified ? `<div class="otp" id="otp">
+        <b>ثبّت حسابك برقم جوالك</b>
+        <p class="muted" style="font-size:14.5px">عشان ترجع لأختامك ورصيدك من أي جوال. لو عندك حساب قبل، نجمعهم لك.</p>
+        ${otp ? `<label class="fld"><span>الرمز اللي وصلك على <span dir="ltr">${esc(otp)}</span></span><input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" dir="ltr"></label>
+          <div style="display:flex;gap:8px"><button class="btn btn-roast btn-sm" type="button" data-verify>تأكيد</button><button class="btn btn-line btn-sm" type="button" data-otp-reset>غيّر الرقم</button></div>`
+        : `<label class="fld"><span>رقم الجوال</span><input name="otpPhone" type="tel" inputmode="tel" dir="ltr" maxlength="14" placeholder="05xxxxxxxx" value="${esc(ACC.phone || '')}"></label>
+          <button class="btn btn-roast btn-sm" type="button" data-send-otp>أرسل رمز التحقق</button>`}
+        <p class="o-err" id="otpErr" hidden></p>
+      </div>` : '';
+    return `<section class="o-card o-sec" id="profile">
+      <div class="sec-row"><h2>بياناتي</h2></div>
+      <form class="stack" id="profForm" novalidate>
+        <label class="fld"><span>الاسم</span><input name="name" maxlength="40" autocomplete="name" value="${esc(ACC.name || '')}"></label>
+        <label class="fld"><span>الجوال</span><input name="phone" type="tel" inputmode="tel" dir="ltr" maxlength="14" autocomplete="tel" value="${esc(ACC.phone || '')}" ${ACC.phoneVerified ? 'readonly' : ''} placeholder="05xxxxxxxx"></label>
+        <button class="btn btn-line btn-sm" type="submit" style="justify-self:start">احفظ</button>
+      </form>
+      ${login}
+    </section>`;
+  }
+
+  function appSec() {
+    const rows = [];
+    if (A.standalone()) rows.push(`<div class="app-row"><img src="/icons/icon-192.png" alt="" width="44" height="44"><div><b>تطبيق آن</b><span>مثبّت على جوالك</span></div><span class="done">✓</span></div>`);
+    else if (A.canInstall()) rows.push(`<div class="app-row"><img src="/icons/icon-192.png" alt="" width="44" height="44"><div><b>ثبّت آن على جوالك</b><span>يفتح من الشاشة الرئيسية مثل أي تطبيق</span></div><button class="btn btn-roast btn-sm" type="button" data-install>ثبّت</button></div>`);
+    if (S.push) rows.push(`<div class="app-row"><span class="ico">${BELL}</span><div><b>إشعارات الطلبات</b><span>نعلمك أول ما يجهز طلبك</span></div><span id="pushSlot"><button class="btn btn-line btn-sm" type="button" data-push>فعّل</button></span></div>`);
+    return rows.length ? `<section class="o-card o-sec" id="app-sec"><div class="sec-row"><h2>تطبيق آن</h2></div>${rows.join('')}</section>` : '';
+  }
+
+  function render() {
+    if (!ACC) { app.innerHTML = '<div class="o-card o-hero"><h1>ما قدرنا نفتح حسابك</h1><p>تأكد من الاتصال وجرّب مرة ثانية.</p><button class="btn btn-roast" onclick="location.reload()">حدّث الصفحة</button></div>'; return; }
+    app.innerHTML = hero() + (S.durable === false ? '<p class="o-note">الأختام والمحفظة والهدايا تتفعّل كاملة مع الافتتاح الرسمي.</p>' : '') + stamps() + wallet() + orders() + gifts() + profile() + appSec();
+    A.pushEnabled().then(on => { const s = document.getElementById('pushSlot'); if (on && s) s.innerHTML = '<span class="done">مفعّلة ✓</span>'; });
+  }
+
+  // ---------- actions ----------
+  function showCode() {
+    const url = `${location.origin}/orders?c=${ACC.code}`;
+    A.sheet(`<div class="qr-box"><h2>ورّ الكاشير رمزك</h2>${A.qrSVG(url, 240)}<b dir="ltr">${esc(ACC.code)}</b><p>يشحن رصيدك، يضيف أختامك، أو يصرف مشروبك المجاني.</p></div>`);
+  }
+
+  function payModal(title, amount, opts) {
+    const m = A.sheet(`<h2>${esc(title)}</h2><p>المبلغ: <b>${money(amount)} ر.س</b></p><div id="payBox"></div>`);
+    A.pay(m.querySelector('#payBox'), Object.assign({ amount }, opts));
+  }
+
+  async function refresh() {
+    const r = await A.api('GET', 'account');
+    if (r.ok && r.data.account) ACC = r.data.account;
+    render();
+  }
+
+  function err(id, msg) { const e = document.getElementById(id); if (e) { e.textContent = msg; e.hidden = !msg; } }
+
+  document.addEventListener('click', async e => {
+    const t = e.target;
+    if (t.closest('[data-showcode]')) return showCode();
+    if (t.closest('[data-install]')) { await A.install(); render(); return; }
+    if (t.closest('[data-push]')) {
+      const b = t.closest('[data-push]'); b.disabled = true;
+      const r = await A.enablePush({});
+      if (r.ok) { document.getElementById('pushSlot').innerHTML = '<span class="done">مفعّلة ✓</span>'; A.toast('تمام! بنعلمك أول ما يجهز طلبك.'); }
+      else { b.disabled = false; if (r.message) A.toast(r.message); }
+      return;
+    }
+    const g = t.closest('[data-gtab]');
+    if (g) { giftTab = g.dataset.gtab; const sec = document.getElementById('gifts'); sec.outerHTML = gifts(); return; }
+    const tp = t.closest('[data-topup]');
+    if (tp && !busy) {
+      busy = true; tp.disabled = true;
+      const r = await A.api('POST', 'account/topup', { amount: Number(tp.dataset.topup) });
+      busy = false; tp.disabled = false;
+      if (!r.ok) return A.toast(r.data.message || 'ما قدرنا نبدأ الشحن.');
+      payModal('شحن الرصيد', r.data.amount, { description: `آن coffee شحن رصيد ${r.data.amount} ر.س`, metadata: { kind: 'topup', ref: r.data.ref }, callback: `${location.origin}/account?pay=topup&ref=${encodeURIComponent(r.data.ref)}` });
+      return;
+    }
+    const ro = t.closest('[data-reorder]');
+    if (ro) {
+      const o = (ACC.orders || [])[Number(ro.dataset.reorder)]; if (!o) return;
+      try { sessionStorage.setItem('ann-reorder', JSON.stringify(o.lines.map(l => ({ id: l.id, qty: l.qty, opts: l.opts || {}, note: l.note || '' })))); } catch {}
+      location.href = '/?cart=1';
+      return;
+    }
+    if (t.closest('[data-send-otp]')) {
+      const inp = document.querySelector('[name=otpPhone]'); err('otpErr', '');
+      const r = await A.api('POST', 'auth/send', { phone: inp.value });
+      if (!r.ok) return err('otpErr', r.data.message || 'ما قدرنا نرسل الرمز.');
+      otp = r.data.phone; document.getElementById('profile').outerHTML = profile();
+      const c = document.querySelector('#otp [name=code]'); if (c) c.focus();
+      return;
+    }
+    if (t.closest('[data-otp-reset]')) { otp = null; document.getElementById('profile').outerHTML = profile(); return; }
+    if (t.closest('[data-verify]')) {
+      const c = document.querySelector('#otp [name=code]'); err('otpErr', '');
+      const r = await A.api('POST', 'auth/verify', { phone: otp, code: c.value });
+      if (!r.ok) return err('otpErr', r.data.message || 'الرمز غير صحيح.');
+      otp = null; ACC = r.data.account; render(); A.toast('تم! حسابك مربوط برقمك.');
+    }
+  });
+
+  document.addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target, v = Object.fromEntries(new FormData(f).entries());
+    const btn = f.querySelector('[type=submit]'); if (btn) btn.disabled = true;
+    try {
+      if (f.id === 'profForm') {
+        const r = await A.api('POST', 'account', { name: v.name, phone: v.phone });
+        if (r.ok) { ACC = r.data.account; render(); A.toast('حفظنا بياناتك.'); } else A.toast(r.data.message || 'ما قدرنا نحفظ.');
+      }
+      if (f.id === 'redeemForm') {
+        err('redeemErr', '');
+        const r = await A.api('POST', 'gift/redeem', { code: v.code });
+        if (!r.ok) return err('redeemErr', r.data.message || 'رمز البطاقة غير صحيح.');
+        A.toast(`انضاف ${money(r.data.gift.amount)} ر.س لرصيدك 🎁`);
+        await refresh(); document.getElementById('wallet').scrollIntoView({ behavior: 'smooth' });
+      }
+      if (f.id === 'giftForm') {
+        err('giftErr', '');
+        const r = await A.api('POST', 'gift', { amount: Number(v.amount), to: v.to, from: v.from, message: v.message });
+        if (!r.ok) return err('giftErr', r.data.message || 'ما قدرنا نجهّز البطاقة.');
+        payModal('بطاقة هدية', r.data.amount, { description: `آن coffee بطاقة هدية ${r.data.amount} ر.س`, metadata: { kind: 'gift', ref: r.data.ref }, callback: `${location.origin}/gift?ref=${encodeURIComponent(r.data.ref)}` });
+      }
+    } finally { if (btn && document.body.contains(btn)) btn.disabled = false; }
+  });
+
+  document.addEventListener('ann:installable', () => { if (ACC) render(); });
+
+  // ---------- boot ----------
+  (async () => {
+    const [s, a] = await Promise.all([A.settings(true), A.api('GET', 'account')]);
+    S = s || {};
+    ACC = a.ok ? a.data.account : null;
+    if (!ACC) ACC = await A.ensureAccount({});
+    if (ACC && !ACC.orders) { const r = await A.api('GET', 'account'); if (r.ok && r.data.account) ACC = r.data.account; }
+    // back from the payment page (wallet top-up)
+    if (qp.get('pay') === 'topup' && qp.get('ref') && qp.get('id')) {
+      const r = await A.api('POST', 'pay', { kind: 'topup', ref: qp.get('ref'), payment: qp.get('id') });
+      history.replaceState(null, '', '/account#wallet');
+      if (r.ok) { A.toast('انشحن رصيدك ✓'); const x = await A.api('GET', 'account'); if (x.ok) ACC = x.data.account; }
+      else A.toast(r.data.message || 'ما تأكد الدفع.');
+    }
+    render();
+    if (location.hash) { const el = document.querySelector(location.hash === '#redeem' ? '#gifts' : location.hash); if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120); }
+  })();
+})();
+</script>
+</body>
+</html>

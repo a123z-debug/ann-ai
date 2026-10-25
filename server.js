@@ -6,19 +6,7 @@ const KB=path.join(__dirname,'data','knowledge.json');
 const ADMIN_PIN=process.env.ADMIN_PIN||'change-me';
 
 const {buildPass,missingConfig}=require('./lib/pass');
-const orders=require('./lib/orders');
-const ORDER_ROUTES={
-  'GET /api/menu':async()=>({status:200,body:require('./data/menu.json')}),
-  'GET /api/settings':orders.getSettingsPublic,
-  'GET /api/order':orders.getOrder,
-  'POST /api/order':orders.createOrder,
-  'POST /api/pay':orders.verifyPayment,
-  'GET /api/orders':orders.adminList,
-  'PATCH /api/orders':orders.adminUpdate,
-  'POST /api/orders':orders.adminUpdate,
-  'GET /api/admin-settings':orders.adminSettings,
-  'PUT /api/admin-settings':orders.adminSettings
-};
+const router=require('./lib/router');
 const readKB=()=>JSON.parse(fs.readFileSync(KB,'utf8'));
 const send=(res,code,obj)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj));};
 const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>1024*1024)reject(new Error('too_large'));});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(e)}});req.on('error',reject);});
@@ -49,11 +37,13 @@ function serve(req,res){
   if(p==='/wallet') p='/wallet.html';
   if(p==='/order') p='/order.html';
   if(p==='/orders') p='/orders.html';
+  if(p==='/account') p='/account.html';
+  if(p==='/gift') p='/gift.html';
   const f=path.normalize(path.join(PUBLIC,p));
   if(!f.startsWith(PUBLIC)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
   const ext=path.extname(f);
-  const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.avif':'image/avif','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8'};
-  res.writeHead(200,{'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':ext==='.html'?'no-cache':'public, max-age=3600'});
+  const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.avif':'image/avif','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json','.json':'application/json; charset=utf-8','.ico':'image/x-icon'};
+  res.writeHead(200,{'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':(ext==='.html'||p==='/sw.js')?'no-cache':'public, max-age=3600'});
   fs.createReadStream(f).pipe(res);
   return true;
 }
@@ -62,10 +52,9 @@ http.createServer(async(req,res)=>{
   try{
     if(req.method==='GET'&&req.url.startsWith('/health')) return send(res,200,{ok:true,service:'ann-ai'});
     const u=new URL(req.url,'http://x');
-    const route=ORDER_ROUTES[req.method+' '+u.pathname];
-    if(route){
+    if(u.pathname.startsWith('/api/v1/')){
       const body=(req.method==='GET')?{}:await parse(req);
-      const r=await route({method:req.method,query:Object.fromEntries(u.searchParams),body,headers:req.headers});
+      const r=await router.handle(req.method,u.pathname.slice(8),{query:Object.fromEntries(u.searchParams),body,headers:req.headers});
       return send(res,r.status,r.body);
     }
     if(u.pathname==='/.well-known/apple-developer-merchantid-domain-association'){
