@@ -7,8 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          for u in "/api/app?diag=1" "/api/v1/settings" "/api/pass?check=1" "/api/app" "/account"; do
-            h=$(curl -s -o /tmp/b -D - "https://ann-ai-lac.vercel.app$u" | grep -iE "^HTTP|x-vercel-error|x-matched-path|content-type" | tr -d '\r' | tr '\n' ' ')
-            b=$(head -c 200 /tmp/b | tr -d '\r\n%')
+          B=https://ann-ai-lac.vercel.app
+          for u in "/api/v1/settings" "/api/gateway?p=menu" "/api/v1/account" "/api/v1/nope" "/account" "/sw.js"; do
+            h=$(curl -s -o /tmp/b -D - "$B$u" | grep -iE "^HTTP|content-type" | tr -d '\r' | tr '\n' ' ')
+            b=$(head -c 160 /tmp/b | tr -d '\r\n%')
             echo "::notice title=$u::$h || $b"
           done
+          r=$(curl -s -X POST -H 'Content-Type: application/json' -d '{"name":"probe"}' "$B/api/v1/account" | head -c 200 | tr -d '\r\n%')
+          echo "::notice title=POST account::$r"
