@@ -8,4 +8,7 @@ jobs:
     steps:
       - run: |
           for u in "/api/app?diag=1" "/api/v1/settings" "/api/pass?check=1" "/api/app" "/account"; do
-            echo "=== $u"; curl -s -o /tmp/b -D - "https://ann-ai-lac.vercel.app$u" | grep -iE "^HTTP|x-vercel-error|x-matched-path|content-type|x-vercel-id"; head -c 300 /tmp/b; echo; done
+            h=$(curl -s -o /tmp/b -D - "https://ann-ai-lac.vercel.app$u" | grep -iE "^HTTP|x-vercel-error|x-matched-path|content-type" | tr -d '\r' | tr '\n' ' ')
+            b=$(head -c 200 /tmp/b | tr -d '\r\n%')
+            echo "::notice title=$u::$h || $b"
+          done
