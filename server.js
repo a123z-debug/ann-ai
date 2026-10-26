@@ -3,13 +3,15 @@ const http=require('http'),fs=require('fs'),path=require('path'),crypto=require(
 const PORT=process.env.PORT||3000;
 const PUBLIC=path.join(__dirname,'public');
 const KB=path.join(__dirname,'data','knowledge.json');
-const ADMIN_PIN=process.env.ADMIN_PIN||'change-me';
 
 const {buildPass,missingConfig}=require('./lib/pass');
 const router=require('./lib/router');
+const {guard}=require('./lib/admin');
+const SEC=require('./lib/security');
 const readKB=()=>JSON.parse(fs.readFileSync(KB,'utf8'));
-const send=(res,code,obj)=>{res.writeHead(code,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj));};
-const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>1024*1024)reject(new Error('too_large'));});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(e)}});req.on('error',reject);});
+const send=(res,code,obj)=>{res.writeHead(code,Object.assign({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'},SEC.HEADERS));res.end(JSON.stringify(obj));};
+class BadBody extends Error{constructor(code,msg){super(msg);this.status=code;}}
+const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>256*1024){reject(new BadBody(413,'too_large'));req.destroy();}});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(new BadBody(400,'bad_json'))}});req.on('error',reject);});
 const norm=s=>String(s||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^\u0600-\u06FFa-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
 
 function localAnswer(message,kb){
@@ -24,11 +26,6 @@ function localAnswer(message,kb){
   return best?best.answer:kb.fallback;
 }
 
-function auth(req){
-  const a=Buffer.from(String(req.headers['x-admin-pin']||''));
-  const b=Buffer.from(String(ADMIN_PIN));
-  return a.length===b.length&&crypto.timingSafeEqual(a,b);
-}
 
 function serve(req,res){
   let p=decodeURIComponent(req.url.split('?')[0]);
@@ -40,15 +37,18 @@ function serve(req,res){
   if(p==='/account') p='/account.html';
   if(p==='/gift') p='/gift.html';
   const f=path.normalize(path.join(PUBLIC,p));
-  if(!f.startsWith(PUBLIC)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
+  if(!f.startsWith(PUBLIC+path.sep)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
   const ext=path.extname(f);
   const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.avif':'image/avif','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json','.json':'application/json; charset=utf-8','.ico':'image/x-icon'};
-  res.writeHead(200,{'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':(ext==='.html'||p==='/sw.js')?'no-cache':'public, max-age=3600'});
+  res.writeHead(200,Object.assign({'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':(ext==='.html'||p==='/sw.js')?'no-cache':'public, max-age=3600'},SEC.HEADERS));
   fs.createReadStream(f).pipe(res);
   return true;
 }
 
 http.createServer(async(req,res)=>{
+  // the socket address, for rate limits when no trusted proxy is in front (never taken from the client)
+  delete req.headers['x-ann-remote'];
+  req.headers['x-ann-remote']=String(req.socket.remoteAddress||'local');
   try{
     if(req.method==='GET'&&req.url.startsWith('/health')) return send(res,200,{ok:true,service:'ann-ai'});
     const u=new URL(req.url,'http://x');
@@ -58,6 +58,7 @@ http.createServer(async(req,res)=>{
       const query=Object.fromEntries(u.searchParams);
       const path=gw?(query.p||''):u.pathname.slice(8);
       delete query.p;
+      if(!SEC.jsonOnly(req.method,req.headers)) return send(res,415,{error:'json_only',message:'الطلب لازم يكون JSON.'});
       const body=(req.method==='GET')?{}:await parse(req);
       const r=await router.handle(req.method,path,{query,body,headers:req.headers});
       return send(res,r.status,r.body);
@@ -78,12 +79,11 @@ http.createServer(async(req,res)=>{
         return send(res,500,{error:'pass_build_failed'});
       }
     }
-    if(req.method==='GET'&&req.url.startsWith('/api/knowledge')){
-      if(!auth(req)) return send(res,401,{error:'unauthorized'});
-      return send(res,200,readKB());
-    }
-    if(req.method==='PUT'&&req.url.startsWith('/api/knowledge')){
-      if(!auth(req)) return send(res,401,{error:'unauthorized'});
+    if(req.url.startsWith('/api/knowledge')&&(req.method==='GET'||req.method==='PUT')){
+      // same PIN check and lockout as the dashboard
+      const denied=await guard(req.headers); if(denied) return send(res,denied.status,denied.body);
+      if(req.method==='GET') return send(res,200,readKB());
+      if(!SEC.jsonOnly(req.method,req.headers)) return send(res,415,{error:'json_only'});
       const body=await parse(req);
       if(!body||typeof body!=='object'||!Array.isArray(body.facts)) return send(res,400,{error:'invalid_knowledge'});
       fs.writeFileSync(KB,JSON.stringify(body,null,2),'utf8');
@@ -98,6 +98,7 @@ http.createServer(async(req,res)=>{
     if(req.method==='GET'&&serve(req,res)) return;
     return send(res,404,{error:'not_found'});
   }catch(e){
+    if(e instanceof BadBody) return send(res,e.status,{error:e.message,message:'بيانات الطلب غير صحيحة.'});
     return send(res,500,{error:'server_error'});
   }
 }).listen(PORT,'0.0.0.0',()=>console.log('ann-ai listening on '+PORT));
