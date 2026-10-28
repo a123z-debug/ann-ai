@@ -9,11 +9,11 @@
 <meta property="og:title" content="آن coffee | وجهة جديدة لعشاق القهوة">
 <meta property="og:description" content="قهوة مختصة وأكثر في شمال محايل عسير. قريبًا الافتتاح.">
 <meta property="og:image" content="/scene-wide.webp">
-<link rel="preload" href="/scene-wide.webp" as="image" type="image/webp" media="(min-width:701px)">
-<link rel="preload" href="/scene-tall.webp" as="image" type="image/webp" media="(max-width:700px)">
-<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
-<link rel="preload" href="/fonts/zain-regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=4">
+<link rel="stylesheet" href="/styles.css?v=5">
+<link rel="preload" as="image" type="image/webp" media="(max-width:700px)" imagesrcset="/scene-tall-760.webp 760w, /scene-tall.webp 1000w" imagesizes="100vw">
+<link rel="preload" as="image" type="image/webp" media="(min-width:701px)" imagesrcset="/scene-wide-1200.webp 1200w, /scene-wide.webp 1800w" imagesizes="min(100vw, 1680px)">
+<link rel="preload" href="/fonts/zain-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/favicon.ico">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -70,8 +70,8 @@
     </div>
     <div class="hero-media">
       <picture>
-        <source media="(max-width:700px)" srcset="/scene-tall.webp">
-        <img class="hero-img" src="/scene-wide.webp" alt="واجهة آن coffee بإضاءتها الدافئة وقت الغروب، وكوب قهوة آن أمامها" width="1800" height="1406" fetchpriority="high">
+        <source media="(max-width:700px)" srcset="/scene-tall-760.webp 760w, /scene-tall.webp 1000w" sizes="100vw">
+        <img class="hero-img" src="/scene-wide.webp" srcset="/scene-wide-1200.webp 1200w, /scene-wide.webp 1800w" sizes="min(100vw, 1680px)" alt="واجهة آن coffee بإضاءتها الدافئة وقت الغروب، وكوب قهوة آن أمامها" width="1800" height="1406" fetchpriority="high">
       </picture>
     </div>
   </section>
@@ -106,11 +106,11 @@
   <!-- ABOUT -->
   <section class="about" id="about" aria-labelledby="about-title">
     <div class="about-visual">
-      <figure class="door"><img src="/scene-door.webp" alt="مدخل آن coffee وخلف الزجاج ركن التحضير" width="880" height="850" loading="lazy"></figure>
-      <figure class="cup"><img src="/scene-cup.webp" alt="كوب قهوة آن بجانب حبوب القهوة" width="1000" height="710" loading="lazy"></figure>
+      <figure class="door"><img src="/scene-door-560.webp" srcset="/scene-door-560.webp 560w, /scene-door.webp 880w" sizes="(max-width:700px) 80vw, 480px" alt="مدخل آن coffee وخلف الزجاج ركن التحضير" width="880" height="850" loading="lazy"></figure>
+      <figure class="cup"><img src="/scene-cup-560.webp" srcset="/scene-cup-560.webp 560w, /scene-cup.webp 1000w" sizes="(max-width:700px) 40vw, 260px" alt="كوب قهوة آن بجانب حبوب القهوة" width="1000" height="710" loading="lazy"></figure>
       <div class="stamp" aria-hidden="true">
         <img class="stamp-ring" src="/stamp-ring.webp" alt="" width="360" height="360" loading="lazy">
-        <img src="/pass/logo@2x.png" alt="" width="122" height="88">
+        <img src="/logo-mark.webp" alt="" width="122" height="88">
       </div>
       <span class="bean b1" aria-hidden="true"></span>
       <span class="bean b2" aria-hidden="true"></span>
@@ -270,9 +270,9 @@
       <p>بنضيف صور الافتتاح والمنيو هنا أول بأول.</p>
     </div>
     <div class="bento">
-      <figure class="g1"><img src="/scene-wide.webp" alt="واجهة آن coffee وقت الغروب" width="1800" height="1406" loading="lazy"></figure>
-      <figure class="g2"><img src="/scene-cup.webp" alt="كوب قهوة آن مع حبوب القهوة" width="1000" height="710" loading="lazy"></figure>
-      <figure class="g3"><img src="/scene-door.webp" alt="مدخل آن coffee بإضاءته الدافئة" width="880" height="850" loading="lazy"></figure>
+      <figure class="g1"><img src="/scene-wide-800.webp" srcset="/scene-wide-800.webp 800w, /scene-wide-1200.webp 1200w, /scene-wide.webp 1800w" sizes="(max-width:700px) 100vw, 62vw" alt="واجهة آن coffee وقت الغروب" width="1800" height="1406" loading="lazy"></figure>
+      <figure class="g2"><img src="/scene-cup-560.webp" srcset="/scene-cup-560.webp 560w, /scene-cup.webp 1000w" sizes="(max-width:700px) 50vw, 38vw" alt="كوب قهوة آن مع حبوب القهوة" width="1000" height="710" loading="lazy"></figure>
+      <figure class="g3"><img src="/scene-door-560.webp" srcset="/scene-door-560.webp 560w, /scene-door.webp 880w" sizes="(max-width:700px) 50vw, 38vw" alt="مدخل آن coffee بإضاءته الدافئة" width="880" height="850" loading="lazy"></figure>
     </div>
   </section>
 
@@ -308,7 +308,7 @@
       <a class="btn btn-halo" href="/wallet">أضف البطاقة لمحفظتك</a>
     </div>
     <a class="mini-pass" href="/wallet" aria-label="بطاقة آن coffee، افتح صفحة الإضافة للمحفظة">
-      <span class="mp-head"><span class="mp-brand"><img src="/pass/logo@2x.png" alt="" width="122" height="88">آن coffee</span><span class="mp-fld"><small>الحالة</small>قريبًا الافتتاح</span></span>
+      <span class="mp-head"><span class="mp-brand"><img src="/logo-mark.webp" alt="" width="122" height="88">آن coffee</span><span class="mp-fld"><small>الحالة</small>قريبًا الافتتاح</span></span>
       <span class="mp-strip"><span class="mp-fld"><small>مرحبًا</small><strong>ضيفنا الكريم</strong></span></span>
       <span class="mp-code"><img src="/qr.svg" alt="" width="134" height="134"></span>
     </a>
@@ -379,14 +379,14 @@
 
 <!-- Chat launcher -->
 <button class="chat-fab" type="button" data-open-chat aria-label="اسأل آن، المساعد الذكي">
-  <span class="fab-avatar"><img src="/pass/logo@2x.png" alt="" width="122" height="88"></span>
+  <span class="fab-avatar"><img src="/logo-mark.webp" alt="" width="122" height="88"></span>
   <span class="fab-text">اسأل آن</span>
 </button>
 
 <div class="chat-backdrop" data-close-chat hidden></div>
 <aside class="chat-panel" id="chatPanel" aria-hidden="true" aria-label="مساعد آن الذكي">
   <div class="chat-panel-head">
-    <div class="assistant-avatar"><img src="/pass/logo@2x.png" alt="" width="122" height="88"></div>
+    <div class="assistant-avatar"><img src="/logo-mark.webp" alt="" width="122" height="88"></div>
     <div class="assistant-meta">
       <strong>مساعد آن</strong>
       <span><i aria-hidden="true"></i> يرد عليك الحين</span>
@@ -415,9 +415,9 @@
   </form>
 </aside>
 
-<script src="/ann.js?v=4"></script>
-<script src="/app.js?v=4"></script>
-<script src="/cart.js?v=4"></script>
+<script src="/ann.js?v=5"></script>
+<script src="/app.js?v=5"></script>
+<script src="/cart.js?v=5"></script>
 <script>
 (() => {
   const b = document.querySelector('[data-install]');

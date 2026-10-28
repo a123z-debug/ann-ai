@@ -9,7 +9,14 @@ const router=require('./lib/router');
 const {guard}=require('./lib/admin');
 const SEC=require('./lib/security');
 const readKB=()=>JSON.parse(fs.readFileSync(KB,'utf8'));
-const send=(res,code,obj)=>{res.writeHead(code,Object.assign({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'},SEC.HEADERS));res.end(JSON.stringify(obj));};
+const zlib=require('zlib');
+// gzip for text when the browser accepts it (Vercel does this at its edge; this covers Railway/local)
+const gzipOk=req=>/\bgzip\b/.test(String(req.headers['accept-encoding']||''));
+const send=(res,code,obj)=>{
+  let body=Buffer.from(JSON.stringify(obj));const h=Object.assign({'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Vary':'Accept-Encoding'},SEC.HEADERS);
+  if(body.length>1024&&res.req&&gzipOk(res.req)){body=zlib.gzipSync(body,{level:6});h['Content-Encoding']='gzip';}
+  res.writeHead(code,h);res.end(body);
+};
 class BadBody extends Error{constructor(code,msg){super(msg);this.status=code;}}
 const parse=req=>new Promise((resolve,reject)=>{let s='';req.on('data',c=>{s+=c;if(s.length>256*1024){reject(new BadBody(413,'too_large'));req.destroy();}});req.on('end',()=>{try{resolve(JSON.parse(s||'{}'))}catch(e){reject(new BadBody(400,'bad_json'))}});req.on('error',reject);});
 const norm=s=>String(s||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^\u0600-\u06FFa-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
@@ -40,8 +47,10 @@ function serve(req,res){
   if(!f.startsWith(PUBLIC+path.sep)||!fs.existsSync(f)||fs.statSync(f).isDirectory()) return false;
   const ext=path.extname(f);
   const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.png':'image/png','.svg':'image/svg+xml','.webp':'image/webp','.avif':'image/avif','.jpg':'image/jpeg','.woff':'font/woff','.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json','.json':'application/json; charset=utf-8','.ico':'image/x-icon'};
-  res.writeHead(200,Object.assign({'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':(ext==='.html'||p==='/sw.js')?'no-cache':'public, max-age=3600'},SEC.HEADERS));
-  fs.createReadStream(f).pipe(res);
+  const cache=(ext==='.html'||p==='/sw.js')?'no-cache':ext==='.woff2'||ext==='.woff'?'public, max-age=31536000, immutable':'public, max-age=86400, stale-while-revalidate=604800';
+  const h=Object.assign({'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':cache,'Vary':'Accept-Encoding'},SEC.HEADERS);
+  if(/^\.(html|css|js|json|svg|webmanifest|txt)$/.test(ext)&&gzipOk(req)){h['Content-Encoding']='gzip';res.writeHead(200,h);fs.createReadStream(f).pipe(zlib.createGzip({level:6})).pipe(res);}
+  else{res.writeHead(200,h);fs.createReadStream(f).pipe(res);}
   return true;
 }
 

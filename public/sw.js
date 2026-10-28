@@ -1,7 +1,7 @@
 /* آن coffee service worker: offline shell, fast repeat visits, order notifications. */
-const VERSION = 'ann-2026-10-25';
-const CORE = ['/', '/offline.html', '/styles.css?v=4', '/ann.js?v=4', '/app.js?v=4', '/cart.js?v=4', '/logo-white.webp', '/logo.webp',
-  '/fonts/zain-regular.woff', '/fonts/zain-bold.woff', '/fonts/zain-extrabold.woff', '/fonts/zain-black.woff', '/icons/icon-192.png'];
+const VERSION = 'ann-2026-10-28';
+const CORE = ['/', '/offline.html', '/styles.css?v=5', '/ann.js?v=5', '/app.js?v=5', '/cart.js?v=5', '/logo-white.webp', '/logo.webp',
+  '/fonts/zain-regular.woff2', '/fonts/zain-bold.woff2', '/fonts/zain-extrabold.woff2', '/fonts/zain-black.woff2', '/icons/icon-192.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => Promise.all(CORE.map(u => c.add(u).catch(() => null)))).then(() => self.skipWaiting()));
@@ -45,6 +45,8 @@ self.addEventListener('push', e => {
       body: m.body, tag: m.tag || 'ann', renotify: true, dir: 'rtl', lang: 'ar',
       icon: '/icons/icon-192.png', badge: '/icons/badge-96.png', data: { url: m.url || '/' }
     });
+    // open order page or dashboard: refresh now instead of waiting for the next poll
+    for (const c of await self.clients.matchAll({ type: 'window' })) c.postMessage({ type: 'ann:refresh' });
   })());
 });
 

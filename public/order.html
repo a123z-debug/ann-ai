@@ -9,8 +9,8 @@
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <link rel="icon" href="/favicon.ico">
-<link rel="preload" href="/fonts/zain-black.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/styles.css?v=4">
+<link rel="preload" href="/fonts/zain-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css?v=5">
 <style>
 .o-badge{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:var(--roast);color:var(--halo);margin-top:-66px;box-shadow:0 0 0 8px #fff,0 18px 30px -10px rgba(46,20,11,.6)}
 .o-badge svg{width:38px;height:38px}
@@ -79,7 +79,7 @@
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="/vendor/qrcode.js"></script>
-<script src="/ann.js?v=4"></script>
+<script src="/ann.js?v=5"></script>
 <script>
 (() => {
   const A = window.Ann, { esc, money, ls } = A;
@@ -275,9 +275,12 @@
   }
   function schedule() {
     clearTimeout(timer);
-    if (stored && order && ['new', 'preparing', 'ready'].includes(order.status)) timer = setTimeout(() => load(false), document.hidden ? 20000 : 6000);
+    // poll only while the page is on screen; a status push or coming back refreshes at once
+    if (stored && order && !document.hidden && ['new', 'preparing', 'ready'].includes(order.status)) timer = setTimeout(() => load(false), 8000);
   }
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && order && stored && ['new', 'preparing', 'ready'].includes(order.status)) load(false); });
+  const live = () => order && stored && ['new', 'preparing', 'ready'].includes(order.status);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && live()) load(false); else clearTimeout(timer); });
+  if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'ann:refresh' && live()) load(false); });
 
   if (!id) { app.innerHTML = '<div class="o-card o-hero"><h1>ما فيه طلب</h1><a class="btn btn-roast" href="/#menu">القائمة</a></div>'; return; }
   A.settings().then(s => { S = s || {}; load(true); });
