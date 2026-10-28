@@ -3,19 +3,41 @@ on:
   push:
     branches: [probe]
 jobs:
-  probe:
+  lighthouse:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        page: ["/", "/account", "/orders", "/gift"]
+    steps:
+      - name: Lighthouse (mobile, 3 runs)
+        env:
+          PAGE: ${{ matrix.page }}
+        run: |
+          B=https://ann-ai-lac.vercel.app
+          for i in 1 2 3; do
+            npx -y lighthouse@12 "$B$PAGE?lh=$i" --only-categories=performance --output=json --output-path=lh$i.json --chrome-flags="--headless=new --no-sandbox" --quiet || true
+          done
+          node -e '
+          const fs=require("fs");const runs=[1,2,3].map(i=>{try{return JSON.parse(fs.readFileSync("lh"+i+".json"))}catch{return null}}).filter(Boolean);
+          runs.sort((a,b)=>a.categories.performance.score-b.categories.performance.score);const r=runs[Math.floor(runs.length/2)];const a=r.audits;
+          const v=k=>a[k]&&a[k].displayValue;
+          const opp=Object.values(a).filter(x=>x.details&&x.details.type==="opportunity"&&(x.details.overallSavingsMs>50||x.details.overallSavingsBytes>20000)).sort((x,y)=>(y.details.overallSavingsMs||0)-(x.details.overallSavingsMs||0)).slice(0,6).map(x=>`${x.id}(${Math.round(x.details.overallSavingsMs||0)}ms/${Math.round((x.details.overallSavingsBytes||0)/1024)}KB)`);
+          const scores=runs.map(x=>Math.round(x.categories.performance.score*100)).join("/");
+          const lcpEl=(a["largest-contentful-paint-element"]&&a["largest-contentful-paint-element"].details&&JSON.stringify(a["largest-contentful-paint-element"].details.items[0]).match(/"snippet":"([^"]{0,70})/))||[];
+          const res=(a["resource-summary"].details.items||[]).map(x=>`${x.resourceType}:${x.requestCount}/${Math.round(x.transferSize/1024)}KB`).join(" ");
+          console.log(`::notice title=LH ${process.env.PAGE}::score ${Math.round(r.categories.performance.score*100)} (runs ${scores}) FCP ${v("first-contentful-paint")} LCP ${v("largest-contentful-paint")} TBT ${v("total-blocking-time")} CLS ${v("cumulative-layout-shift")} SI ${v("speed-index")} weight ${v("total-byte-weight")} | ${res} | LCP el ${lcpEl[1]||""} | ${opp.join(" ")}`);
+          '
+  api:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: Latency and load (read-only endpoints)
+        run: |
           B=https://ann-ai-lac.vercel.app
-          note() { echo "::notice title=$1::$(echo "$2" | tr -d '\r\n%' | cut -c1-300)"; }
-          note "home headers" "$(curl -s -o /dev/null -D - $B/ | grep -iE '^HTTP|content-security|x-frame|x-content-type|referrer-policy|permissions-policy|strict-transport' | cut -c1-60 | tr '\n' ' ')"
-          note "api headers" "$(curl -s -o /dev/null -D - $B/api/v1/settings | grep -iE '^HTTP|x-frame|x-content-type|cache-control' | tr '\n' ' ')"
-          note "settings" "$(curl -s $B/api/v1/settings | head -c 120)"
-          note "POST account json" "$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'Content-Type: application/json' -d '{}' $B/api/v1/account)"
-          note "POST order text/plain" "$(curl -s -w ' %{http_code}' -X POST -H 'Content-Type: text/plain' -d '{"type":"pickup"}' $B/api/v1/order)"
-          note "push to evil host" "$(curl -s -w ' %{http_code}' -X POST -H 'Content-Type: application/json' -d '{"sub":{"endpoint":"https://169.254.169.254/x"}}' $B/api/v1/push/subscribe)"
-          note "admin no pin" "$(curl -s -o /dev/null -w '%{http_code}' $B/api/v1/admin/orders)"
-          note "knowledge no pin" "$(curl -s -o /dev/null -w '%{http_code}' $B/api/knowledge)"
-          note "source files" "$(for p in /server.js /lib/accounts.js /data/shop.json /.git/config /api/gateway.js; do printf '%s=%s ' $p $(curl -s -o /dev/null -w '%{http_code}' $B$p); done)"
-          note "pages" "$(for p in / /account /gift /orders /order /wallet; do printf '%s=%s ' $p $(curl -s -o /dev/null -w '%{http_code}' $B$p); done)"
+          for u in / /api/v1/settings /api/v1/menu /styles.css?v=4; do
+            t=$(for i in 1 2 3 4 5; do curl -s -o /dev/null -w '%{time_starttransfer} ' "$B$u"; done)
+            echo "::notice title=TTFB $u::$t (seconds, 5 sequential)"
+          done
+          for u in /api/v1/settings /api/v1/menu /; do
+            npx -y autocannon@7 -c 10 -a 300 -j "$B$u" > ac.json 2>/dev/null || true
+            node -e 'const j=JSON.parse(require("fs").readFileSync("ac.json"));const L=j.latency;console.log(`::notice title=Load ${process.argv[1]}::10 parallel, ${j.requests.total} req: ${Math.round(j.requests.average)} req/s, latency p50 ${L.p50}ms p90 ${L.p90}ms p99 ${L.p99}ms max ${L.max}ms, errors ${j.errors}, non-2xx ${j.non2xx}`)' "$u"
+          done
