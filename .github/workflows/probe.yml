@@ -15,7 +15,7 @@ jobs:
         run: |
           B=https://ann-ai-lac.vercel.app
           for i in 1 2 3; do
-            npx -y lighthouse@12 "$B$PAGE?lh=$i" --only-categories=performance --output=json --output-path=lh$i.json --chrome-flags="--headless=new --no-sandbox" --quiet || true
+            npx -y lighthouse@12 "$B$PAGE?lh=b$i" --only-categories=performance --output=json --output-path=lh$i.json --chrome-flags="--headless=new --no-sandbox" --quiet || true
           done
           node -e '
           const fs=require("fs");const runs=[1,2,3].map(i=>{try{return JSON.parse(fs.readFileSync("lh"+i+".json"))}catch{return null}}).filter(Boolean);
@@ -30,6 +30,13 @@ jobs:
   api:
     runs-on: ubuntu-latest
     steps:
+      - name: Cache headers and function region
+        run: |
+          B=https://ann-ai-lac.vercel.app
+          for u in /scene-tall-760.webp "/styles.css?v=5" /fonts/zain-black.woff2 /sw.js /api/v1/settings; do
+            h=$(curl -s -o /dev/null -D - "$B$u" | grep -iE '^cache-control|^x-vercel-id|^content-type' | tr -d '\r' | tr '\n' ' ')
+            echo "::notice title=Headers $u::$h"
+          done
       - name: Latency and load (read-only endpoints)
         run: |
           B=https://ann-ai-lac.vercel.app
