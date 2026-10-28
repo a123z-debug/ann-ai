@@ -330,7 +330,7 @@ video.scan{width:100%;max-width:360px;border-radius:16px;background:#000}
     S = j.settings; MENU = j.menu; META = j;
     $('#login').hidden = true; $('#dash').hidden = false;
     fillTop(); renderSettings(); renderItems(); renderTables(); fillBranches();
-    if (Ann.pushSupported() && j.durable) { $('#pushBtn').hidden = false; Ann.pushEnabled().then(on => $('#pushBtn').classList.toggle('on', on)); }
+    if (Ann.pushSupported() && j.durable) { $('#pushBtn').hidden = false; Ann.pushEnabled().then(on => { pushOn = on; $('#pushBtn').classList.toggle('on', on); }); }
     if ('BarcodeDetector' in window) $('#scanBtn').hidden = false;
     poll();
     const c = qp.get('c');
@@ -349,7 +349,7 @@ video.scan{width:100%;max-width:360px;border-radius:16px;background:#000}
   // ---------- orders ----------
   // Asks "anything new since revision X?" (one small read). The full list comes only after a change;
   // a push to this device, or coming back to the tab, refreshes at once.
-  let rev = '', lastDraw = 0;
+  let rev = '', lastDraw = 0, pushOn = false;
   async function poll() {
     clearTimeout(timer);
     try {
@@ -369,7 +369,8 @@ video.scan{width:100%;max-width:360px;border-radius:16px;background:#000}
         firstLoad = false;
       }
     } catch {}
-    timer = setTimeout(poll, document.hidden ? 30000 : 6000);
+    // with notifications on this device, new orders arrive as a push and refresh the board at once
+    timer = setTimeout(poll, document.hidden ? 30000 : pushOn ? 15000 : 6000);
   }
   document.addEventListener('visibilitychange', () => { if (!document.hidden && PIN && !$('#dash').hidden) poll(); });
   if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { if (e.data && e.data.type === 'ann:refresh' && PIN && !$('#dash').hidden) poll(); });
@@ -452,7 +453,7 @@ video.scan{width:100%;max-width:360px;border-radius:16px;background:#000}
   $('#soundBtn').onclick = e => { sound = !sound; e.currentTarget.setAttribute('aria-pressed', sound); if (sound) chime(); };
   $('#pushBtn').onclick = async () => {
     const r = await Ann.enablePush({ admin: true, pin: PIN });
-    if (r.ok) { $('#pushBtn').classList.add('on'); Ann.toast('تمام! يوصلك تنبيه على هذا الجهاز مع كل طلب جديد.'); } else if (r.message) Ann.toast(r.message);
+    if (r.ok) { pushOn = true; $('#pushBtn').classList.add('on'); Ann.toast('تمام! يوصلك تنبيه على هذا الجهاز مع كل طلب جديد.'); } else if (r.message) Ann.toast(r.message);
   };
 
   // ---------- stats ----------
